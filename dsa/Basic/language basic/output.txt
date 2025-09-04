@@ -1,7 +1,3 @@
 Array size: 5
 Sum: 15
 Max element: 5
-Min element: 1
-GCD of first two: 1
-2^10 = 1024
-Sorted: 1 2 3 4 5 

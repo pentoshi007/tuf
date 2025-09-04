@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# Quick C++ compile and run script
+# Usage: ./clang filename.cpp
+# Alternative: ./clang filename (without .cpp extension)
+
+if [ $# -eq 0 ]; then
+    echo "❌ Usage: ./clang <filename.cpp> or ./clang <filename>"
+    echo "📝 Examples:"
+    echo "   ./clang setup.cpp"
+    echo "   ./clang setup"
+    exit 1
+fi
+
+# Get the filename
+FILE="$1"
+
+# Add .cpp extension if not provided
+if [[ ! "$FILE" =~ \.cpp$ ]]; then
+    FILE="${FILE}.cpp"
+fi
+
+# Check if file exists
+if [ ! -f "$FILE" ]; then
+    echo "❌ File '$FILE' not found!"
+    exit 1
+fi
+
+# Get filename without extension for output
+BASE_NAME=$(basename "$FILE" .cpp)
+
+echo "🚀 Compiling $FILE with Clang C++20..."
+
+# Compile with optimized flags
+clang++ -std=c++20 -O2 -Wall "$FILE" -o "$BASE_NAME"
+
+if [ $? -eq 0 ]; then
+    echo "✅ Compilation successful!"
+    echo "🔄 Running $BASE_NAME..."
+    echo "───────────────────────────────"
+    ./"$BASE_NAME"
+else
+    echo "❌ Compilation failed!"
+    exit 1
+fi

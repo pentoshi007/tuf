@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Quick C++ compile and run script
+# Usage: ./clang filename.cpp or ./clang filename
+
+if [ $# -eq 0 ]; then
+    echo "❌ Usage: ./clang <filename>"
+    echo "📝 Examples: ./clang setup.cpp  or  ./clang setup"
+    exit 1
+fi
+
+FILE="$1"
+[[ ! "$FILE" =~ \.cpp$ ]] && FILE="${FILE}.cpp"
+
+if [ ! -f "$FILE" ]; then
+    echo "❌ File '$FILE' not found!"
+    exit 1
+fi
+
+BASE_NAME=$(basename "$FILE" .cpp)
+echo "🚀 Compiling $FILE..."
+clang++ -std=c++20 -O2 -Wall "$FILE" -o "$BASE_NAME" && echo "✅ Done! Running..." && echo "────────────────" && ./"$BASE_NAME"
