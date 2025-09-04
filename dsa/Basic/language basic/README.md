@@ -38,9 +38,11 @@
 ## 🛠 Usage Options
 
 ### **1. Code Runner Extension (Recommended for C++)**
+
 **Usage:** Press `Ctrl+F5` or click the ▶️ Run Code button
 
 **🎯 Language-Specific Behavior:**
+
 - **✅ C++ files (.cpp):** Automatic `input.txt` → `output.txt` redirection + terminal output
 - **✅ Python files (.py):** Normal execution (`python -u`)
 - **✅ JavaScript files (.js):** Normal execution (`node`)
@@ -48,6 +50,7 @@
 - **✅ C files (.c):** Normal gcc compilation
 
 **C++ Output Example:**
+
 ```
 === OUTPUT ===
 Array size: 5
@@ -59,6 +62,7 @@ Max element: 5
 ```
 
 **Features:**
+
 - ✅ Automatic C++20 compilation with `-O2` optimization
 - ✅ Input/output redirection (C++ only)
 - ✅ Shows both output and input for reference
@@ -72,6 +76,7 @@ Max element: 5
 ```
 
 **Features:**
+
 - ⚡ Fastest compilation and execution
 - 🔄 Direct terminal output (no I/O redirection)
 - 🚀 Perfect for quick testing and debugging
@@ -84,12 +89,14 @@ Max element: 5
 ```
 
 **Modes:**
+
 - `./run.sh` - Default fast mode with setup.cpp
 - `./run.sh mycode` - Compile mycode.cpp in fast mode
 - `./run.sh mycode debug` - Debug mode with extra warnings
 - `./run.sh mycode time` - Performance timing mode
 
 **Features:**
+
 - 📁 Always uses `input.txt` → `output.txt`
 - 🎨 Color-coded output
 - ⏱️ Optional performance timing
@@ -154,6 +161,7 @@ clang++ -std=c++20 -g -DDEBUG -Wall -Wextra -o solution_debug solution.cpp
 ## 🎯 Best Practices & Workflow
 
 ### **Competitive Programming Workflow**
+
 1. **Setup:** Put test data in `input.txt`
 2. **Development:** Use Code Runner (▶️) for automatic I/O redirection
 3. **Quick Testing:** Use `./clang filename` for immediate feedback
@@ -161,6 +169,7 @@ clang++ -std=c++20 -g -DDEBUG -Wall -Wextra -o solution_debug solution.cpp
 5. **Performance:** Use `./run.sh filename time` for timing analysis
 
 ### **Development Guidelines**
+
 1. **Always include `#include <bits/stdc++.h>`** - works perfectly with our setup
 2. **Use `ios_base::sync_with_stdio(false); cin.tie(NULL);`** for fast I/O
 3. **Test with different input sizes** in `input.txt`
@@ -168,6 +177,7 @@ clang++ -std=c++20 -g -DDEBUG -Wall -Wextra -o solution_debug solution.cpp
 5. **Comment tricky algorithms** for future reference
 
 ### **File Management Tips**
+
 - Keep `input.txt` updated with current test case
 - `output.txt` is auto-generated, don't edit manually
 - Use descriptive filenames: `problem1.cpp`, `array_sorting.cpp`
@@ -177,23 +187,23 @@ clang++ -std=c++20 -g -DDEBUG -Wall -Wextra -o solution_debug solution.cpp
 
 ### **Use Case → Recommended Method**
 
-| Scenario | Best Method | Features | Speed |
-|----------|------------|----------|-------|
-| **Competitive Programming** | Code Runner ▶️ | Auto I/O redirection | ⚡ Fast |
-| **Quick Testing** | `./clang setup` | Direct terminal output | ⚡⚡ Fastest |
-| **Debugging** | VSCode Debug Task | Debug symbols + I/O | 🐛 Debug |
-| **Performance Testing** | `./run.sh setup time` | Timing + I/O redirection | 📊 Measured |
-| **Other Languages** | Code Runner ▶️ | Language-specific execution | ⚡ Normal |
+| Scenario                    | Best Method           | Features                    | Speed        |
+| --------------------------- | --------------------- | --------------------------- | ------------ |
+| **Competitive Programming** | Code Runner ▶️        | Auto I/O redirection        | ⚡ Fast      |
+| **Quick Testing**           | `./clang setup`       | Direct terminal output      | ⚡⚡ Fastest |
+| **Debugging**               | VSCode Debug Task     | Debug symbols + I/O         | 🐛 Debug     |
+| **Performance Testing**     | `./run.sh setup time` | Timing + I/O redirection    | 📊 Measured  |
+| **Other Languages**         | Code Runner ▶️        | Language-specific execution | ⚡ Normal    |
 
 ### **Input/Output Behavior Summary**
 
-| Method | Input Source | Output Destination | Shows in Terminal |
-|--------|--------------|-------------------|------------------|
-| Code Runner (C++) | `input.txt` | `output.txt` + Terminal | ✅ Both |
-| Code Runner (Python/JS) | Terminal/Interactive | Terminal | ✅ Direct |
-| `./clang script` | Terminal/Interactive | Terminal | ✅ Direct |
-| `./run.sh script` | `input.txt` | `output.txt` + Terminal | ✅ Both |
-| VSCode Tasks | `input.txt` | `output.txt` + Terminal | ✅ Both |
+| Method                  | Input Source         | Output Destination      | Shows in Terminal |
+| ----------------------- | -------------------- | ----------------------- | ----------------- |
+| Code Runner (C++)       | `input.txt`          | `output.txt` + Terminal | ✅ Both           |
+| Code Runner (Python/JS) | Terminal/Interactive | Terminal                | ✅ Direct         |
+| `./clang script`        | Terminal/Interactive | Terminal                | ✅ Direct         |
+| `./run.sh script`       | `input.txt`          | `output.txt` + Terminal | ✅ Both           |
+| VSCode Tasks            | `input.txt`          | `output.txt` + Terminal | ✅ Both           |
 
 ## 📁 File Structure
 
@@ -203,7 +213,7 @@ Basic/language basic/
 ├── input.txt          # Input data (5\n1 2 3 4 5)
 ├── output.txt         # Program output (auto-generated)
 ├── clang*             # Quick compile script
-├── run.sh*            # Enhanced run script  
+├── run.sh*            # Enhanced run script
 └── README.md          # This documentation
 
 .vscode/
@@ -214,22 +224,24 @@ Basic/language basic/
 ## ⚙️ Configuration Details
 
 ### **Code Runner Settings (.vscode/settings.json)**
+
 ```json
 {
-    "code-runner.executorMap": {
-        "cpp": "cd $dir && clang++ -std=c++20 -O2 -Wall $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt < input.txt > output.txt && echo '=== OUTPUT ===' && cat output.txt && echo '=== INPUT ===' && cat input.txt",
-        "python": "python -u",
-        "javascript": "node",
-        "java": "cd $dir && javac $fileName && java $fileNameWithoutExt",
-        "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
-    },
-    "code-runner.runInTerminal": true,
-    "code-runner.saveFileBeforeRun": true,
-    "code-runner.clearPreviousOutput": true
+  "code-runner.executorMap": {
+    "cpp": "cd $dir && clang++ -std=c++20 -O2 -Wall $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt < input.txt > output.txt && echo '=== OUTPUT ===' && cat output.txt && echo '=== INPUT ===' && cat input.txt",
+    "python": "python -u",
+    "javascript": "node",
+    "java": "cd $dir && javac $fileName && java $fileNameWithoutExt",
+    "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
+  },
+  "code-runner.runInTerminal": true,
+  "code-runner.saveFileBeforeRun": true,
+  "code-runner.clearPreviousOutput": true
 }
 ```
 
 ### **Custom bits/stdc++.h Location**
+
 ```
 /opt/homebrew/Cellar/llvm/20.1.8/include/c++/v1/bits/stdc++.h
 ```
@@ -241,6 +253,7 @@ Basic/language basic/
 ### **Common Issues & Solutions**
 
 **❌ "bits/stdc++.h not found"**
+
 ```bash
 # Verify custom header exists
 ls /opt/homebrew/Cellar/llvm/*/include/c++/v1/bits/stdc++.h
@@ -248,11 +261,13 @@ ls /opt/homebrew/Cellar/llvm/*/include/c++/v1/bits/stdc++.h
 ```
 
 **❌ Code Runner not using input.txt**
+
 - Check that file extension is `.cpp`
 - Verify `.vscode/settings.json` exists and is properly configured
 - Try reloading VSCode: `Ctrl+Shift+P` → "Developer: Reload Window"
 
 **❌ Compilation errors**
+
 ```bash
 # Update Homebrew and Clang
 brew update && brew upgrade llvm
@@ -261,17 +276,20 @@ clang++ --version  # Should be 20.1.8+
 ```
 
 **❌ Permission denied for scripts**
+
 ```bash
 # Make scripts executable
 chmod +x clang run.sh
 ```
 
 **❌ Input/output redirection not working**
+
 - Ensure `input.txt` exists and has content
 - Check file paths in commands
 - Use absolute paths if relative paths fail
 
 ### **Performance Optimization**
+
 ```bash
 # For maximum performance (contests)
 clang++ -std=c++20 -O3 -march=native -DNDEBUG setup.cpp -o setup
@@ -283,22 +301,27 @@ clang++ -std=c++20 -g -O0 -DDEBUG -fsanitize=address setup.cpp -o setup_debug
 ## 🚀 Advanced Features
 
 ### **Multi-file Projects**
+
 ```bash
 # Compile multiple files
 clang++ -std=c++20 -O2 main.cpp utils.cpp -o solution
 
 # With header files
-clang++ -std=c++20 -O2 -I./headers main.cpp -o solution  
+clang++ -std=c++20 -O2 -I./headers main.cpp -o solution
 ```
 
 ### **Custom Compilation Flags**
+
 Edit `.vscode/settings.json` to customize:
+
 ```json
 "cpp": "cd $dir && clang++ -std=c++20 -O2 -Wall -DCUSTOM_FLAG $fileName -o $fileNameWithoutExt && ..."
 ```
 
 ### **Template Expansion**
+
 The `bits/stdc++.h` header includes these competitive programming helpers:
+
 - **Macros:** `ll`, `vi`, `pii`, `pb`, `all()`, `sz()`
 - **Constants:** `PI`, `INF`, `MOD`, `EPS`
 - **Functions:** `gcd()`, `lcm()`, `power()`
@@ -307,11 +330,13 @@ The `bits/stdc++.h` header includes these competitive programming helpers:
 ## 📊 Benchmarks
 
 **Compilation Speed (M1 MacBook Air):**
+
 - Simple program: ~0.3 seconds
-- With `bits/stdc++.h`: ~0.5 seconds  
+- With `bits/stdc++.h`: ~0.5 seconds
 - Large program (1000+ lines): ~2 seconds
 
 **Execution Speed:**
+
 - I/O redirection overhead: ~0.01 seconds
 - Direct execution: ~0.001 seconds
 
