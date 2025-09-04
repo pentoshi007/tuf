@@ -1,0 +1,528 @@
+# 🚀 VSCode C++ Competitive Programming Setup Migration Guide
+
+## 📋 Overview
+This guide helps you replicate the complete C++ competitive programming environment with:
+- ✅ **Clang C++20** with Apple Silicon optimization
+- ✅ **Custom bits/stdc++.h** header with all standard libraries
+- ✅ **Language-specific Code Runner** (C++ uses input/output redirection, others normal)
+- ✅ **Multiple execution methods** (Code Runner, quick scripts, VSCode tasks)
+- ✅ **Automatic input.txt → output.txt** redirection for competitive programming
+
+## 🛠 Prerequisites
+Ensure you have these installed:
+```bash
+# Install Homebrew (if not installed)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Install Clang via Homebrew
+brew install llvm
+
+# Verify installation
+clang++ --version  # Should show version 20.1.8+
+```
+
+## 📦 Required VSCode Extensions
+Install these extensions in VSCode:
+1. **Code Runner** (`ms-vscode.cpptools`)
+2. **C/C++** (`ms-vscode.cpptools`) 
+3. **C/C++ Extension Pack** (`ms-vscode.cpptools-extension-pack`)
+
+```bash
+# Install via command line (optional)
+code --install-extension ms-vscode.cpptools
+code --install-extension formulahendry.code-runner
+```
+
+## ⚙️ Step 1: VSCode Configuration Files
+
+### Create `.vscode/settings.json`
+```json
+{
+    "code-runner.executorMap": {
+        "cpp": "cd $dir && clang++ -std=c++20 -O2 -Wall $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt < input.txt > output.txt && echo '=== OUTPUT ===' && cat output.txt && echo '=== INPUT ===' && cat input.txt",
+        "python": "python -u",
+        "javascript": "node",
+        "java": "cd $dir && javac $fileName && java $fileNameWithoutExt",
+        "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
+    },
+    "code-runner.runInTerminal": true,
+    "code-runner.saveFileBeforeRun": true,
+    "code-runner.clearPreviousOutput": true,
+    "code-runner.showExecutionMessage": false,
+    "code-runner.preserveFocus": false,
+    "code-runner.fileDirectoryAsCwd": true
+}
+```
+
+### Create `.vscode/tasks.json`
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "compile (optimized)",
+      "type": "shell",
+      "command": "clang++",
+      "args": ["-std=c++20", "-O2", "-Wall", "-Wextra", "-o", "${fileBasenameNoExtension}", "${file}"],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    },
+    {
+      "label": "compile and run (fast)",
+      "type": "shell",
+      "command": "clang++ -std=c++20 -O2 -Wall -o ${fileBasenameNoExtension} ${file} && ./${fileBasenameNoExtension} < input.txt > output.txt && echo '\\n--- Output from output.txt ---' && cat output.txt",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "debug compile",
+      "type": "shell",
+      "command": "clang++",
+      "args": ["-std=c++20", "-g", "-DDEBUG", "-Wall", "-Wextra", "-o", "${fileBasenameNoExtension}_debug", "${file}"],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    }
+  ]
+}
+```
+
+## 🔧 Step 2: Create Custom bits/stdc++.h Header
+
+### Find Clang Include Path
+```bash
+# Find your Clang version and path
+clang++ -v -E -x c++ - < /dev/null 2>&1 | grep -E '^ /' | grep include
+
+# Usually located at:
+# /opt/homebrew/Cellar/llvm/[VERSION]/include/c++/v1
+```
+
+### Create the Header Directory and File
+```bash
+# Create bits directory (replace [VERSION] with your Clang version)
+sudo mkdir -p /opt/homebrew/Cellar/llvm/20.1.8/include/c++/v1/bits
+
+# Create the header file
+sudo nano /opt/homebrew/Cellar/llvm/20.1.8/include/c++/v1/bits/stdc++.h
+```
+
+### bits/stdc++.h Content
+```cpp
+/*
+ * Comprehensive C++ Standard Library Header for Competitive Programming
+ * Compatible with Clang on macOS - Apple Silicon Optimized
+ */
+
+#ifndef _BITS_STDC___H
+#define _BITS_STDC___H
+
+// Essential I/O
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+#include <sstream>
+
+// Containers
+#include <vector>
+#include <array>
+#include <list>
+#include <deque>
+#include <stack>
+#include <queue>
+#include <set>
+#include <map>
+#include <unordered_set>
+#include <unordered_map>
+
+// Algorithms and utilities
+#include <algorithm>
+#include <numeric>
+#include <iterator>
+#include <functional>
+#include <utility>
+
+// String
+#include <string>
+#if __has_include(<string_view>)
+#include <string_view>
+#endif
+
+// Mathematics
+#include <cmath>
+#include <complex>
+#include <random>
+
+// Memory and smart pointers
+#include <memory>
+
+// Standard C headers
+#include <cassert>
+#include <cctype>
+#include <cerrno>
+#include <cfloat>
+#include <ciso646>
+#include <climits>
+#include <clocale>
+#include <cmath>
+#include <csetjmp>
+#include <csignal>
+#include <cstdarg>
+#include <cstddef>
+#include <cstdint>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
+#include <cwchar>
+#include <cwctype>
+
+// Modern C++ features
+#include <tuple>
+#include <type_traits>
+#include <limits>
+#include <initializer_list>
+
+// C++11 and later
+#include <chrono>
+#if __has_include(<thread>)
+#include <thread>
+#include <mutex>
+#include <atomic>
+#endif
+
+// Exception handling
+#include <exception>
+#include <stdexcept>
+
+// Additional competitive programming headers
+#include <bitset>
+
+// Optional modern headers (C++17/20/23)
+#if __has_include(<optional>)
+#include <optional>
+#endif
+
+#if __has_include(<variant>)
+#include <variant>
+#endif
+
+#if __has_include(<filesystem>)
+#include <filesystem>
+#endif
+
+// Competitive Programming Macros
+#define ll long long
+#define ull unsigned long long
+#define ld long double
+#define vi vector<int>
+#define vll vector<long long>
+#define pii pair<int, int>
+#define pll pair<long long, long long>
+#define pb push_back
+#define eb emplace_back
+#define mp make_pair
+#define fi first
+#define se second
+#define all(x) (x).begin(), (x).end()
+#define rall(x) (x).rbegin(), (x).rend()
+#define sz(x) (int)(x).size()
+
+// Fast I/O
+#define FAST_IO                       \
+    ios_base::sync_with_stdio(false); \
+    cin.tie(NULL);                    \
+    cout.tie(NULL)
+
+// Debugging (only when DEBUG is defined)
+#ifdef DEBUG
+#define debug(x) cerr << #x << " = " << x << endl
+#define debug2(x, y) cerr << #x << " = " << x << ", " << #y << " = " << y << endl
+#else
+#define debug(x)
+#define debug2(x, y)
+#endif
+
+// Mathematical constants
+const double PI = acos(-1.0);
+const double EPS = 1e-9;
+const int INF = 0x3f3f3f3f;
+const long long LLINF = 0x3f3f3f3f3f3f3f3fLL;
+const int MOD = 1000000007;
+const int MAXN = 1000005;
+
+// Direction vectors for grid problems
+const int dx[] = {-1, -1, -1, 0, 0, 1, 1, 1};
+const int dy[] = {-1, 0, 1, -1, 1, -1, 0, 1};
+const int dx4[] = {-1, 0, 1, 0};
+const int dy4[] = {0, 1, 0, -1};
+
+// Common competitive programming functions
+template <typename T>
+T gcd(T a, T b) { return b ? gcd(b, a % b) : a; }
+template <typename T>
+T lcm(T a, T b) { return a / gcd(a, b) * b; }
+template <typename T>
+T power(T a, T b)
+{
+    T res = 1;
+    while (b > 0)
+    {
+        if (b & 1)
+            res *= a;
+        a *= a;
+        b >>= 1;
+    }
+    return res;
+}
+
+#endif /* _BITS_STDC___H */
+```
+
+## 📜 Step 3: Create Helper Scripts
+
+### Create `clang` (Quick Compile Script)
+```bash
+#!/bin/bash
+
+# Quick C++ compile and run script
+# Usage: ./clang filename.cpp or ./clang filename
+
+if [ $# -eq 0 ]; then
+    echo "❌ Usage: ./clang <filename>"
+    echo "📝 Examples: ./clang setup.cpp  or  ./clang setup"
+    exit 1
+fi
+
+FILE="$1"
+[[ ! "$FILE" =~ \.cpp$ ]] && FILE="${FILE}.cpp"
+
+if [ ! -f "$FILE" ]; then
+    echo "❌ File '$FILE' not found!"
+    exit 1
+fi
+
+BASE_NAME=$(basename "$FILE" .cpp)
+echo "🚀 Compiling $FILE..."
+clang++ -std=c++20 -O2 -Wall "$FILE" -o "$BASE_NAME" && echo "✅ Done! Running..." && echo "────────────────" && ./"$BASE_NAME"
+```
+
+### Create `run.sh` (Enhanced Runner)
+```bash
+#!/bin/bash
+
+# Optimized C++ Competitive Programming Runner
+# Compatible with Clang on macOS Apple Silicon
+# Usage: ./run.sh [filename] [mode]
+# Modes: fast (default), debug, time
+
+FILENAME=${1:-setup}
+MODE=${2:-fast}
+CPP_FILE="${FILENAME}.cpp"
+EXEC_FILE="${FILENAME}"
+
+# Color codes for better output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+echo -e "${BLUE}🚀 Clang C++20 Compiler (Apple Silicon Optimized)${NC}"
+echo -e "📁 Compiling: ${YELLOW}${CPP_FILE}${NC}"
+
+case $MODE in
+    "debug")
+        echo -e "🐛 Debug mode with extra warnings"
+        clang++ -std=c++20 -g -DDEBUG -Wall -Wextra -o "${EXEC_FILE}_debug" "${CPP_FILE}"
+        EXEC_FILE="${EXEC_FILE}_debug"
+        ;;
+    "time")
+        echo -e "⏱️  Performance timing mode"
+        clang++ -std=c++20 -O2 -Wall -o "${EXEC_FILE}" "${CPP_FILE}"
+        ;;
+    *)
+        echo -e "⚡ Fast optimized compilation"
+        clang++ -std=c++20 -O2 -Wall -o "${EXEC_FILE}" "${CPP_FILE}"
+        ;;
+esac
+
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}✅ Compilation successful!${NC}"
+    
+    if [ "$MODE" == "time" ]; then
+        echo -e "🕐 Running with timing..."
+        time ./"${EXEC_FILE}" < input.txt > output.txt
+    else
+        echo -e "🔄 Running: input.txt → output.txt"
+        ./"${EXEC_FILE}" < input.txt > output.txt
+    fi
+    
+    echo -e "${BLUE}📤 Output:${NC}"
+    cat output.txt
+    
+    # Show input for reference
+    echo -e "\n${BLUE}📥 Input was:${NC}"
+    cat input.txt
+    
+else
+    echo -e "${RED}❌ Compilation failed!${NC}"
+    exit 1
+fi
+```
+
+### Make Scripts Executable
+```bash
+chmod +x clang run.sh
+```
+
+## 📝 Step 4: Create Sample Files
+
+### Create `setup.cpp` (Template File)
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    
+    int n;
+    cin >> n;
+    
+    vector<int> arr(n);
+    for(int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+    
+    cout << "Array size: " << arr.size() << endl;
+    cout << "Sum: " << accumulate(arr.begin(), arr.end(), 0) << endl;
+    cout << "Max element: " << *max_element(arr.begin(), arr.end()) << endl;
+    
+    return 0;
+}
+```
+
+### Create `input.txt` (Sample Input)
+```
+5
+1 2 3 4 5
+```
+
+## 🧪 Step 5: Test the Setup
+
+### Test 1: Code Runner
+1. Open `setup.cpp` in VSCode
+2. Press `Ctrl+F5` or click the ▶️ Run Code button
+3. Expected output:
+```
+=== OUTPUT ===
+Array size: 5
+Sum: 15
+Max element: 5
+=== INPUT ===
+5
+1 2 3 4 5
+```
+
+### Test 2: Quick Clang Script
+```bash
+./clang setup
+# Should show: compilation → execution → direct terminal output
+```
+
+### Test 3: Enhanced Run Script
+```bash
+./run.sh setup
+# Should show: colored output → I/O redirection → both input and output displayed
+```
+
+### Test 4: VSCode Tasks
+1. Press `Ctrl+Shift+P`
+2. Type "Tasks: Run Task"
+3. Select "compile and run (fast)"
+4. Should compile and show output
+
+## 📂 Final Project Structure
+```
+your-project/
+├── .vscode/
+│   ├── settings.json      # Code Runner configuration
+│   └── tasks.json         # VSCode tasks
+├── setup.cpp              # Your main C++ file
+├── input.txt              # Input data
+├── output.txt             # Program output (auto-generated)
+├── clang*                 # Quick compile script
+└── run.sh*                # Enhanced runner
+```
+
+## 🎯 Usage Summary
+
+### 5 Ways to Run Your Code:
+
+1. **Code Runner** (`Ctrl+F5`): Best for competitive programming - automatic I/O redirection
+2. **Quick Clang** (`./clang filename`): Fastest compilation - direct terminal output
+3. **Enhanced Runner** (`./run.sh filename`): Full-featured with timing and colors
+4. **VSCode Tasks** (`Ctrl+Shift+P`): Professional build system
+5. **Manual** (`clang++ setup.cpp -o setup && ./setup`): Traditional approach
+
+### Language-Specific Behavior:
+- **C++ files**: Automatic `input.txt` → `output.txt` redirection
+- **Python/JS/Java files**: Normal execution (no I/O redirection)
+
+## 🔧 Troubleshooting
+
+### Common Issues:
+```bash
+# If bits/stdc++.h not found
+ls /opt/homebrew/Cellar/llvm/*/include/c++/v1/bits/stdc++.h
+
+# If Clang version issues
+brew update && brew upgrade llvm
+
+# If permission denied
+chmod +x clang run.sh
+
+# If Code Runner not working
+# Reload VSCode: Ctrl+Shift+P → "Developer: Reload Window"
+```
+
+## 🚀 Advanced Configuration
+
+### Performance Optimization:
+```bash
+# Maximum performance for contests
+clang++ -std=c++20 -O3 -march=native -DNDEBUG setup.cpp -o setup
+
+# Debug with sanitizers
+clang++ -std=c++20 -g -O0 -DDEBUG -fsanitize=address setup.cpp -o setup_debug
+```
+
+### Custom Code Runner Settings:
+Edit `.vscode/settings.json` to customize compilation flags:
+```json
+"cpp": "cd $dir && clang++ -std=c++20 -O2 -Wall -DCUSTOM_FLAG $fileName -o $fileNameWithoutExt && ..."
+```
+
+---
+
+## ✅ Verification Checklist
+
+- [ ] Clang 20.1.8+ installed via Homebrew
+- [ ] Code Runner extension installed
+- [ ] `.vscode/settings.json` created with language-specific executors
+- [ ] `.vscode/tasks.json` created with build tasks
+- [ ] Custom `bits/stdc++.h` header installed
+- [ ] Helper scripts (`clang`, `run.sh`) created and executable
+- [ ] Sample files (`setup.cpp`, `input.txt`) created
+- [ ] All 5 execution methods tested successfully
+
+**🎉 Once all items are checked, you have the complete C++ competitive programming environment ready!**
+
+**Quick Start:** Open `setup.cpp`, put test data in `input.txt`, and press Code Runner ▶️ button!
