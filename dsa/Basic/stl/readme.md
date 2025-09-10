@@ -63,9 +63,17 @@ accessing and modifying elements in STL containers.
 The `pair` in C++ STL is a utility that allows the storage
 of two heterogeneous objects as a single unit. This is particularly
 useful when there is a need to associate two values together, such as
-when storing key-value pairs. The pair can store values of any data
+when storing key-value pairs or coordinates. The pair can store values of any data
 type, and the values can be accessed directly using `first` and `second` members.
 
+**Key Features:**
+
+- Stores two values of potentially different types
+- Provides comparison operators (==, !=, <, >, <=, >=)
+- Supports assignment and copy operations
+- Can be used as elements in containers like vector, set, etc.
+- Useful for returning multiple values from functions
+
 ### Example Code
 
 ```cpp
@@ -89,41 +97,118 @@ Roll No: 1, Name: Alice
 
 ```
 
-### Example Code
+### 1. Creating and Using Pairs
 
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
 
 int main() {
-    pair<int, string> student;
-    student.first = 1;
-    student.second = "Alice";
+    // Different ways to create pairs
+    pair<int, string> student1(1, "Alice");           // Constructor
+    pair<int, string> student2 = {2, "Bob"};          // Brace initialization
+    pair<int, string> student3 = make_pair(3, "Charlie"); // make_pair function
 
-    cout << "Roll No: " << student.first << ", Name: " << student.second << endl;
-
-    pair<pair<int, char>, int> complexPair = {{2, 'B'}, 20};
-    cout << "Roll No: " << complexPair.first.first << ", Section: " << complexPair.first.second;
-    cout << ", Marks: " << complexPair.second << endl;
+    cout << "Student 1: " << student1.first << ", " << student1.second << endl;
+    cout << "Student 2: " << student2.first << ", " << student2.second << endl;
+    cout << "Student 3: " << student3.first << ", " << student3.second << endl;
 
     return 0;
 }
 ```
 
-### Expected Output
+**Expected Output:**
 
 ```
-Roll No: 1, Name: Alice
-Roll No: 2, Section: B, Marks: 20
+Student 1: 1, Alice
+Student 2: 2, Bob
+Student 3: 3, Charlie
+```
 
+### 2. Pair Comparisons and Sorting
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    vector<pair<int, string>> students = {
+        {3, "Charlie"}, {1, "Alice"}, {2, "Bob"}
+    };
+
+    // Pairs are compared first by .first, then by .second
+    sort(students.begin(), students.end());
+
+    cout << "Sorted by roll number:" << endl;
+    for(auto& s : students) {
+        cout << s.first << ": " << s.second << endl;
+    }
+
+    return 0;
+}
+```
+
+**Expected Output:**
+
+```
+Sorted by roll number:
+1: Alice
+2: Bob
+3: Charlie
+```
+
+### 3. Nested Pairs and Complex Structures
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    // Nested pair for more complex data
+    pair<pair<int, char>, int> complexStudent = {{2, 'A'}, 95};
+
+    cout << "Roll No: " << complexStudent.first.first << endl;
+    cout << "Section: " << complexStudent.first.second << endl;
+    cout << "Marks: " << complexStudent.second << endl;
+
+    // Using pair for coordinates
+    pair<double, double> point = {3.14, 2.71};
+    cout << "Point: (" << point.first << ", " << point.second << ")" << endl;
+
+    return 0;
+}
+```
+
+**Expected Output:**
+
+```
+Roll No: 2
+Section: A
+Marks: 95
+Point: (3.14, 2.71)
 ```
 
 ## C++ STL Vector Operations
 
+The `vector` is a sequence container representing a dynamic array that can automatically resize itself when elements are added or removed. It provides the same functionalities as an array but with additional features like dynamic resizing.
+
+**Key Characteristics:**
+
+- **Random Access:** O(1) access to elements by index
+- **Dynamic Size:** Automatically grows and shrinks as needed
+- **Cache-Friendly:** Elements are stored contiguously in memory
+- **Iterators:** Supports random access iterators
+
+**Time Complexities:**
+
+- **Access:** O(1) - Direct access by index
+- **Insert/Delete at end:** O(1) amortized
+- **Insert/Delete at middle:** O(n) - requires shifting elements
+- **Search:** O(n) - linear search through elements
+
 ### 1. Initialization
 
-`vector` is a dynamic array that can automatically resize itself when elements are added or removed.
-It provides the same functionalities as an array but with additional features like dynamic resizing.
+Different ways to create and initialize vectors:
 
 ```cpp
 #include <bits/stdc++.h>
@@ -354,22 +439,163 @@ int main() {
 }
 ```
 
-**Expected Output:** Size after clear: 0
+**Expected Output:**
+
+```
+Size after clear: 0
+```
+
+### 13. capacity and reserve
+
+`capacity()` returns the number of elements the vector can hold before needing to reallocate.
+`reserve()` requests that capacity be at least enough to contain n elements.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    vector<int> v;
+    cout << "Initial capacity: " << v.capacity() << endl;
+
+    v.reserve(100);  // Reserve space for 100 elements
+    cout << "After reserve(100): " << v.capacity() << endl;
+
+    v.push_back(1);
+    cout << "After push_back: size=" << v.size() << ", capacity=" << v.capacity() << endl;
+
+    return 0;
+}
+```
+
+**Expected Output:**
+
+```
+Initial capacity: 0
+After reserve(100): 100
+After push_back: size=1, capacity=100
+```
+
+### 14. resize
+
+The `resize()` function changes the size of the vector. If the new size is larger,
+new elements are initialized with the default value (or specified value).
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    vector<int> v = {1, 2, 3};
+    cout << "Original size: " << v.size() << endl;
+
+    v.resize(5);  // Increase size, new elements are 0
+    cout << "After resize(5): ";
+    for(int x : v) cout << x << " ";
+    cout << endl;
+
+    v.resize(2);  // Decrease size
+    cout << "After resize(2): ";
+    for(int x : v) cout << x << " ";
+    cout << endl;
+
+    return 0;
+}
+```
+
+**Expected Output:**
+
+```
+Original size: 3
+After resize(5): 1 2 3 0 0
+After resize(2): 1 2
+```
+
+### 15. pop_back
+
+The `pop_back()` function removes the last element from the vector.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    vector<int> v = {1, 2, 3, 4, 5};
+    cout << "Before pop_back: ";
+    for(int x : v) cout << x << " ";
+    cout << endl;
+
+    v.pop_back();
+    cout << "After pop_back: ";
+    for(int x : v) cout << x << " ";
+    cout << endl;
+
+    return 0;
+}
+```
+
+**Expected Output:**
+
+```
+Before pop_back: 1 2 3 4 5
+After pop_back: 1 2 3 4
+```
+
+### 16. emplace_back
+
+The `emplace_back()` function constructs an element in-place at the end of the vector.
+It's more efficient than `push_back()` for complex objects as it avoids copying.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    vector<pair<int, string>> v;
+
+    // emplace_back constructs the pair directly
+    v.emplace_back(1, "one");
+    v.emplace_back(2, "two");
+
+    for(auto& p : v) {
+        cout << p.first << ": " << p.second << endl;
+    }
+
+    return 0;
+}
+```
+
+**Expected Output:**
+
+```
+1: one
+2: two
+```
 
 ## C++ STL List and Deque Operations
 
 ### What is a List?
 
-Lists are sequence containers that support non-contiguous memory
-allocation. Unlike vectors, which offer faster traversal, lists have
-slower traversal times.
-However, they excel in insertion and deletion operations, which are
-performed in constant time once the desired position is identified.
-A `list` in C++ STL is a doubly-linked list, which allows
-elements to be efficiently inserted or deleted from both ends as well
-as from the middle.
-Unlike arrays or vectors, lists do not provide fast random access
-but are highly efficient in insertion and deletion operations.
+The `list` container in C++ STL is implemented as a doubly-linked list, which stores elements in non-contiguous memory locations. Unlike vectors, which offer faster traversal, lists have slower traversal times but excel in insertion and deletion operations.
+
+**Key Characteristics:**
+
+- **Bidirectional:** Can traverse forward and backward
+- **Non-contiguous:** Elements scattered in memory, connected by pointers
+- **No Random Access:** Cannot directly access elements by index
+- **Dynamic Size:** Grows and shrinks efficiently
+
+**Time Complexities:**
+
+- **Access:** O(n) - Must traverse from beginning or end
+- **Insert/Delete:** O(1) - At any position if iterator is available
+- **Search:** O(n) - Linear search required
+
+**Use Cases:**
+
+- Frequent insertions/deletions in the middle
+- When you don't need random access
+- Implementing other data structures (stacks, queues)
 
 ### 1. push_front / emplace_front (List)
 
@@ -413,30 +639,76 @@ element at the front without affecting the rest of the list.
 
 **Expected Output:** Front element: 10
 
-### 3. Deque
+### 3. What is a Deque?
 
-A `deque` is a sequence container with the
-ability to expand and contract on both ends efficiently. It supports
-fast insertions and deletions at both the beginning and the end, making
-it more flexible than a vector or list in scenarios where elements are
-frequently added or removed from both ends.
+A `deque` (double-ended queue) is a sequence container with the ability to expand and contract on both ends efficiently. It combines the advantages of vectors and lists, providing fast random access like vectors while supporting efficient insertions and deletions at both ends.
+
+**Key Characteristics:**
+
+- **Double-ended:** Fast insertion/deletion at both front and back
+- **Random Access:** O(1) access to elements by index
+- **Dynamic Size:** Grows and shrinks efficiently
+- **Memory Layout:** Uses chunks of contiguous memory
+
+**Time Complexities:**
+
+- **Access:** O(1) - Direct access by index
+- **Insert/Delete at ends:** O(1) - Front and back operations
+- **Insert/Delete at middle:** O(n) - Linear complexity
+- **Search:** O(n) - Linear search
+
+**Use Cases:**
+
+- Need random access AND frequent front/back operations
+- Implementing sliding window algorithms
+- Browser history navigation
+- Job scheduling systems
+
+### 4. Deque Operations Example
 
 ```cpp
 #include <bits/stdc++.h>
-        using namespace std;
+using namespace std;
 
-        int main() {
-            deque<int> dq = {10, 20, 30};
-            dq.push_front(0);  // Insert at the beginning
-            dq.push_back(40);  // Insert at the end
-            for (int i : dq) {
-                cout << i << " ";
-            }
-            return 0;
-        }
+int main() {
+    deque<int> dq = {10, 20, 30};
+
+    // Insert at both ends
+    dq.push_front(0);     // Insert at the beginning
+    dq.push_back(40);     // Insert at the end
+
+    cout << "After push operations: ";
+    for (int i : dq) {
+        cout << i << " ";
+    }
+    cout << endl;
+
+    // Access elements like a vector
+    cout << "Element at index 2: " << dq[2] << endl;
+    cout << "Front: " << dq.front() << ", Back: " << dq.back() << endl;
+
+    // Remove from both ends
+    dq.pop_front();       // Remove from beginning
+    dq.pop_back();        // Remove from end
+
+    cout << "After pop operations: ";
+    for (int i : dq) {
+        cout << i << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
 ```
 
-**Expected Output:** 0 10 20 30 40
+**Expected Output:**
+
+```
+After push operations: 0 10 20 30 40
+Element at index 2: 20
+Front: 0, Back: 40
+After pop operations: 10 20 30
+```
 
 ## Stack (LIFO)
 
@@ -1170,12 +1442,419 @@ int main() {
 
 ````
 
+**Expected Output:**
+
 ```
-Expected Output: Found: 3
-Comparator
+Found: 3
+```
+
+### 8. unique
+
+Remove consecutive duplicate elements from a sorted range.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    vector<int> v = {1, 1, 2, 2, 3, 3, 3, 4};
+    auto new_end = unique(v.begin(), v.end());
+    v.erase(new_end, v.end());
+
+    for(int x : v) {
+        cout << x << " ";
+    }
+    return 0;
+}
+```
+
+**Expected Output:**
+
+```
+1 2 3 4
+```
+
+### 9. next_permutation / prev_permutation
+
+Generate the next/previous lexicographically greater permutation.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    vector<int> v = {1, 2, 3};
+    cout << "All permutations:" << endl;
+
+    do {
+        for(int x : v) {
+            cout << x << " ";
+        }
+        cout << endl;
+    } while(next_permutation(v.begin(), v.end()));
+
+    return 0;
+}
+```
+
+**Expected Output:**
+
+```
+All permutations:
+1 2 3
+1 3 2
+2 1 3
+2 3 1
+3 1 2
+3 2 1
+```
+
+### 10. binary_search
+
+Check if an element exists in a sorted range (requires sorted data).
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    vector<int> v = {1, 2, 3, 4, 5};
+    cout << "Found 3: " << (binary_search(v.begin(), v.end(), 3) ? "Yes" : "No") << endl;
+    cout << "Found 6: " << (binary_search(v.begin(), v.end(), 6) ? "Yes" : "No") << endl;
+    return 0;
+}
+```
+
+**Expected Output:**
+
+```
+Found 3: Yes
+Found 6: No
+```
+
+### 11. lower_bound / upper_bound
+
+Find the position where an element should be inserted to maintain sorted order.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    vector<int> v = {1, 2, 4, 4, 5};
+    auto lower = lower_bound(v.begin(), v.end(), 4);
+    auto upper = upper_bound(v.begin(), v.end(), 4);
+
+    cout << "First occurrence of 4 at index: " << (lower - v.begin()) << endl;
+    cout << "Position to insert after 4: " << (upper - v.begin()) << endl;
+    cout << "Count of 4: " << (upper - lower) << endl;
+
+    return 0;
+}
+```
+
+**Expected Output:**
+
+```
+First occurrence of 4 at index: 2
+Position to insert after 4: 4
+Count of 4: 2
+```
+
+### 12. transform
+
+Apply a function to each element in a range.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    vector<int> v = {1, 2, 3, 4, 5};
+    vector<int> result(v.size());
+
+    // Square each element
+    transform(v.begin(), v.end(), result.begin(), [](int x) {
+        return x * x;
+    });
+
+    cout << "Squares: ";
+    for(int x : result) {
+        cout << x << " ";
+    }
+    return 0;
+}
+```
+
+**Expected Output:**
+
+```
+Squares: 1 4 9 16 25
+```
+
+## Custom Comparators
+
 A comparator is a function or functor that determines the order of
 elements during sorting or other operations. It is often passed to
 functions like `sort`.
+
+### 1. Function Comparator
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+// Custom comparator for descending order
+bool descending(int a, int b) {
+    return a > b;
+}
+
+int main() {
+    vector<int> v = {3, 1, 4, 1, 5, 9};
+
+    // Sort in descending order
+    sort(v.begin(), v.end(), descending);
+    cout << "Descending: ";
+    for(int x : v) {
+        cout << x << " ";
+    }
+    return 0;
+}
 ```
 
-/co
+**Expected Output:**
+
+```
+Descending: 9 5 4 3 1 1
+```
+
+### 2. Lambda Comparator
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    vector<pair<int, string>> pairs = {{3, "three"}, {1, "one"}, {2, "two"}};
+
+    // Sort by string value
+    sort(pairs.begin(), pairs.end(), [](const auto& a, const auto& b) {
+        return a.second < b.second;
+    });
+
+    cout << "Sorted by string: ";
+    for(auto& p : pairs) {
+        cout << "(" << p.first << "," << p.second << ") ";
+    }
+    return 0;
+}
+```
+
+**Expected Output:**
+
+```
+Sorted by string: (1,one) (3,three) (2,two)
+```
+
+## Priority Queue (Heap)
+
+The `priority_queue` is a container adapter that provides constant time lookup of the largest element (by default).
+
+**Time Complexities:**
+
+- Top: O(1)
+- Push/Pop: O(log n)
+- Size/Empty: O(1)
+
+### Max Heap (Default)
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    priority_queue<int> maxHeap;
+    maxHeap.push(3);
+    maxHeap.push(1);
+    maxHeap.push(4);
+    maxHeap.push(2);
+
+    cout << "Max heap (largest first): ";
+    while(!maxHeap.empty()) {
+        cout << maxHeap.top() << " ";
+        maxHeap.pop();
+    }
+
+    return 0;
+}
+```
+
+**Expected Output:**
+
+```
+Max heap (largest first): 4 3 2 1
+```
+
+### Min Heap
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    priority_queue<int, vector<int>, greater<int>> minHeap;
+    minHeap.push(3);
+    minHeap.push(1);
+    minHeap.push(4);
+    minHeap.push(2);
+
+    cout << "Min heap (smallest first): ";
+    while(!minHeap.empty()) {
+        cout << minHeap.top() << " ";
+        minHeap.pop();
+    }
+
+    return 0;
+}
+```
+
+**Expected Output:**
+
+```
+Min heap (smallest first): 1 2 3 4
+```
+
+### Custom Priority Queue
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Task {
+    string name;
+    int priority;
+
+    // Higher priority value = higher priority
+    bool operator<(const Task& other) const {
+        return priority < other.priority;  // Note: reversed for max heap
+    }
+};
+
+int main() {
+    priority_queue<Task> taskQueue;
+    taskQueue.push({"Low task", 1});
+    taskQueue.push({"High task", 10});
+    taskQueue.push({"Medium task", 5});
+
+    cout << "Tasks by priority:" << endl;
+    while(!taskQueue.empty()) {
+        Task t = taskQueue.top();
+        taskQueue.pop();
+        cout << t.name << " (priority: " << t.priority << ")" << endl;
+    }
+
+    return 0;
+}
+```
+
+**Expected Output:**
+
+```
+Tasks by priority:
+High task (priority: 10)
+Medium task (priority: 5)
+Low task (priority: 1)
+```
+
+---
+
+## Summary of Time Complexities
+
+| Container             | Access         | Insert                          | Delete                 | Search               |
+| --------------------- | -------------- | ------------------------------- | ---------------------- | -------------------- |
+| **vector**            | O(1)           | O(1) amortized end, O(n) middle | O(n)                   | O(n)                 |
+| **list**              | O(n)           | O(1)                            | O(1)                   | O(n)                 |
+| **deque**             | O(1)           | O(1) ends, O(n) middle          | O(1) ends, O(n) middle | O(n)                 |
+| **set/map**           | N/A            | O(log n)                        | O(log n)               | O(log n)             |
+| **unordered_set/map** | N/A            | O(1) avg, O(n) worst            | O(1) avg, O(n) worst   | O(1) avg, O(n) worst |
+| **stack/queue**       | O(1) top/front | O(1)                            | O(1)                   | N/A                  |
+| **priority_queue**    | O(1) top       | O(log n)                        | O(log n)               | N/A                  |
+
+## Memory Usage Guidelines
+
+| Container             | Memory Overhead     | Use When                                |
+| --------------------- | ------------------- | --------------------------------------- |
+| **vector**            | Low                 | Random access, mostly append operations |
+| **list**              | High (pointers)     | Frequent insertions/deletions in middle |
+| **deque**             | Medium              | Frequent insertions at both ends        |
+| **set/map**           | Medium (tree nodes) | Need sorted order, frequent searches    |
+| **unordered_set/map** | Medium (hash table) | Fast lookup without ordering            |
+
+## Best Practices
+
+### 1. Container Selection
+
+- **Use `vector` by default** - Most versatile and cache-friendly
+- **Use `deque`** for frequent front/back operations
+- **Use `list`** only for frequent middle insertions/deletions
+- **Use `set/map`** when you need sorted order
+- **Use `unordered_set/map`** for fastest lookup without ordering
+
+### 2. Performance Tips
+
+```cpp
+// Reserve capacity for vectors when size is known
+vector<int> v;
+v.reserve(1000);  // Avoids multiple reallocations
+
+// Use emplace instead of push for complex objects
+vector<pair<int, string>> pairs;
+pairs.emplace_back(1, "one");  // More efficient than push_back
+
+// Prefer range-based loops
+for(const auto& item : container) {  // Clear and efficient
+    // process item
+}
+```
+
+### 3. Safety Tips
+
+```cpp
+// Use at() for bounds checking during development
+cout << vec.at(index);  // Throws exception if out of bounds
+
+// Check container size before accessing
+if(!container.empty()) {
+    auto first = container.front();
+}
+
+// Use iterators carefully
+auto it = container.find(key);
+if(it != container.end()) {
+    // Safe to use *it
+}
+```
+
+### 4. Common Pitfalls to Avoid
+
+```cpp
+// DON'T: Modify container while iterating
+for(auto it = vec.begin(); it != vec.end(); ++it) {
+    vec.erase(it);  // WRONG: Invalidates iterator
+}
+
+// DO: Use proper erase idiom
+vec.erase(remove_if(vec.begin(), vec.end(), condition), vec.end());
+
+// DON'T: Assume iterators remain valid after modification
+auto it = vec.begin();
+vec.push_back(item);  // May invalidate 'it' if vector reallocates
+// Use of 'it' here is undefined behavior
+
+// DO: Refresh iterators after modifications
+it = vec.begin();  // Refresh after potential reallocation
+```
+
+---
+
+_This guide covers the most commonly used STL containers and algorithms. For production code, prefer specific headers (e.g., `#include <vector>`) over `#include <bits/stdc++.h>`._
