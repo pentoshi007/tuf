@@ -761,34 +761,32 @@ graph TD
 ### 📊 Partition Process Visualization
 
 ```mermaid
-stateDiagram-v2
-    [*] --> ChoosePivot: Start with [10, 7, 8, 9, 1, 5]
-    ChoosePivot --> InitPointers: Pivot = 5 (random)<br/>Swap to first position
-
-    state InitPointers {
-        [*] --> Setup: [5, 7, 8, 9, 1, 10]<br/>i=0, j=5
-    }
-
-    InitPointers --> MoveI: Find element > 5
-    MoveI --> StopI: i stops at 7 (index 1)
-    StopI --> MoveJ: Find element ≤ 5
-    MoveJ --> StopJ: j stops at 1 (index 4)
-    StopJ --> SwapIJ: Swap 7 and 1<br/>[5, 1, 8, 9, 7, 10]
-
-    SwapIJ --> MoveI2: Continue moving i
-    MoveI2 --> StopI2: i stops at 8 (index 2)
-    StopI2 --> MoveJ2: Continue moving j
-    MoveJ2 --> StopJ2: j stops at 1 (index 1)
-
-    StopJ2 --> SwapPivot: i >= j, stop<br/>Swap pivot with j<br/>[1, 5, 8, 9, 7, 10]
-    SwapPivot --> [*]: Pivot in position!<br/>Left: [1] Right: [8,9,7,10]
-
-    note right of SwapPivot
-        Pivot 5 is now at
-        correct position
-        All left ≤ 5
-        All right > 5
-    end note
+graph TD
+    Start["Start<br/>Array: 10,7,8,9,1,5"] --> ChoosePivot["Choose Pivot<br/>Pivot = 5 (random)<br/>Swap to first"]
+    ChoosePivot --> InitPointers["Initialize Pointers<br/>Array: 5,7,8,9,1,10<br/>i=0, j=5"]
+    
+    InitPointers --> MoveI["Find element > 5<br/>i moves right"]
+    MoveI --> StopI["i stops at 7<br/>index 1"]
+    StopI --> MoveJ["Find element ≤ 5<br/>j moves left"]
+    MoveJ --> StopJ["j stops at 1<br/>index 4"]
+    StopJ --> SwapIJ["Swap 7 and 1<br/>Array: 5,1,8,9,7,10"]
+    
+    SwapIJ --> MoveI2["Continue i<br/>i moves right"]
+    MoveI2 --> StopI2["i stops at 8<br/>index 2"]
+    StopI2 --> MoveJ2["Continue j<br/>j moves left"]
+    MoveJ2 --> StopJ2["j stops at 1<br/>index 1"]
+    
+    StopJ2 --> CheckCross["Check: i >= j?<br/>Yes, stop"]
+    CheckCross --> SwapPivot["Swap pivot with j<br/>Array: 1,5,8,9,7,10"]
+    SwapPivot --> Done["Partition Complete!<br/>Pivot 5 at position 1<br/>Left: 1 | Right: 8,9,7,10"]
+    
+    style Start fill:#7B1FA2,stroke:#4A148C,stroke-width:3px,color:#fff
+    style ChoosePivot fill:#E91E63,stroke:#C2185B,stroke-width:3px,color:#fff
+    style InitPointers fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
+    style SwapIJ fill:#F57C00,stroke:#E65100,stroke-width:3px,color:#fff
+    style CheckCross fill:#D32F2F,stroke:#B71C1C,stroke-width:3px,color:#fff
+    style SwapPivot fill:#F57C00,stroke:#E65100,stroke-width:3px,color:#fff
+    style Done fill:#2E7D32,stroke:#1B5E20,stroke-width:3px,color:#fff
 ```
 
 ### 📈 Recursion Tree
