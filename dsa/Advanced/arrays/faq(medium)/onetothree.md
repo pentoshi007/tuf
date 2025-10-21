@@ -17,11 +17,13 @@ This directory contains three medium-level array problems that test deeper algor
 ## 1. Find Leaders in an Array
 
 ### 📖 Explanation
+
 A leader in an array is an element that is greater than all elements to its right. The rightmost element is always a leader. The problem requires finding all such leader elements and returning them in the order of their appearance.
 
 ### 🎯 Approach Comparison
 
 #### **Brute Force Approach** ❌ O(n²)
+
 1. For each element at index `i`
 2. Check all elements to its right (index `i+1` to `n-1`)
 3. If any element to the right is ≥ current element, it's not a leader
@@ -30,6 +32,7 @@ A leader in an array is an element that is greater than all elements to its righ
 **Complexity**: O(n²) time, O(1) space (excluding output)
 
 #### **Optimal Approach** ⭐ O(n)
+
 1. Start from the **rightmost element** (always a leader)
 2. Keep track of maximum element seen so far from right
 3. Traverse from right to left:
@@ -42,6 +45,7 @@ A leader in an array is an element that is greater than all elements to its righ
 ### 💻 Code Implementation
 
 #### Brute Force
+
 ```cpp
 class Solution
 {
@@ -49,11 +53,11 @@ public:
     vector<int> leaders(vector<int> &nums)
     {
         vector<int> ans;
-        
+
         for (int i = 0; i < nums.size(); i++)
         {
             bool leader = true;
-            
+
             /* Check whether nums[i] is greater
             than all elements to its right*/
             for (int j = i + 1; j < nums.size(); j++)
@@ -66,20 +70,21 @@ public:
                     break;
                 }
             }
-            
+
             // If nums[i] is a leader, add it to the ans vector
             if (leader)
             {
                 ans.push_back(nums[i]);
             }
         }
-        
+
         return ans;
     }
 };
 ```
 
 #### Optimal Solution
+
 ```cpp
 class Solution
 {
@@ -89,7 +94,7 @@ public:
         vector<int> ans;
         int n = nums.size();
         int maxi = INT_MIN;
-        
+
         // Traverse from right to left
         for (int i = n - 1; i >= 0; i--)
         {
@@ -100,9 +105,9 @@ public:
                 maxi = nums[i]; // then if element is greater than prev max, element itself becomes new max
             }
         }
-        
+
         reverse(ans.begin(), ans.end());
-        
+
         return ans;
     }
 };
@@ -110,10 +115,10 @@ public:
 
 ### 🔍 Complexity Analysis
 
-| Approach | Time   | Space |
-| -------- | ------ | ----- |
-| Brute    | O(n²)  | O(1)  |
-| Optimal  | O(n)   | O(1)  |
+| Approach | Time  | Space |
+| -------- | ----- | ----- |
+| Brute    | O(n²) | O(1)  |
+| Optimal  | O(n)  | O(1)  |
 
 ### 🎨 Dry Run with Visual
 
@@ -130,7 +135,7 @@ graph TD
     E --> F["Check 5: Right elements [2]<br/>2 ≥ 5? NO<br/>5 is a leader ✓"]
     F --> G["Check 2: (last element)<br/>2 is a leader ✓"]
     G --> H["Result: [17, 8, 5, 2]"]
-    
+
     style A fill:#7B1FA2,stroke:#4A148C,stroke-width:3px,color:#fff
     style C fill:#2E7D32,stroke:#1B5E20,stroke-width:3px,color:#fff
     style D fill:#2E7D32,stroke:#1B5E20,stroke-width:3px,color:#fff
@@ -150,7 +155,7 @@ graph TD
     E --> F["i=1: nums[1]=17<br/>maxi=8<br/>17 > 8? YES<br/>Add 17, maxi=17"]
     F --> G["i=0: nums[0]=10<br/>maxi=17<br/>10 > 17? NO<br/>Skip"]
     G --> H["temp = [2,5,8,17]<br/>Reverse = [17,8,5,2]"]
-    
+
     style A fill:#7B1FA2,stroke:#4A148C,stroke-width:3px,color:#fff
     style B fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
     style C fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
@@ -162,6 +167,7 @@ graph TD
 ```
 
 ### ✅ Key Points
+
 - ✓ Rightmost element is always a leader
 - ✓ Optimal: Single right-to-left pass
 - ✓ Track maximum from right to identify leaders
@@ -173,7 +179,9 @@ graph TD
 ## 2. Rearrange Array Elements by Sign
 
 ### 📖 Explanation
+
 Given an array with equal positive and negative integers, rearrange so that:
+
 1. Every consecutive pair has opposite signs
 2. Order of same-sign elements is preserved
 3. Array starts with a positive integer
@@ -181,6 +189,7 @@ Given an array with equal positive and negative integers, rearrange so that:
 ### 🎯 Approach Comparison
 
 #### **Brute Force Approach** - O(n)
+
 1. Separate array into positive and negative vectors
 2. Place positives on even indices (0, 2, 4, ...)
 3. Place negatives on odd indices (1, 3, 5, ...)
@@ -188,6 +197,7 @@ Given an array with equal positive and negative integers, rearrange so that:
 **Complexity**: O(n) time, O(n) space
 
 #### **Optimal Approach** ⭐ - O(n)
+
 1. Create result array of size n
 2. Use two pointers: `posIndex = 0`, `negIndex = 1`
 3. Single pass:
@@ -199,6 +209,7 @@ Given an array with equal positive and negative integers, rearrange so that:
 ### 💻 Code Implementation
 
 #### Brute Force
+
 ```cpp
 class Solution
 {
@@ -206,11 +217,11 @@ public:
     vector<int> rearrangeArray(vector<int> &nums)
     {
         int n = nums.size();
-        
+
         // Define 2 vectors, one for storing positive
         // and the other for negative elements of the array
         vector<int> pos, neg;
-        
+
         // Segregate the array into positives and negatives
         for (int i = 0; i < n; ++i)
         {
@@ -219,20 +230,21 @@ public:
             else
                 neg.push_back(nums[i]);
         }
-        
+
         // Positives on even indices, negatives on odd
         for (int i = 0; i < n / 2; ++i)
         {
             nums[2 * i] = pos[i];
             nums[2 * i + 1] = neg[i];
         }
-        
+
         return nums;
     }
 };
 ```
 
 #### Optimal Solution
+
 ```cpp
 class Solution
 {
@@ -243,7 +255,7 @@ public:
         vector<int> ans(n, 0);
         int posIndex = 0;
         int negIndex = 1;
-        
+
         for (int i = 0; i < n; i++)
         {
             if (nums[i] >= 0)
@@ -257,7 +269,7 @@ public:
                 negIndex = negIndex + 2;
             }
         }
-        
+
         return ans;
     }
 };
@@ -285,7 +297,7 @@ graph TD
     E --> F["i=4: nums[4]=2 ≥ 0<br/>ans[4]=2<br/>posIndex=6<br/>ans=[3,-2,1,-5,2,0]"]
     F --> G["i=5: nums[5]=-4 < 0<br/>ans[5]=-4<br/>negIndex=7<br/>ans=[3,-2,1,-5,2,-4]"]
     G --> H["Result<br/>[3,-2,1,-5,2,-4]"]
-    
+
     style A fill:#7B1FA2,stroke:#4A148C,stroke-width:3px,color:#fff
     style B fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
     style C fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
@@ -304,37 +316,38 @@ sequenceDiagram
     participant Ans as Result Array
     participant Pos as posIndex
     participant Neg as negIndex
-    
+
     Note over Arr,Neg: [3,1,-2,-5,2,-4]
-    
+
     Arr->>Ans: 3 is positive
     Pos->>Ans: Place at index 0
     Pos->>Pos: 0 + 2 = 2
-    
+
     Arr->>Ans: 1 is positive
     Pos->>Ans: Place at index 2
     Pos->>Pos: 2 + 2 = 4
-    
+
     Arr->>Ans: -2 is negative
     Neg->>Ans: Place at index 1
     Neg->>Neg: 1 + 2 = 3
-    
+
     Arr->>Ans: -5 is negative
     Neg->>Ans: Place at index 3
     Neg->>Neg: 3 + 2 = 5
-    
+
     Arr->>Ans: 2 is positive
     Pos->>Ans: Place at index 4
     Pos->>Pos: 4 + 2 = 6
-    
+
     Arr->>Ans: -4 is negative
     Neg->>Ans: Place at index 5
     Neg->>Neg: 5 + 2 = 7
-    
+
     Note over Ans: [3,-2,1,-5,2,-4] ✓
 ```
 
 ### ✅ Key Points
+
 - ✓ Single pass solution
 - ✓ Preserves order of same-sign elements
 - ✓ Two separate index pointers for positions
@@ -346,9 +359,11 @@ sequenceDiagram
 ## 3. Print Matrix in Spiral Order
 
 ### 📖 Explanation
+
 Given an M×N matrix, traverse and print elements in clockwise spiral order: right → down → left → up, spiraling inward layer by layer.
 
 ### 🎯 Approach
+
 1. Use four boundaries: `top`, `bottom`, `left`, `right`
 2. Traverse four sides in order:
    - **Top row** (left to right)
@@ -373,7 +388,7 @@ public:
         int left = 0;
         int right = m - 1;
         vector<int> ans;
-        
+
         while (left <= right && top <= bottom)
         {
             // Traverse top row (left to right)
@@ -382,14 +397,14 @@ public:
                 ans.push_back(matrix[top][i]);
             }
             top++;
-            
+
             // Traverse right column (top to bottom)
             for (int i = top; i <= bottom; i++)
             {
                 ans.push_back(matrix[i][right]);
             }
             right--;
-            
+
             // Traverse bottom row (right to left) - check boundary
             if (top > bottom)
                 break;
@@ -398,7 +413,7 @@ public:
                 ans.push_back(matrix[bottom][i]);
             }
             bottom--;
-            
+
             // Traverse left column (bottom to top) - check boundary
             if (left > right)
                 break;
@@ -408,7 +423,7 @@ public:
             }
             left++;
         }
-        
+
         return ans;
     }
 };
@@ -416,12 +431,12 @@ public:
 
 ### 🔍 Complexity Analysis
 
-| Complexity | Value |
-| ---------- | ----- |
-| Time       | O(m*n)|
-| Space      | O(1)  |
+| Complexity | Value   |
+| ---------- | ------- |
+| Time       | O(m\*n) |
+| Space      | O(1)    |
 
-- **Time O(m*n)**: Visit each element exactly once
+- **Time O(m\*n)**: Visit each element exactly once
 - **Space O(1)**: Only boundaries and output
 
 ### 🎨 Dry Run with Visual
@@ -438,7 +453,7 @@ graph TD
     F --> G["Step 5: Traverse TOP row<br/>i=1→1: 5<br/>top++ = 2<br/>Path: →"]
     G --> H["Check loop condition<br/>left=1, right=1 (YES)<br/>top=2, bottom=1 (2≤1? NO)<br/>Exit loop"]
     H --> I["Result: [1,2,3,6,9,8,7,4,5]"]
-    
+
     style A fill:#7B1FA2,stroke:#4A148C,stroke-width:3px,color:#fff
     style B fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
     style C fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
@@ -460,7 +475,7 @@ graph TD
     D --> E["Phase 4: Left Col<br/>↑ 4"]
     E --> F["Phase 5: Top Row<br/>→ 5"]
     F --> G["Result<br/>1,2,3,6,9,8,7,4,5"]
-    
+
     style A fill:#7B1FA2,stroke:#4A148C,stroke-width:3px,color:#fff
     style B fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
     style C fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
@@ -471,6 +486,7 @@ graph TD
 ```
 
 ### ✅ Key Points
+
 - ✓ Four-boundary approach (top, bottom, left, right)
 - ✓ Adjust boundaries after each side
 - ✓ Check boundaries before bottom and left traversals
@@ -481,27 +497,30 @@ graph TD
 
 ## Comparison Table
 
-| Problem              | Approach      | Brute Time | Optimal Time | Space | Difficulty |
-| -------------------- | ------------- | ---------- | ------------ | ----- | ----------- |
-| **Leaders**          | Right to Left | O(n²)      | O(n)         | O(1)  | Medium      |
-| **Rearrange by Sign**| Two Pointers  | O(n)       | O(n)         | O(n)  | Medium      |
-| **Spiral Matrix**    | Four Boundary | O(m*n)     | O(m*n)       | O(1)  | Medium      |
+| Problem               | Approach      | Brute Time | Optimal Time | Space | Difficulty |
+| --------------------- | ------------- | ---------- | ------------ | ----- | ---------- |
+| **Leaders**           | Right to Left | O(n²)      | O(n)         | O(1)  | Medium     |
+| **Rearrange by Sign** | Two Pointers  | O(n)       | O(n)         | O(n)  | Medium     |
+| **Spiral Matrix**     | Four Boundary | O(m\*n)    | O(m\*n)      | O(1)  | Medium     |
 
 ---
 
 ## Key Takeaways
 
 ### 🎯 Problem 1: Find Leaders
+
 - **Key Insight**: Track maximum from right to identify leaders
 - **Optimization**: O(n²) → O(n) by reversing traversal direction
 - **Application**: First element after sorting descending is always a leader
 
 ### 🎯 Problem 2: Rearrange by Sign
+
 - **Key Insight**: Use two separate index pointers for positions
 - **Optimization**: Single pass instead of separate segregation
 - **Application**: Two-pointer technique on single array
 
 ### 🎯 Problem 3: Spiral Matrix
+
 - **Key Insight**: Maintain four boundaries for layer-by-layer traversal
 - **Challenge**: Handle boundary conditions for different matrix sizes
 - **Application**: 2D array traversal patterns

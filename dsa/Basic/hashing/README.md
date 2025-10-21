@@ -1,10 +1,6 @@
 # Hashing - Complete Guide 🔑This section is a concise yet comprehensive guide to hashing for DSA: concepts, visuals, trade-offs, and multiple solved problems with code and explanations. It is optimized for quick revision and interview prep.
 
-
-
 A comprehensive guide to hashing techniques with detailed explanations, complexity analysis, and practical applications for effective problem-solving.### Why Hashing?
-
-
 
 ## Table of ContentsHashing lets us map a value/key to an index in constant expected time. It enables O(1) average-time inserts, lookups, and deletions, which is critical for frequency counting, deduplication, set membership, and many more problems.
 
@@ -28,11 +24,7 @@ A comprehensive guide to hashing techniques with detailed explanations, complexi
 
 ---- **Load factor (α)**: α = number_of_elements / number_of_buckets. High α increases collisions; resizing helps keep O(1) average time.
 
-
-
 ## Introduction to Hashing### Collision Handling (Visual)
-
-
 
 **Hashing** is a technique to efficiently store and retrieve data using key-value pairs. It's one of the most important concepts in competitive programming and interviews.```
 
@@ -40,13 +32,11 @@ Chaining (linked lists at each bucket):
 
 ### What is Hashing?
 
-- **Hash Table**: Data structure that maps keys to values bucket[0]:  →  10 → 20 → 30
+- **Hash Table**: Data structure that maps keys to values bucket[0]: → 10 → 20 → 30
 
-- **Hash Function**: Converts keys to array indices bucket[1]:  →  11
+- **Hash Function**: Converts keys to array indices bucket[1]: → 11
 
-- **Direct Addressing**: Use array index as key (when keys are small integers) bucket[2]:  →  2  → 12
-
-
+- **Direct Addressing**: Use array index as key (when keys are small integers) bucket[2]: → 2 → 12
 
 ### Why Use Hashing?Open Addressing (probing for next free slot):
 
@@ -76,7 +66,7 @@ Chaining (linked lists at each bucket):
 
 ### Array Size Constraints (Important!)
 
-```cpp## Frequency Hashing Patterns
+```````cpp## Frequency Hashing Patterns
 
 // OUTSIDE main():
 
@@ -140,7 +130,7 @@ int main()---
 
     int hash[11] = {0};  // Array to store frequencies (0-10)We work with the sample array:
 
-    
+
 
     // Count frequencies```cpp
 
@@ -194,7 +184,7 @@ int main()---
 
 ### Dry Run}
 
-``````
+```````
 
 arr[] = {1, 2, 3, 4, 5, 5, 6, 2, 1, 3, 4, 5, 6, 7, 8, 9, 10}
 
@@ -206,51 +196,49 @@ hash[11] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}Notes:
 
 Processing:
 
-arr[0] = 1  → hash[1]++ → {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0}### 2) Most Occurring Element — Hashing
+arr[0] = 1 → hash[1]++ → {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0}### 2) Most Occurring Element — Hashing
 
-arr[1] = 2  → hash[2]++ → {0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0}
+arr[1] = 2 → hash[2]++ → {0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0}
 
-arr[2] = 3  → hash[3]++ → {0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0}Approach: Build a frequency table in one pass, then scan for the maximum.
+arr[2] = 3 → hash[3]++ → {0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0}Approach: Build a frequency table in one pass, then scan for the maximum.
 
-arr[3] = 4  → hash[4]++ → {0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0}
+arr[3] = 4 → hash[4]++ → {0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0}
 
-arr[4] = 5  → hash[5]++ → {0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0}- Time: O(n + M) where M is hash size (or keys iterated), typically O(n)
+arr[4] = 5 → hash[5]++ → {0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0}- Time: O(n + M) where M is hash size (or keys iterated), typically O(n)
 
-arr[5] = 5  → hash[5]++ → {0, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0}- Space: O(M) or O(K) unique values
+arr[5] = 5 → hash[5]++ → {0, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0}- Space: O(M) or O(K) unique values
 
-arr[6] = 6  → hash[6]++ → {0, 1, 1, 1, 1, 2, 1, 0, 0, 0, 0}
+arr[6] = 6 → hash[6]++ → {0, 1, 1, 1, 1, 2, 1, 0, 0, 0, 0}
 
-arr[7] = 2  → hash[2]++ → {0, 1, 2, 1, 1, 2, 1, 0, 0, 0, 0}```cpp
+arr[7] = 2 → hash[2]++ → {0, 1, 2, 1, 1, 2, 1, 0, 0, 0, 0}```cpp
 
 ...continuing...int mocc_hash(int arr[], int n) {
 
     int hash[1000000] = {0}; // assumes bounded non-negative values
 
-Final hash array:    for (int i = 0; i < n; i++) hash[arr[i]]++;
+Final hash array: for (int i = 0; i < n; i++) hash[arr[i]]++;
 
-{0, 2, 2, 2, 2, 3, 2, 1, 1, 1, 1}    int max_count = 0, ele = -1;
+{0, 2, 2, 2, 2, 3, 2, 1, 1, 1, 1} int max_count = 0, ele = -1;
 
- 0  1  2  3  4  5  6  7  8  9  10    for (int i = 0; i < 1000000; i++) if (hash[i] > max_count) {
+0 1 2 3 4 5 6 7 8 9 10 for (int i = 0; i < 1000000; i++) if (hash[i] > max_count) {
 
         max_count = hash[i]; ele = i;
 
-Output:    }
+Output: }
 
-0:0, 1:2, 2:2, 3:2, 4:2, 5:3, 6:2, 7:1, 8:1, 9:1, 10:1    return ele;
+0:0, 1:2, 2:2, 3:2, 4:2, 5:3, 6:2, 7:1, 8:1, 9:1, 10:1 return ele;
 
 }
 
 Visual:```
 
-Element: 0  1  2  3  4  5  6  7  8  9  10
+Element: 0 1 2 3 4 5 6 7 8 9 10
 
-Freq:    0  2  2  2  2  3  2  1  1  1   1`unordered_map` alternative (safer for large/unbounded integers):
-
-         
+Freq: 0 2 2 2 2 3 2 1 1 1 1`unordered_map` alternative (safer for large/unbounded integers):
 
 5 appears most frequently (3 times)```cpp
 
-```int mocc_hash_umap(int arr[], int n) {
+````int mocc_hash_umap(int arr[], int n) {
 
     unordered_map<int,int> freq;
 
@@ -324,7 +312,7 @@ hash[char - 'a']++;        if (hash[i] > max_count) {
 
 using namespace std;}
 
-```
+````
 
 int main()
 
@@ -366,15 +354,15 @@ int main()
 
     return 0;        }
 
-}    }
+} }
 
-```    for (auto &p : freq) if (p.second == second_max_count) return p.first;
+```for (auto &p : freq) if (p.second == second_max_count) return p.first;
 
     return -1;
 
 ### Why Subtract 'a'?}
 
-``````
+```
 
 ASCII Values:
 
@@ -392,21 +380,21 @@ ASCII Values:
 
 Mapping to Array:
 
-'a' - 'a' = 97 - 97 = 0  → hash[0]```cpp
+'a' - 'a' = 97 - 97 = 0 → hash[0]```cpp
 
-'b' - 'a' = 98 - 97 = 1  → hash[1]int sum_of_highest_and_lowest_frequency(int arr[], int n) {
+'b' - 'a' = 98 - 97 = 1 → hash[1]int sum_of_highest_and_lowest_frequency(int arr[], int n) {
 
-'c' - 'a' = 99 - 97 = 2  → hash[2]    int hash[1000000] = {0};
+'c' - 'a' = 99 - 97 = 2 → hash[2] int hash[1000000] = {0};
 
-...    for (int i = 0; i < n; i++) hash[arr[i]]++;
+... for (int i = 0; i < n; i++) hash[arr[i]]++;
 
 'z' - 'a' = 122 - 97 = 25 → hash[25]
 
     int max_count = 0;
 
-This saves space! Only need array of size 26 instead of 256 (full ASCII)    int min_count = INT_MAX;
+This saves space! Only need array of size 26 instead of 256 (full ASCII) int min_count = INT_MAX;
 
-```    for (int i = 0; i < 1000000; i++) if (hash[i] > max_count) max_count = hash[i];
+````for (int i = 0; i < 1000000; i++) if (hash[i] > max_count) max_count = hash[i];
 
     for (int i = 0; i < 1000000; i++) if (hash[i] > 0) min_count = min(min_count, hash[i]);
 
@@ -418,13 +406,13 @@ s = "hello"    return max_count + min_count;
 
 hash[26] = {0, 0, 0, ..., 0}}
 
-```
+````
 
 Processing:
 
-'h' → h - a = 7  → hash[7]++ → hash[7] = 1Important correction vs naive approach: When computing minimum frequency, consider only keys that appear (frequency > 0). Counting zeros would incorrectly make the minimum zero for all absent keys.
+'h' → h - a = 7 → hash[7]++ → hash[7] = 1Important correction vs naive approach: When computing minimum frequency, consider only keys that appear (frequency > 0). Counting zeros would incorrectly make the minimum zero for all absent keys.
 
-'e' → e - a = 4  → hash[4]++ → hash[4] = 1
+'e' → e - a = 4 → hash[4]++ → hash[4] = 1
 
 'l' → l - a = 11 → hash[11]++ → hash[11] = 1`unordered_map` variant:
 
@@ -434,15 +422,15 @@ Processing:
 
 int sum_high_low_umap(int arr[], int n) {
 
-Final:    unordered_map<int,int> freq;
+Final: unordered_map<int,int> freq;
 
-hash[4] = 1  (e)    for (int i = 0; i < n; i++) freq[arr[i]]++;
+hash[4] = 1 (e) for (int i = 0; i < n; i++) freq[arr[i]]++;
 
-hash[7] = 1  (h)    if (freq.empty()) return 0;
+hash[7] = 1 (h) if (freq.empty()) return 0;
 
-hash[11] = 2 (l)    int mx = 0, mn = INT_MAX;
+hash[11] = 2 (l) int mx = 0, mn = INT_MAX;
 
-hash[14] = 1 (o)    for (auto &p : freq) { mx = max(mx, p.second); mn = min(mn, p.second); }
+hash[14] = 1 (o) for (auto &p : freq) { mx = max(mx, p.second); mn = min(mn, p.second); }
 
     return mx + mn;
 
@@ -456,7 +444,7 @@ l: 2---
 
 o: 1
 
-```## End-to-End Example (Matches this folder)
+````## End-to-End Example (Matches this folder)
 
 
 
@@ -470,21 +458,21 @@ int hash[26] = {0};int arr[] = {1,2,3,4,5,5,6,2,1,3,4,5,6,7,8,9,10};
 
 hash[ch - 'A']++;  // Map 'A' to 0, 'B' to 1, etc.```
 
-```
+````
 
 Expected outputs from `hashing.cpp` main:
 
 ### For Both Cases
 
-```cpp```
+`cpp`
 
-// For both uppercase and lowercaseMost occurring (brute):           5
+// For both uppercase and lowercaseMost occurring (brute): 5
 
-int hash[52] = {0};Most occurring (hash):            5
+int hash[52] = {0};Most occurring (hash): 5
 
-Second most occurring (hash):     1
+Second most occurring (hash): 1
 
-if (ch >= 'a' && ch <= 'z')Sum of highest + lowest freq:     3
+if (ch >= 'a' && ch <= 'z')Sum of highest + lowest freq: 3
 
     hash[ch - 'a']++;        // Lowercase: 0-25```
 
@@ -492,7 +480,7 @@ else if (ch >= 'A' && ch <= 'Z')
 
     hash[ch - 'A' + 26]++;   // Uppercase: 26-51These match the sample `output.txt`.
 
-```
+````
 
 ---
 
@@ -570,7 +558,7 @@ for (auto& p : freq) {  - Build/Query: O(log K)
 
 // Output will be sorted by key---
 
-```
+````
 
 ## Quick Revision
 
@@ -609,6 +597,7 @@ for (int x : arr) {- Load factor, rehashing, and performance tuning
 ```
 
 ### Code Example Comparison
+
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -616,34 +605,35 @@ using namespace std;
 int main()
 {
     vector<int> arr = {5, 2, 8, 2, 5, 1, 8};
-    
+
     // Using map (sorted)
     map<int, int> sorted_freq;
     for (int x : arr) sorted_freq[x]++;
-    
+
     cout << "Map (sorted): ";
     for (auto& p : sorted_freq) {
         cout << p.first << ":" << p.second << " ";
     }
     cout << endl;
     // Output: 1:1 2:2 5:2 8:2 (sorted by key)
-    
+
     // Using unordered_map (faster)
     unordered_map<int, int> fast_freq;
     for (int x : arr) fast_freq[x]++;
-    
+
     cout << "Unordered Map: ";
     for (auto& p : fast_freq) {
         cout << p.first << ":" << p.second << " ";
     }
     cout << endl;
     // Output: 8:2 1:1 5:2 2:2 (random order)
-    
+
     return 0;
 }
 ```
 
 ### Visual Comparison
+
 ```
 Array: {5, 2, 8, 2, 5, 1, 8}
 
@@ -662,6 +652,7 @@ Index: [0] [1] [2] [3] [4] ...
 ```
 
 ### Performance Benchmark
+
 ```
 For n = 1,000,000 insertions:
 
@@ -681,23 +672,25 @@ unordered_map is ~20x faster for this case!
 ## 4. Most Occurring Element - Brute Force
 
 ### Problem Statement
+
 Find the element that appears most frequently in an array using nested loops.
 
 ### Code
+
 ```cpp
 int mocc_brute(int arr[], int n)
 {
     int vis[1000000] = {0};  // Visited array
     int max_count = 0;
     int ele = -1;
-    
+
     for (int i = 0; i < n; i++)
     {
         int count = 0;
         if (vis[arr[i]] == 0)  // If not visited
         {
             vis[arr[i]] = 1;  // Mark as visited
-            
+
             // Count occurrences
             for (int j = 0; j < n; j++)
             {
@@ -706,7 +699,7 @@ int mocc_brute(int arr[], int n)
                     count++;
                 }
             }
-            
+
             // Update max
             if (count > max_count)
             {
@@ -720,6 +713,7 @@ int mocc_brute(int arr[], int n)
 ```
 
 ### Approach
+
 1. Use visited array to avoid recounting
 2. For each unvisited element:
    - Count its occurrences in entire array
@@ -727,10 +721,12 @@ int mocc_brute(int arr[], int n)
 3. Return element with maximum count
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(n²) - Nested loops
 - **Space Complexity**: O(max_value) - Visited array
 
 ### Dry Run (arr = {1, 2, 3, 2, 1, 1, 4})
+
 ```
 n = 7
 arr[] = {1, 2, 3, 2, 1, 1, 4}
@@ -781,6 +777,7 @@ Visual:
 ```
 
 ### Problems with Brute Force
+
 - ❌ **Slow**: O(n²) time complexity
 - ❌ **Redundant**: Counts same element multiple times
 - ❌ **Space**: Large visited array needed
@@ -791,20 +788,22 @@ Visual:
 ## 5. Most Occurring Element - Using Hash
 
 ### Problem Statement
+
 Find the most frequent element efficiently using hashing.
 
 ### Code
+
 ```cpp
 int mocc_hash(int arr[], int n)
 {
     int hash[1000000] = {0};
-    
+
     // Count frequencies
     for (int i = 0; i < n; i++)
     {
         hash[arr[i]]++;
     }
-    
+
     // Find maximum frequency
     int max_count = 0;
     int ele = -1;
@@ -821,17 +820,20 @@ int mocc_hash(int arr[], int n)
 ```
 
 ### Approach
+
 1. **Count Phase**: Build frequency array in O(n)
 2. **Find Max Phase**: Scan frequency array once
 3. Return element with highest frequency
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(n + m) where m = max_value
   - O(n) to count frequencies
   - O(m) to find maximum
 - **Space Complexity**: O(m) - Hash array
 
 ### Dry Run (arr = {1, 2, 3, 2, 1, 1, 4})
+
 ```
 arr[] = {1, 2, 3, 2, 1, 1, 4}
 n = 7
@@ -871,6 +873,7 @@ Freq:     3  2  1  1
 ```
 
 ### Comparison with Brute Force
+
 ```
 For n = 1000 elements:
 
@@ -886,15 +889,16 @@ Hash is 1000x faster! 🚀
 ```
 
 ### Using Map (For Large or Unknown Range)
+
 ```cpp
 int mocc_map(vector<int>& arr) {
     unordered_map<int, int> freq;
-    
+
     // Count frequencies
     for (int x : arr) {
         freq[x]++;
     }
-    
+
     // Find maximum
     int max_count = 0;
     int element = -1;
@@ -914,24 +918,26 @@ int mocc_map(vector<int>& arr) {
 ## 6. Second Most Occurring Element
 
 ### Problem Statement
+
 Find the element with second highest frequency in an array.
 
 ### Code
+
 ```cpp
 int smocc_hash(int arr[], int n)
 {
     int hash[1000000] = {0};
-    
+
     // Count frequencies
     for (int i = 0; i < n; i++)
     {
         hash[arr[i]]++;
     }
-    
+
     // Find first and second maximum frequencies
     int max_count = 0;
     int second_max_count = 0;
-    
+
     for (int i = 0; i < 1000000; i++)
     {
         if (hash[i] > max_count)
@@ -944,7 +950,7 @@ int smocc_hash(int arr[], int n)
             second_max_count = hash[i];    // Update second max
         }
     }
-    
+
     // Find element with second max frequency
     int ele = -1;
     for (int i = 0; i < 1000000; i++)
@@ -960,6 +966,7 @@ int smocc_hash(int arr[], int n)
 ```
 
 ### Approach
+
 1. Count frequencies using hash array
 2. Find both max and second_max frequencies
 3. When finding new max:
@@ -970,10 +977,12 @@ int smocc_hash(int arr[], int n)
 5. Return element with second_max frequency
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(n + m) - Count + 2 scans
 - **Space Complexity**: O(m) - Hash array
 
 ### Dry Run (arr = {1, 1, 1, 2, 2, 3, 4, 4, 4, 4})
+
 ```
 arr[] = {1, 1, 1, 2, 2, 3, 4, 4, 4, 4}
 n = 10
@@ -1027,6 +1036,7 @@ Freq:     3  2  1  4
 ```
 
 ### Edge Cases
+
 ```cpp
 // All same frequency
 arr = {1, 2, 3}
@@ -1047,20 +1057,22 @@ second_max_count = 0 (no distinct second)
 ## 7. Sum of Highest and Lowest Frequency
 
 ### Problem Statement
+
 Find the sum of the highest and lowest non-zero frequencies in an array.
 
 ### Code
+
 ```cpp
 int sum_of_highest_and_lowest_frequency(int arr[], int n)
 {
     int hash[1000000] = {0};
-    
+
     // Count frequencies
     for (int i = 0; i < n; i++)
     {
         hash[arr[i]]++;
     }
-    
+
     // Find maximum frequency
     int max_count = 0;
     for (int i = 0; i < 1000000; i++)
@@ -1070,7 +1082,7 @@ int sum_of_highest_and_lowest_frequency(int arr[], int n)
             max_count = hash[i];
         }
     }
-    
+
     // Find minimum non-zero frequency
     int min_count = 1000000;
     for (int i = 0; i < 1000000; i++)
@@ -1080,21 +1092,24 @@ int sum_of_highest_and_lowest_frequency(int arr[], int n)
             min_count = hash[i];
         }
     }
-    
+
     return max_count + min_count;
 }
 ```
 
 ### Approach
+
 1. Count frequencies
 2. Find maximum frequency (scan all)
 3. Find minimum **non-zero** frequency
 4. Return sum
 
 ### Important Note
+
 **Must check `hash[i] > 0`** when finding minimum, otherwise minimum would always be 0!
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(n + 2m) = O(n + m)
   - O(n) for counting
   - O(m) for finding max
@@ -1102,6 +1117,7 @@ int sum_of_highest_and_lowest_frequency(int arr[], int n)
 - **Space Complexity**: O(m) - Hash array
 
 ### Dry Run (arr = {1, 1, 1, 2, 2, 3})
+
 ```
 arr[] = {1, 1, 1, 2, 2, 3}
 n = 6
@@ -1133,11 +1149,12 @@ Element:  1  2  3
 Freq:     3  2  1
           ↑     ↑
          max   min
-         
+
 Sum = 3 + 1 = 4
 ```
 
 ### Dry Run (arr = {5, 5, 5, 5, 2, 1, 3, 4, 5, 6, 2, 1, 3, 4, 5, 6, 7, 8, 9, 10})
+
 ```
 After counting:
 hash[1] = 2
@@ -1158,6 +1175,7 @@ Result: 6 + 1 = 7
 ```
 
 ### Why Check `hash[i] > 0`?
+
 ```
 Without check:
 for (int i = 0; i < 1000000; i++)
@@ -1181,6 +1199,7 @@ for (int i = 0; i < 1000000; i++)
 ## Hashing Patterns Summary
 
 ### Pattern 1: Direct Addressing (Array as Hash)
+
 ```cpp
 int hash[MAX_VALUE] = {0};
 hash[element]++;
@@ -1189,6 +1208,7 @@ hash[element]++;
 ```
 
 ### Pattern 2: Character Mapping
+
 ```cpp
 int hash[26] = {0};
 hash[ch - 'a']++;
@@ -1197,6 +1217,7 @@ hash[ch - 'a']++;
 ```
 
 ### Pattern 3: Map/Unordered Map
+
 ```cpp
 unordered_map<int, int> freq;
 freq[element]++;
@@ -1210,6 +1231,7 @@ freq[element]++;
 ## Choosing the Right Approach
 
 ### Decision Tree
+
 ```
 Is the range of values small (< 10^6)?
 ├─ YES → Use array hashing
@@ -1224,17 +1246,20 @@ Is the range of values small (< 10^6)?
 ```
 
 ### Array Hashing (Best When)
+
 - ✓ Values are non-negative integers
 - ✓ Range is small (< 10⁶)
 - ✓ Need fastest possible access
 - ✓ Memory is available
 
 ### Map (Best When)
+
 - ✓ Need sorted output
 - ✓ Range operations needed
 - ✓ Guaranteed O(log n) acceptable
 
 ### Unordered Map (Best When)
+
 - ✓ Large or unknown value range
 - ✓ Negative numbers
 - ✓ Non-integer keys (strings, pairs)
@@ -1245,6 +1270,7 @@ Is the range of values small (< 10^6)?
 ## Common Hashing Problems
 
 ### 1. Frequency Counting
+
 ```cpp
 // Count character frequencies
 unordered_map<char, int> freq;
@@ -1252,6 +1278,7 @@ for (char ch : s) freq[ch]++;
 ```
 
 ### 2. Find Duplicates
+
 ```cpp
 // Check if array has duplicates
 unordered_set<int> seen;
@@ -1263,6 +1290,7 @@ return false;
 ```
 
 ### 3. Two Sum
+
 ```cpp
 // Find pair with sum = target
 unordered_map<int, int> seen;
@@ -1276,6 +1304,7 @@ for (int i = 0; i < n; i++) {
 ```
 
 ### 4. Anagram Check
+
 ```cpp
 // Check if two strings are anagrams
 int hash[26] = {0};
@@ -1287,6 +1316,7 @@ return true;
 ```
 
 ### 5. First Non-Repeating Character
+
 ```cpp
 unordered_map<char, int> freq;
 for (char ch : s) freq[ch]++;
@@ -1300,6 +1330,7 @@ return '\0';
 ## Optimization Techniques
 
 ### 1. Use Array When Possible
+
 ```cpp
 // Slower (for small range)
 unordered_map<int, int> freq;
@@ -1309,12 +1340,14 @@ int freq[1001] = {0};  // If values are 0-1000
 ```
 
 ### 2. Reserve Space for Maps
+
 ```cpp
 unordered_map<int, int> freq;
 freq.reserve(1000);  // Avoid rehashing
 ```
 
 ### 3. Use References in Loops
+
 ```cpp
 // Slower (copies pair)
 for (auto p : map) { ... }
@@ -1324,6 +1357,7 @@ for (auto& p : map) { ... }
 ```
 
 ### 4. Early Exit
+
 ```cpp
 // Find first element with frequency > k
 for (auto& p : freq) {
@@ -1338,6 +1372,7 @@ for (auto& p : freq) {
 ## Common Pitfalls
 
 ### 1. Not Checking for Zero
+
 ```cpp
 // ❌ Wrong: includes zeros
 int min_freq = INT_MAX;
@@ -1352,6 +1387,7 @@ for (int i = 0; i < MAX; i++)
 ```
 
 ### 2. Array Size Too Large
+
 ```cpp
 // ❌ May cause stack overflow
 int hash[10000000] = {0};  // 40 MB on stack
@@ -1361,6 +1397,7 @@ vector<int> hash(10000000, 0);  // Heap allocation
 ```
 
 ### 3. Not Initializing
+
 ```cpp
 // ❌ Undefined values
 int hash[100];
@@ -1370,6 +1407,7 @@ int hash[100] = {0};
 ```
 
 ### 4. Using Map When unordered_map Sufficient
+
 ```cpp
 // ❌ Slower if order not needed
 map<int, int> freq;
@@ -1383,18 +1421,21 @@ unordered_map<int, int> freq;
 ## Practice Problems
 
 ### Easy
+
 1. Find frequency of each element
 2. Check if element exists
 3. Find first non-repeating element
 4. Count distinct elements
 
 ### Medium
+
 5. Two sum problem
 6. Subarray with given sum
 7. Longest substring without repeating characters
 8. Group anagrams
 
 ### Hard
+
 9. Longest consecutive sequence
 10. Count of subarrays with k different integers
 
@@ -1402,13 +1443,13 @@ unordered_map<int, int> freq;
 
 ## Time Complexity Summary
 
-| Operation | Array Hash | Map | Unordered Map |
-|-----------|-----------|-----|---------------|
-| Insert | O(1) | O(log n) | O(1) avg |
-| Search | O(1) | O(log n) | O(1) avg |
-| Delete | O(1) | O(log n) | O(1) avg |
-| Iteration | O(m) | O(n) | O(n) |
-| Space | O(m) | O(n) | O(n) |
+| Operation | Array Hash | Map      | Unordered Map |
+| --------- | ---------- | -------- | ------------- |
+| Insert    | O(1)       | O(log n) | O(1) avg      |
+| Search    | O(1)       | O(log n) | O(1) avg      |
+| Delete    | O(1)       | O(log n) | O(1) avg      |
+| Iteration | O(m)       | O(n)     | O(n)          |
+| Space     | O(m)       | O(n)     | O(n)          |
 
 m = max value, n = number of elements
 
@@ -1419,6 +1460,7 @@ m = max value, n = number of elements
 Hashing is a fundamental technique for efficient problem-solving:
 
 **Key Takeaways:**
+
 - Use **array hashing** for small integer ranges
 - Use **unordered_map** for general cases
 - Use **map** when order matters
@@ -1426,12 +1468,14 @@ Hashing is a fundamental technique for efficient problem-solving:
 - Check for edge cases (zeros, negatives)
 
 **When to Use Hashing:**
+
 - Frequency counting
 - Duplicate detection
 - Fast lookups
 - Caching results
 
 **Master These Patterns:**
+
 - Direct addressing
 - Character mapping
 - Map-based solutions

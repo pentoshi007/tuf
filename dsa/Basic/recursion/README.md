@@ -3,6 +3,7 @@
 A comprehensive collection of fundamental recursion problems with detailed explanations, complexity analysis, and visual dry runs for effective revision.
 
 ## Table of Contents
+
 1. [Introduction to Recursion](#introduction-to-recursion)
 2. [Sum of N Natural Numbers](#1-sum-of-n-natural-numbers)
 3. [Factorial of a Number](#2-factorial-of-a-number)
@@ -22,11 +23,13 @@ A comprehensive collection of fundamental recursion problems with detailed expla
 **Recursion** is a programming technique where a function calls itself to solve a problem by breaking it down into smaller, similar subproblems.
 
 ### Key Components:
+
 1. **Base Case**: The condition that stops the recursion
 2. **Recursive Case**: The part where the function calls itself
 3. **Progress towards Base Case**: Each recursive call should move closer to the base case
 
 ### Why Use Recursion?
+
 - Simplifies complex problems
 - Natural for problems with recursive structure (trees, graphs)
 - Makes code more readable and elegant
@@ -36,9 +39,11 @@ A comprehensive collection of fundamental recursion problems with detailed expla
 ## 1. Sum of N Natural Numbers
 
 ### Problem Statement
+
 Find the sum of first N natural numbers using recursion.
 
 ### Code
+
 ```cpp
 int sum(int n)
 {
@@ -49,15 +54,18 @@ int sum(int n)
 ```
 
 ### Approach
+
 1. **Base Case**: If n = 0, return 0
 2. **Recursive Case**: Add n to the sum of (n-1) numbers
 3. Formula: sum(n) = n + sum(n-1)
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(n) - Function is called n times
 - **Space Complexity**: O(n) - Recursion call stack depth is n
 
 ### Dry Run (n = 5)
+
 ```
 sum(5) = 5 + sum(4)
        = 5 + 4 + sum(3)
@@ -74,6 +82,7 @@ sum(5) → sum(4) → sum(3) → sum(2) → sum(1) → sum(0)
 ```
 
 ### Key Takeaway
+
 Each call adds the current number and waits for the result of the smaller subproblem.
 
 ---
@@ -81,9 +90,11 @@ Each call adds the current number and waits for the result of the smaller subpro
 ## 2. Factorial of a Number
 
 ### Problem Statement
+
 Calculate the factorial of a number n (n!) using recursion.
 
 ### Code
+
 ```cpp
 int factorial(int n)
 {
@@ -94,15 +105,18 @@ int factorial(int n)
 ```
 
 ### Approach
+
 1. **Base Case**: If n = 0 or n = 1, return 1
 2. **Recursive Case**: Multiply n with factorial of (n-1)
 3. Formula: factorial(n) = n × factorial(n-1)
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(n) - Function is called n times
 - **Space Complexity**: O(n) - Recursion stack depth
 
 ### Dry Run (n = 4)
+
 ```
 factorial(4) = 4 × factorial(3)
              = 4 × 3 × factorial(2)
@@ -118,6 +132,7 @@ factorial(4) → factorial(3) → factorial(2) → factorial(1) → factorial(0)
 ```
 
 ### Visual Representation
+
 ```
          factorial(4)
               |
@@ -137,9 +152,11 @@ factorial(4) → factorial(3) → factorial(2) → factorial(1) → factorial(0)
 ## 3. Sum of Array Elements
 
 ### Problem Statement
+
 Find the sum of all elements in a vector/array using recursion.
 
 ### Code
+
 ```cpp
 int arraySum(vector<int> &nums)
 {
@@ -151,15 +168,18 @@ int arraySum(vector<int> &nums)
 ```
 
 ### Approach
+
 1. **Base Case**: If array has only 1 element, return that element
 2. **Recursive Case**: Add first element to sum of remaining elements
 3. Create subvector from index 1 to end and recursively sum it
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(n²) - Creating subvector takes O(n) and we do it n times
 - **Space Complexity**: O(n²) - Due to creating new vectors at each level
 
 ### Dry Run (nums = [1, 2, 3, 4])
+
 ```
 arraySum([1, 2, 3, 4])
 = 1 + arraySum([2, 3, 4])
@@ -179,7 +199,9 @@ Visual:
 ```
 
 ### Optimization Note
+
 This approach can be optimized by using indices instead of creating new vectors:
+
 ```cpp
 int arraySum(vector<int> &nums, int index) {
     if (index == nums.size() - 1) return nums[index];
@@ -192,9 +214,11 @@ int arraySum(vector<int> &nums, int index) {
 ## 4. Reverse a String
 
 ### Problem Statement
+
 Reverse a string (character vector) in-place using recursion.
 
 ### Code
+
 ```cpp
 class Solution
 {
@@ -221,17 +245,20 @@ public:
 ```
 
 ### Approach
+
 1. Use two pointers: left (start) and right (end)
 2. **Base Case**: If left > right, return (all elements swapped)
-3. **Recursive Case**: 
+3. **Recursive Case**:
    - Swap elements at left and right
    - Recursively call with left+1 and right-1
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(n) - We process each element once (n/2 swaps)
 - **Space Complexity**: O(n) - Recursion stack depth is n/2
 
 ### Dry Run (s = ['h', 'e', 'l', 'l', 'o'])
+
 ```
 Initial: ['h', 'e', 'l', 'l', 'o']
          left=0, right=4
@@ -264,9 +291,11 @@ Visual:
 ## 5. Check if String is Palindrome
 
 ### Problem Statement
+
 Check if a given string is a palindrome using recursion.
 
 ### Code
+
 ```cpp
 class Solution
 {
@@ -291,30 +320,33 @@ public:
 ```
 
 ### Approach
+
 1. Compare characters from both ends moving inward
 2. **Base Case**: If left >= right, all characters matched → palindrome
-3. **Recursive Case**: 
+3. **Recursive Case**:
    - If current characters don't match → not palindrome
    - Otherwise, check next pair (left+1, right-1)
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(n) - Check n/2 pairs of characters
 - **Space Complexity**: O(n) - Recursion stack depth
 
 ### Dry Run (s = "racecar")
+
 ```
 s = "racecar"
      0123456
 
 Step 1: left=0, right=6
         s[0]='r', s[6]='r' ✓ Match
-        
+
 Step 2: left=1, right=5
         s[1]='a', s[5]='a' ✓ Match
-        
+
 Step 3: left=2, right=4
         s[2]='c', s[4]='c' ✓ Match
-        
+
 Step 4: left=3, right=3
         left >= right → Base case
         Return TRUE
@@ -332,6 +364,7 @@ r  a  c  e  c  a  r
 ```
 
 ### Example of Non-Palindrome (s = "hello")
+
 ```
 Step 1: left=0, right=4
         s[0]='h', s[4]='o' ✗ Don't Match
@@ -343,9 +376,11 @@ Step 1: left=0, right=4
 ## 6. Check if Number is Prime
 
 ### Problem Statement
+
 Check if a given number is prime using recursion.
 
 ### Code
+
 ```cpp
 class Solution
 {
@@ -371,20 +406,23 @@ public:
 ```
 
 ### Approach
+
 1. Check divisibility starting from 2
 2. **Base Cases**:
    - If num = 1, return false
    - If i² > num, no divisors found → prime
-3. **Recursive Case**: 
+3. **Recursive Case**:
    - If num % i = 0 → not prime
    - Otherwise, check next number (i+1)
 4. Optimization: Only check up to √num
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(√n) - Check divisors up to square root
 - **Space Complexity**: O(√n) - Recursion stack depth
 
 ### Dry Run (num = 17)
+
 ```
 checkPrime(17)
   → check(2, 17)
@@ -420,6 +458,7 @@ Visual:
 ```
 
 ### Example of Composite Number (num = 15)
+
 ```
 Step 1: i=2, 15 % 2 = 1 → continue
 Step 2: i=3, 15 % 3 = 0 → NOT PRIME ✗
@@ -430,9 +469,11 @@ Step 2: i=3, 15 % 3 = 0 → NOT PRIME ✗
 ## 7. Reverse an Array
 
 ### Problem Statement
+
 Reverse an array in-place using recursion.
 
 ### Code
+
 ```cpp
 class Solution
 {
@@ -459,17 +500,20 @@ public:
 ```
 
 ### Approach
+
 1. Use two pointers: left and right
 2. **Base Case**: If left >= right, all elements swapped
-3. **Recursive Case**: 
+3. **Recursive Case**:
    - Swap elements at left and right
    - Recursively call with left+1 and right-1
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(n) - Process each element once (n/2 swaps)
 - **Space Complexity**: O(n) - Recursion stack depth is n/2
 
 ### Dry Run (nums = [1, 2, 3, 4, 5])
+
 ```
 Initial: [1, 2, 3, 4, 5]
          L=0        R=4
@@ -502,9 +546,11 @@ Visual Representation:
 ## 8. Check if Array is Sorted
 
 ### Problem Statement
+
 Check if an array is sorted in non-decreasing order using recursion.
 
 ### Code
+
 ```cpp
 class Solution
 {
@@ -522,17 +568,20 @@ public:
 ```
 
 ### Approach
+
 1. **Base Case**: Array with 1 element is always sorted
-2. **Recursive Case**: 
+2. **Recursive Case**:
    - If first element > second element → not sorted
    - Otherwise, check if remaining array is sorted
 3. Create subarray from index 1 onwards
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(n²) - Creating subvector takes O(n), done n times
 - **Space Complexity**: O(n²) - New vectors created at each level
 
 ### Dry Run (nums = [1, 2, 3, 4, 5])
+
 ```
 Step 1: [1, 2, 3, 4, 5]
         1 ≤ 2 ✓ → Check [2, 3, 4, 5]
@@ -562,6 +611,7 @@ Visual:
 ```
 
 ### Example of Unsorted Array (nums = [1, 3, 2, 4])
+
 ```
 Step 1: [1, 3, 2, 4]
         1 ≤ 3 ✓ → Check [3, 2, 4]
@@ -571,6 +621,7 @@ Step 2: [3, 2, 4]
 ```
 
 ### Optimization Note
+
 ```cpp
 // Better approach using index:
 bool isSorted(vector<int> &nums, int index = 0) {
@@ -585,9 +636,11 @@ bool isSorted(vector<int> &nums, int index = 0) {
 ## 9. Sum of Digits
 
 ### Problem Statement
+
 Find the sum of digits of a number, repeatedly until a single digit remains.
 
 ### Code
+
 ```cpp
 class Solution
 {
@@ -596,7 +649,7 @@ public:
     {
         if (num < 10)  // Base case: single digit
             return num;
-        
+
         // Sum the digits and continue recursively
         int sum = sumDigits(num);
         return addDigits(sum);
@@ -614,6 +667,7 @@ private:
 ```
 
 ### Approach
+
 1. **Helper Function (sumDigits)**: Calculate sum of all digits
    - Extract last digit using num % 10
    - Recursively sum remaining digits (num / 10)
@@ -622,10 +676,12 @@ private:
    - **Recursive Case**: Sum digits and recursively process result
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(log n) - Number of digits in n
 - **Space Complexity**: O(log n) - Recursion stack depth
 
 ### Dry Run (num = 38)
+
 ```
 addDigits(38)
   → sumDigits(38)
@@ -638,7 +694,7 @@ sumDigits(38):
 
 addDigits(11):
   → sumDigits(11)
-  
+
 sumDigits(11):
   = sumDigits(1) + 1
   = sumDigits(0) + 1 + 1
@@ -660,6 +716,7 @@ Visual:
 ```
 
 ### Detailed sumDigits Recursion (num = 38)
+
 ```
 sumDigits(38)
   = sumDigits(38/10) + 38%10
@@ -680,9 +737,11 @@ sumDigits(38) → sumDigits(3) → sumDigits(0)
 ## 10. Fibonacci Number
 
 ### Problem Statement
+
 Find the nth Fibonacci number using recursion.
 
 ### Code
+
 ```cpp
 class Solution
 {
@@ -699,17 +758,20 @@ public:
 ```
 
 ### Approach
-1. **Base Cases**: 
+
+1. **Base Cases**:
    - fibonacci(0) = 0
    - fibonacci(1) = 1
 2. **Recursive Case**: fibonacci(n) = fibonacci(n-1) + fibonacci(n-2)
 3. Each call branches into two recursive calls
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(2ⁿ) - Each call makes 2 recursive calls (exponential)
 - **Space Complexity**: O(n) - Maximum recursion depth is n
 
 ### Dry Run (n = 5)
+
 ```
 fibonacci(5)
 = fibonacci(4) + fibonacci(3)
@@ -726,6 +788,7 @@ fibonacci(5) = 3 + 2 = 5
 ```
 
 ### Visual Tree Representation
+
 ```
                     fib(5)
                    /      \
@@ -749,19 +812,23 @@ fib(5) = fib(4) + fib(3) = 3 + 2 = 5
 ```
 
 ### Fibonacci Sequence
+
 ```
 n:     0  1  2  3  4  5  6  7   8   9   10
 fib(n): 0  1  1  2  3  5  8  13  21  34  55
 ```
 
 ### Performance Issue and Optimization
+
 This naive recursive approach recalculates the same values multiple times:
+
 ```
 fib(5) calls fib(3) twice
 fib(4) calls fib(2) three times
 ```
 
 **Optimization using Memoization:**
+
 ```cpp
 // Using dynamic programming / memoization
 int fibonacci(int n, vector<int>& dp) {
@@ -778,21 +845,25 @@ int fibonacci(int n, vector<int>& dp) {
 ## Recursion Patterns Summary
 
 ### 1. Linear Recursion
+
 - Single recursive call per function call
 - Examples: Sum of N numbers, Factorial, Array sum
 - Complexity: Usually O(n) time and O(n) space
 
 ### 2. Divide and Conquer
+
 - Problem divided into smaller subproblems
 - Examples: Binary search, Merge sort
 - Complexity: Often O(log n) or O(n log n)
 
 ### 3. Multiple Recursion
+
 - Multiple recursive calls per function call
 - Examples: Fibonacci, Tree traversals
 - Complexity: Can be exponential O(2ⁿ) without optimization
 
 ### 4. Two-Pointer Recursion
+
 - Using two indices that move towards each other
 - Examples: Reverse array, Palindrome check
 - Complexity: O(n) time, O(n/2) space
@@ -812,12 +883,14 @@ int fibonacci(int n, vector<int>& dp) {
 ## When to Use Recursion
 
 ✅ **Use Recursion When:**
+
 - Problem has recursive structure (trees, graphs)
 - Problem can be broken into similar subproblems
 - Code becomes simpler and more readable
 - Working with recursive data structures
 
 ❌ **Avoid Recursion When:**
+
 - Simple iteration is more efficient
 - Stack space is limited
 - Performance is critical and recursion adds overhead
@@ -850,6 +923,7 @@ int fibonacci(int n, vector<int>& dp) {
 Recursion is a powerful technique that makes complex problems simpler. Master these fundamental patterns, and you'll be well-prepared for more advanced recursive problems in trees, graphs, backtracking, and dynamic programming.
 
 **Key Takeaways:**
+
 - Always have a clear base case
 - Make progress toward the base case in each recursive call
 - Consider both time and space complexity

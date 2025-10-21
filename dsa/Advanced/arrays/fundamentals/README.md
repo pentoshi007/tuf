@@ -21,9 +21,11 @@ This directory contains fundamental array operations and algorithms with detaile
 ## 1. Linear Search
 
 ### 📖 Explanation
+
 Linear Search is the simplest searching algorithm that sequentially checks each element in the array until the target element is found or the entire array has been traversed.
 
 ### 🎯 Approach
+
 1. Start from the first element (index 0)
 2. Compare each element with the target value
 3. If match found, return the index
@@ -71,7 +73,7 @@ graph LR
     B --> C["i=1<br/>nums[1]=2<br/>2≠7"]
     C --> D["i=2<br/>nums[2]=7<br/>7=7 ✓"]
     D --> E["Found!<br/>Return index 2"]
-    
+
     style A fill:#7B1FA2,stroke:#4A148C,stroke-width:3px,color:#fff
     style B fill:#D32F2F,stroke:#B71C1C,stroke-width:3px,color:#fff
     style C fill:#D32F2F,stroke:#B71C1C,stroke-width:3px,color:#fff
@@ -86,7 +88,7 @@ sequenceDiagram
     participant Array as Array [4,2,7,1,9,5]
     participant Search as Linear Search
     participant Result as Result
-    
+
     Search->>Array: Check index 0
     Array-->>Search: 4 ≠ 7
     Search->>Array: Check index 1
@@ -94,11 +96,12 @@ sequenceDiagram
     Search->>Array: Check index 2
     Array-->>Search: 7 = 7 (Match!)
     Search->>Result: Return 2
-    
+
     Note over Search,Result: Element found at index 2
 ```
 
 ### ✅ Key Points
+
 - ✓ Simple to implement and understand
 - ✓ Works on unsorted arrays
 - ✓ No preprocessing required
@@ -111,9 +114,11 @@ sequenceDiagram
 ## 2. Find Largest Element
 
 ### 📖 Explanation
+
 This algorithm finds the maximum element in an array by maintaining a variable that tracks the largest value encountered so far during traversal.
 
 ### 🎯 Approach
+
 1. Initialize `largest` to the smallest possible integer (`INT_MIN`)
 2. Traverse through the array
 3. Update `largest` whenever a bigger element is found
@@ -161,7 +166,7 @@ graph TD
     E --> F["i=4: nums[4]=4<br/>largest = max(9, 4) = 9"]
     F --> G["i=5: nums[5]=6<br/>largest = max(9, 6) = 9"]
     G --> H["Return 9"]
-    
+
     style A fill:#7B1FA2,stroke:#4A148C,stroke-width:3px,color:#fff
     style B fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
     style C fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
@@ -179,10 +184,10 @@ gantt
     title Largest Element Updates
     dateFormat X
     axisFormat %s
-    
+
     section Initialization
     largest = INT_MIN :0, 1
-    
+
     section Updates
     largest = 3 :1, 2
     largest = 8 :2, 3
@@ -190,12 +195,13 @@ gantt
     largest = 9 :4, 5
     stays 9 :5, 6
     stays 9 :6, 7
-    
+
     section Result
     Return 9 :7, 8
 ```
 
 ### ✅ Key Points
+
 - ✓ Single pass through array
 - ✓ Very efficient O(n) solution
 - ✓ Minimal space usage
@@ -207,9 +213,11 @@ gantt
 ## 3. Find Second Largest Element
 
 ### 📖 Explanation
+
 This algorithm finds the second largest element in a single pass by maintaining two variables: one for the largest and one for the second largest element.
 
 ### 🎯 Approach
+
 1. Initialize `largest` to first element
 2. Initialize `secondLargest` to `INT_MIN`
 3. For each element:
@@ -268,7 +276,7 @@ graph TD
     D --> E["i=4: 34<35 && 34>12<br/>second=34"]
     E --> F["i=5: 1<35<br/>No change"]
     F --> G["Return 34"]
-    
+
     style A fill:#7B1FA2,stroke:#4A148C,stroke-width:3px,color:#fff
     style B fill:#2E7D32,stroke:#1B5E20,stroke-width:3px,color:#fff
     style C fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
@@ -286,31 +294,32 @@ sequenceDiagram
     participant n as nums[i]
     participant l as largest
     participant s as secondLargest
-    
+
     Note over i,s: Initial: largest=12, second=INT_MIN
-    
+
     i->>n: i=1, value=35
     n->>l: 35 > 12, update
     l->>s: old largest (12) → second
     Note over l,s: largest=35, second=12
-    
+
     i->>n: i=2, value=1
     Note over l,s: No change (1 < 12)
-    
+
     i->>n: i=3, value=10
     Note over l,s: No change (10 < 12)
-    
+
     i->>n: i=4, value=34
     n->>s: 34 < 35 && 34 > 12
     Note over l,s: largest=35, second=34
-    
+
     i->>n: i=5, value=1
     Note over l,s: No change
-    
+
     Note over s: Final: Return 34
 ```
 
 ### ✅ Key Points
+
 - ✓ Single pass solution
 - ✓ Optimal O(n) time complexity
 - ✓ Handles edge cases (all same elements)
@@ -322,9 +331,11 @@ sequenceDiagram
 ## 4. Maximum Consecutive Ones
 
 ### 📖 Explanation
+
 This problem finds the maximum number of consecutive 1s in a binary array. The algorithm maintains a running count of consecutive 1s and tracks the maximum.
 
 ### 🎯 Approach
+
 1. Initialize `maxi = 0` and `count = 0`
 2. Traverse the array:
    - If element is 1: increment `count` and update `maxi`
@@ -384,7 +395,7 @@ graph TD
     G --> H["i=6: 0<br/>count=0, maxi=3"]
     H --> I["i=7: 1<br/>count=1, maxi=3"]
     I --> J["Return 3"]
-    
+
     style A fill:#7B1FA2,stroke:#4A148C,stroke-width:3px,color:#fff
     style B fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
     style C fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
@@ -404,27 +415,28 @@ gantt
     title Consecutive Ones Counter
     dateFormat X
     axisFormat %s
-    
+
     section Sequence 1
     1 (count=1) :0, 1
     1 (count=2) :1, 2
-    
+
     section Break
     0 (reset) :2, 3
-    
+
     section Sequence 2
     1 (count=1) :3, 4
     1 (count=2) :4, 5
     1 (count=3) MAX! :5, 6
-    
+
     section Break
     0 (reset) :6, 7
-    
+
     section Sequence 3
     1 (count=1) :7, 8
 ```
 
 ### ✅ Key Points
+
 - ✓ Single pass solution
 - ✓ Efficient O(n) time
 - ✓ Minimal space O(1)
@@ -436,9 +448,11 @@ gantt
 ## 5. Left Rotate Array by One
 
 ### 📖 Explanation
+
 This algorithm rotates all elements of the array one position to the left. The first element moves to the last position.
 
 ### 🎯 Approach
+
 1. Store the first element in a temporary variable
 2. Shift all elements one position to the left
 3. Place the temporary element at the last position
@@ -483,7 +497,7 @@ graph LR
     C --> D["Shift Step 3<br/>2,3,4,4,5"]
     D --> E["Shift Step 4<br/>2,3,4,5,5"]
     E --> F["Place temp<br/>2,3,4,5,1"]
-    
+
     style A fill:#7B1FA2,stroke:#4A148C,stroke-width:3px,color:#fff
     style B fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
     style C fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
@@ -502,20 +516,21 @@ sequenceDiagram
     participant Pos3 as Position 3
     participant Pos4 as Position 4
     participant Temp as Temp
-    
+
     Note over Pos0,Pos4: Initial: [1,2,3,4,5]
-    
+
     Pos0->>Temp: Save 1
     Pos1->>Pos0: Move 2→0
     Pos2->>Pos1: Move 3→1
     Pos3->>Pos2: Move 4→2
     Pos4->>Pos3: Move 5→3
     Temp->>Pos4: Place 1→4
-    
+
     Note over Pos0,Pos4: Final: [2,3,4,5,1]
 ```
 
 ### ✅ Key Points
+
 - ✓ In-place rotation
 - ✓ O(1) extra space
 - ✓ Simple implementation
@@ -526,9 +541,11 @@ sequenceDiagram
 ## 6. Left Rotate Array by K - Brute Force
 
 ### 📖 Explanation
+
 This approach rotates the array K positions to the left using extra space. It stores the first K elements in a temporary array, shifts the remaining elements, then copies back the K elements.
 
 ### 🎯 Approach
+
 1. Handle edge case: `k = k % n` (avoid unnecessary rotations)
 2. Store first K elements in temporary array
 3. Shift remaining (n-k) elements to the front
@@ -573,10 +590,10 @@ public:
 
 ### 🔍 Complexity Analysis
 
-| Complexity Type | Best Case  | Average Case | Worst Case |
-| --------------- | ---------- | ------------ | ---------- |
-| Time            | O(n)       | O(n)         | O(n)       |
-| Space           | O(k)       | O(k)         | O(k)       |
+| Complexity Type | Best Case | Average Case | Worst Case |
+| --------------- | --------- | ------------ | ---------- |
+| Time            | O(n)      | O(n)         | O(n)       |
+| Space           | O(k)      | O(k)         | O(k)       |
 
 - **Time O(n)**: Three separate loops but linear overall
 - **Space O(k)**: Temporary array for K elements
@@ -596,7 +613,7 @@ graph TD
     G --> H["Copy temp[1]→5<br/>4,5,6,7,1,2,7"]
     H --> I["Copy temp[2]→6<br/>4,5,6,7,1,2,3"]
     I --> J["Final Result<br/>4,5,6,7,1,2,3"]
-    
+
     style A fill:#7B1FA2,stroke:#4A148C,stroke-width:3px,color:#fff
     style B fill:#E91E63,stroke:#C2185B,stroke-width:3px,color:#fff
     style C fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
@@ -616,22 +633,23 @@ sequenceDiagram
     participant Orig as Original Array
     participant Temp as Temporary Array
     participant New as Modified Array
-    
+
     Note over Orig: [1,2,3,4,5,6,7] k=3
-    
+
     Orig->>Temp: Copy first 3 elements
     Note over Temp: [1,2,3]
-    
+
     Orig->>New: Shift elements [4,5,6,7] left by 3
     Note over New: [4,5,6,7,_,_,_]
-    
+
     Temp->>New: Copy back to end
     Note over New: [4,5,6,7,1,2,3]
-    
+
     Note over New: Rotation Complete!
 ```
 
 ### ✅ Key Points
+
 - ✓ Easy to understand
 - ✓ Linear time complexity
 - ✓ Handles k > n with modulo
@@ -643,14 +661,17 @@ sequenceDiagram
 ## 7. Left Rotate Array by K - Optimal
 
 ### 📖 Explanation
+
 This is the optimal approach using the **Reversal Algorithm**. It performs rotation in-place using only O(1) extra space by reversing portions of the array three times.
 
 ### 🎯 Approach - Reversal Algorithm
+
 1. **Reverse first K elements**: `[1,2,3,4,5]` → `[3,2,1,4,5]` (k=3)
 2. **Reverse remaining (n-k) elements**: `[3,2,1,4,5]` → `[3,2,1,5,4]`
 3. **Reverse entire array**: `[3,2,1,5,4]` → `[4,5,1,2,3]`
 
 **Mathematical Proof**:
+
 - Let array = `A B` where A = first k elements, B = remaining
 - Reverse A: `A' B`
 - Reverse B: `A' B'`
@@ -712,7 +733,7 @@ graph TD
     D --> E["After Step 2<br/>3,2,1,7,6,5,4"]
     E --> F["Step 3: Reverse 0 to n-1<br/>Reverse entire array"]
     F --> G["Final Result<br/>4,5,6,7,1,2,3"]
-    
+
     style A fill:#7B1FA2,stroke:#4A148C,stroke-width:3px,color:#fff
     style B fill:#E91E63,stroke:#C2185B,stroke-width:3px,color:#fff
     style C fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
@@ -730,17 +751,17 @@ sequenceDiagram
     participant R1 as Reverse 1
     participant R2 as Reverse 2
     participant R3 as Reverse 3
-    
+
     Note over Arr: Original: [1,2,3,4,5,6,7]
-    
+
     Arr->>R1: Reverse indices 0-2
     R1-->>Arr: [3,2,1,4,5,6,7]
     Note over Arr: First k elements reversed
-    
+
     Arr->>R2: Reverse indices 3-6
     R2-->>Arr: [3,2,1,7,6,5,4]
     Note over Arr: Last (n-k) elements reversed
-    
+
     Arr->>R3: Reverse indices 0-6
     R3-->>Arr: [4,5,6,7,1,2,3]
     Note over Arr: Complete reversal = Rotation!
@@ -753,18 +774,18 @@ graph LR
     subgraph "Step 1: Reverse first k=3"
     A1["[1,2,3,4,5,6,7]"] --> A2["[3,2,1,4,5,6,7]"]
     end
-    
+
     subgraph "Step 2: Reverse last n-k=4"
     B1["[3,2,1,4,5,6,7]"] --> B2["[3,2,1,7,6,5,4]"]
     end
-    
+
     subgraph "Step 3: Reverse all n=7"
     C1["[3,2,1,7,6,5,4]"] --> C2["[4,5,6,7,1,2,3]"]
     end
-    
+
     A2 --> B1
     B2 --> C1
-    
+
     style A1 fill:#7B1FA2,stroke:#4A148C,stroke-width:3px,color:#fff
     style A2 fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
     style B1 fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
@@ -781,7 +802,7 @@ graph TD
     Rev1["Reverse A: A' B<br/>Example: 321 4567"] --> Rev2
     Rev2["Reverse B: A' B'<br/>Example: 321 7654"] --> Rev3
     Rev3["Reverse All: B A<br/>Example: 4567 321"] --> End["Rotated by k!"]
-    
+
     style Start fill:#7B1FA2,stroke:#4A148C,stroke-width:3px,color:#fff
     style Rev1 fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
     style Rev2 fill:#F57C00,stroke:#E65100,stroke-width:3px,color:#fff
@@ -790,6 +811,7 @@ graph TD
 ```
 
 ### ✅ Key Points
+
 - ✓ **Optimal Solution**: O(n) time, O(1) space
 - ✓ In-place rotation
 - ✓ No extra arrays needed
@@ -802,15 +824,15 @@ graph TD
 
 ## Comparison Table
 
-| Problem                    | Time Complexity | Space Complexity | Best Approach              |
-| -------------------------- | --------------- | ---------------- | -------------------------- |
-| **Linear Search**          | O(n)            | O(1)             | Sequential scan            |
-| **Largest Element**        | O(n)            | O(1)             | Single pass with tracking  |
-| **Second Largest**         | O(n)            | O(1)             | Two variable tracking      |
-| **Max Consecutive Ones**   | O(n)            | O(1)             | Counter with reset         |
-| **Rotate by One**          | O(n)            | O(1)             | Shift with temp            |
-| **Rotate by K (Brute)**    | O(n)            | O(k)             | Temp array approach        |
-| **Rotate by K (Optimal)**  | O(n)            | O(1)             | **Reversal Algorithm** ⭐  |
+| Problem                   | Time Complexity | Space Complexity | Best Approach             |
+| ------------------------- | --------------- | ---------------- | ------------------------- |
+| **Linear Search**         | O(n)            | O(1)             | Sequential scan           |
+| **Largest Element**       | O(n)            | O(1)             | Single pass with tracking |
+| **Second Largest**        | O(n)            | O(1)             | Two variable tracking     |
+| **Max Consecutive Ones**  | O(n)            | O(1)             | Counter with reset        |
+| **Rotate by One**         | O(n)            | O(1)             | Shift with temp           |
+| **Rotate by K (Brute)**   | O(n)            | O(k)             | Temp array approach       |
+| **Rotate by K (Optimal)** | O(n)            | O(1)             | **Reversal Algorithm** ⭐ |
 
 ---
 
@@ -819,7 +841,9 @@ graph TD
 ### 🎯 Array Traversal Patterns
 
 #### 1. **Single Pass with Tracking**
+
 Used in: Largest Element, Second Largest, Max Consecutive Ones
+
 ```
 Initialize tracker variable(s)
 For each element:
@@ -828,7 +852,9 @@ Return tracker
 ```
 
 #### 2. **Array Manipulation**
+
 Used in: Rotations
+
 ```
 Store elements temporarily (or use reversal)
 Shift/modify elements
@@ -836,7 +862,9 @@ Restore/place elements in new positions
 ```
 
 #### 3. **Sequential Search**
+
 Used in: Linear Search
+
 ```
 For each element:
     Check if matches target
@@ -847,11 +875,13 @@ Return not found indicator
 ### 🔑 Optimization Techniques
 
 #### **Space Optimization**
+
 - Use variables instead of extra arrays when possible
 - In-place modifications save O(n) space
 - Reversal algorithm: O(k) → O(1) improvement
 
 #### **Time Optimization**
+
 - Single pass is better than multiple passes
 - Track multiple values simultaneously
 - Avoid sorting when possible (O(n) vs O(n log n))
@@ -867,14 +897,17 @@ Return not found indicator
 ### 💡 When to Use What
 
 #### **Linear Search vs Binary Search**
+
 - Linear Search: Unsorted arrays, small datasets
 - Binary Search: Sorted arrays, O(log n) needed
 
 #### **Brute Force vs Optimal Rotation**
+
 - Brute Force: Easier to understand, acceptable for small K
 - Optimal: Production code, large arrays, space constrained
 
 #### **Single vs Multiple Variables**
+
 - Track multiple values to solve in one pass
 - Example: Second largest needs 2 variables
 
@@ -883,6 +916,7 @@ Return not found indicator
 ## 🎓 Practice Problems
 
 ### Easy
+
 1. Find the smallest element in array
 2. Find the second smallest element
 3. Right rotate array by K positions
@@ -890,6 +924,7 @@ Return not found indicator
 5. Check if array is sorted
 
 ### Medium
+
 6. Move all zeros to end
 7. Find missing number in array
 8. Find the number appearing once
@@ -897,6 +932,7 @@ Return not found indicator
 10. Two sum problem
 
 ### Hard
+
 11. Rotate array by K (follow-up: do it in-place)
 12. Find all pairs with given difference
 13. Majority element (appears > n/2 times)
@@ -923,4 +959,3 @@ Return not found indicator
 **Happy Coding! 🚀**
 
 _Last Updated: October 10, 2025_
-

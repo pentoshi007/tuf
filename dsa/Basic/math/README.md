@@ -3,6 +3,7 @@
 A comprehensive collection of fundamental mathematical algorithms with detailed explanations, complexity analysis, and visual demonstrations for effective revision.
 
 ## Table of Contents
+
 1. [Introduction to Math Operations](#introduction-to-math-operations)
 2. [Count Digits](#1-count-digits)
 3. [Reverse a Number](#2-reverse-a-number)
@@ -22,11 +23,13 @@ A comprehensive collection of fundamental mathematical algorithms with detailed 
 ## Introduction to Math Operations
 
 Mathematical operations form the foundation of many algorithmic problems. Understanding these concepts is crucial for:
+
 - **Number Theory**: Properties of integers
 - **Optimization**: Efficient algorithms for common operations
 - **Problem Solving**: Building blocks for complex problems
 
 ### Key Concepts:
+
 1. **Digit Manipulation**: Extracting and processing individual digits
 2. **Modular Arithmetic**: Operations with remainders
 3. **Prime Numbers**: Building blocks of integers
@@ -38,9 +41,11 @@ Mathematical operations form the foundation of many algorithmic problems. Unders
 ## 1. Count Digits
 
 ### Problem Statement
+
 Count the number of digits in a given integer (positive or negative).
 
 ### Code
+
 ```cpp
 #include <iostream>
 using namespace std;
@@ -70,16 +75,19 @@ int main()
 ```
 
 ### Approach
+
 1. Handle special case: 0 has 1 digit
 2. Convert negative numbers to positive (sign doesn't count as digit)
 3. Repeatedly divide by 10 until number becomes 0
 4. Count the number of divisions
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(log₁₀ n) - Number of digits in n
 - **Space Complexity**: O(1) - Only using counter variable
 
 ### Dry Run (n = 12345)
+
 ```
 n = 12345
 count = 0
@@ -114,6 +122,7 @@ Visual:
 ```
 
 ### Alternative Approach (Mathematical)
+
 ```cpp
 // Using logarithm
 int countDigits(int n) {
@@ -125,6 +134,7 @@ int countDigits(int n) {
 ```
 
 ### Edge Cases
+
 ```cpp
 countDigits(0)       → 1
 countDigits(5)       → 1
@@ -137,9 +147,11 @@ countDigits(1000000) → 7
 ## 2. Reverse a Number
 
 ### Problem Statement
+
 Reverse the digits of a given integer while preserving the sign.
 
 ### Code
+
 ```cpp
 #include <iostream>
 using namespace std;
@@ -170,6 +182,7 @@ int main()
 ```
 
 ### Approach
+
 1. Store the sign (negative flag)
 2. Work with absolute value
 3. Extract last digit using modulo 10
@@ -178,10 +191,12 @@ int main()
 6. Restore sign if negative
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(log₁₀ n) - Process each digit once
 - **Space Complexity**: O(1) - Only using variables
 
 ### Dry Run (n = 12345)
+
 ```
 n = 12345
 negative = false
@@ -224,6 +239,7 @@ Building process:
 ```
 
 ### Dry Run (n = -123)
+
 ```
 n = -123
 negative = true
@@ -239,6 +255,7 @@ Result: -321
 ```
 
 ### Edge Cases
+
 ```cpp
 reverse(0)     → 0
 reverse(123)   → 321
@@ -248,6 +265,7 @@ reverse(5)     → 5
 ```
 
 ### Important Note
+
 **Overflow Risk**: For very large numbers, reversed value might exceed integer limits. Use `long long` or check for overflow.
 
 ---
@@ -255,9 +273,11 @@ reverse(5)     → 5
 ## 3. Palindrome Number
 
 ### Problem Statement
+
 Check if a number reads the same forwards and backwards. Negative numbers are not palindromes.
 
 ### Code
+
 ```cpp
 #include <iostream>
 using namespace std;
@@ -285,6 +305,7 @@ int main()
 ```
 
 ### Approach
+
 1. **Base Case**: Negative numbers are not palindromes
 2. Store original number
 3. Reverse the number (same logic as previous problem)
@@ -292,10 +313,12 @@ int main()
 5. If equal → palindrome, else not
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(log₁₀ n) - Process each digit
 - **Space Complexity**: O(1) - Constant space
 
 ### Dry Run (n = 12321)
+
 ```
 n = 12321
 original = 12321
@@ -321,6 +344,7 @@ Visual:
 ```
 
 ### Dry Run (n = 12345)
+
 ```
 n = 12345
 original = 12345
@@ -336,6 +360,7 @@ Visual:
 ```
 
 ### Edge Cases
+
 ```cpp
 isPalindrome(0)      → Yes (single digit)
 isPalindrome(7)      → Yes (single digit)
@@ -345,6 +370,7 @@ isPalindrome(10)     → No  (01 != 10)
 ```
 
 ### Optimization (Half Comparison)
+
 ```cpp
 bool isPalindrome(int n) {
     if (n < 0 || (n % 10 == 0 && n != 0)) return false;
@@ -363,11 +389,13 @@ bool isPalindrome(int n) {
 ## 4. Armstrong Number
 
 ### Problem Statement
+
 Check if a 3-digit number is an Armstrong number (sum of cubes of its digits equals the number itself).
 
 Example: 153 = 1³ + 5³ + 3³ = 1 + 125 + 27 = 153 ✓
 
 ### Code
+
 ```cpp
 #include <iostream>
 using namespace std;
@@ -390,6 +418,7 @@ int main()
 ```
 
 ### Approach
+
 1. Store original number
 2. Extract each digit using modulo 10
 3. Cube the digit and add to sum
@@ -397,10 +426,12 @@ int main()
 5. Compare sum with original number
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(d) - Where d is number of digits (O(1) for 3-digit)
 - **Space Complexity**: O(1) - Only using variables
 
 ### Dry Run (n = 153)
+
 ```
 n = 153
 original = 153
@@ -437,6 +468,7 @@ Breakdown:
 ```
 
 ### Dry Run (n = 123)
+
 ```
 n = 123
 original = 123
@@ -457,6 +489,7 @@ Visual:
 ```
 
 ### Armstrong Numbers (3-digit)
+
 ```
 153 = 1³ + 5³ + 3³ = 1 + 125 + 27 = 153 ✓
 370 = 3³ + 7³ + 0³ = 27 + 343 + 0 = 370 ✓
@@ -465,6 +498,7 @@ Visual:
 ```
 
 ### Generalized Armstrong (n-digit)
+
 ```cpp
 // For any number of digits
 bool isArmstrong(int n) {
@@ -485,9 +519,11 @@ bool isArmstrong(int n) {
 ## 5. Prime Number Check
 
 ### Problem Statement
+
 Determine if a given number is prime (divisible only by 1 and itself).
 
 ### Code
+
 ```cpp
 #include <iostream>
 #include <cmath>
@@ -517,6 +553,7 @@ int main()
 ```
 
 ### Approach
+
 1. **Base Cases**: Numbers ≤ 1 are not prime
 2. **Optimization**: Only check divisors up to √n
 3. Check if n is divisible by any number from 2 to √n
@@ -524,6 +561,7 @@ int main()
 5. If no divisor found → prime
 
 ### Why Check Only Up to √n?
+
 ```
 If n = a × b, then:
 - Either a ≤ √n or b ≤ √n
@@ -537,10 +575,12 @@ All factor pairs have at least one element ≤ 6
 ```
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(√n) - Check divisors up to square root
 - **Space Complexity**: O(1) - Only using boolean flag
 
 ### Dry Run (n = 17)
+
 ```
 n = 17
 isPrime = true
@@ -569,6 +609,7 @@ Visual:
 ```
 
 ### Dry Run (n = 15)
+
 ```
 n = 15
 isPrime = true
@@ -587,12 +628,14 @@ Found divisor 3
 ```
 
 ### Prime Numbers (First 20)
+
 ```
-2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 
+2, 3, 5, 7, 11, 13, 17, 19, 23, 29,
 31, 37, 41, 43, 47, 53, 59, 61, 67, 71
 ```
 
 ### Edge Cases
+
 ```cpp
 isPrime(0)  → No (not prime)
 isPrime(1)  → No (not prime by convention)
@@ -601,12 +644,13 @@ isPrime(4)  → No (2 × 2)
 ```
 
 ### Further Optimization
+
 ```cpp
 bool isPrime(int n) {
     if (n <= 1) return false;
     if (n == 2) return true;
     if (n % 2 == 0) return false;  // Check even numbers
-    
+
     // Only check odd numbers from 3
     for (int i = 3; i * i <= n; i += 2) {
         if (n % i == 0) return false;
@@ -621,9 +665,11 @@ bool isPrime(int n) {
 ## 6. GCD - Brute Force
 
 ### Problem Statement
+
 Find the Greatest Common Divisor (GCD) of two numbers using brute force approach.
 
 ### Code
+
 ```cpp
 #include <iostream>
 using namespace std;
@@ -657,6 +703,7 @@ int main()
 ```
 
 ### Approach
+
 1. Handle edge cases (zeros, negatives)
 2. Start from min(a, b) and go downwards
 3. Check if current number divides both a and b
@@ -664,10 +711,12 @@ int main()
 5. Break immediately when found
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(min(a, b)) - Worst case check all numbers
 - **Space Complexity**: O(1) - Only using variables
 
 ### Dry Run (a = 48, b = 18)
+
 ```
 a = 48, b = 18
 start = min(48, 18) = 18
@@ -699,6 +748,7 @@ Greatest: 6
 ```
 
 ### Dry Run (a = 14, b = 28)
+
 ```
 a = 14, b = 28
 start = 14
@@ -718,6 +768,7 @@ GCD = 14
 ```
 
 ### Edge Cases
+
 ```cpp
 gcd(0, 0)   → 0  (undefined, but returns 0)
 gcd(0, 5)   → 5  (gcd(0, n) = n)
@@ -726,6 +777,7 @@ gcd(1, 100) → 1  (coprime)
 ```
 
 ### Why Brute Force is Inefficient
+
 ```
 For large numbers like gcd(1000000, 999999)
 - Need to check from 999999 down
@@ -738,9 +790,11 @@ For large numbers like gcd(1000000, 999999)
 ## 7. GCD - Euclidean Algorithm
 
 ### Problem Statement
+
 Find GCD using the efficient Euclidean algorithm based on the principle: gcd(a, b) = gcd(b, a mod b)
 
 ### Code
+
 ```cpp
 #include <iostream>
 using namespace std;
@@ -765,12 +819,14 @@ int main()
 ```
 
 ### Approach
+
 1. **Key Principle**: gcd(a, b) = gcd(b, a mod b)
 2. Repeatedly replace (a, b) with (b, a mod b)
 3. Continue until b becomes 0
 4. When b = 0, a contains the GCD
 
 ### Why It Works
+
 ```
 If d divides both a and b:
 - Then d divides (a - k×b) for any integer k
@@ -780,10 +836,12 @@ If d divides both a and b:
 ```
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(log(min(a, b))) - Much faster than brute force
 - **Space Complexity**: O(1) - Only using variables
 
 ### Dry Run (a = 48, b = 18)
+
 ```
 a = 48, b = 18
 
@@ -820,6 +878,7 @@ gcd(48, 18)
 ```
 
 ### Dry Run (a = 100, b = 35)
+
 ```
 a = 100, b = 35
 
@@ -834,6 +893,7 @@ gcd(100, 35) = gcd(35, 30) = gcd(30, 5) = gcd(5, 0) = 5
 ```
 
 ### Comparison: Brute Force vs Euclidean
+
 ```
 For gcd(1000000, 999999):
 
@@ -849,6 +909,7 @@ Euclidean:
 ```
 
 ### Recursive Version
+
 ```cpp
 int gcd(int a, int b) {
     if (b == 0) return a;
@@ -857,6 +918,7 @@ int gcd(int a, int b) {
 ```
 
 ### LCM Using GCD
+
 ```cpp
 // LCM(a, b) = (a × b) / GCD(a, b)
 long long lcm(int a, int b) {
@@ -869,9 +931,11 @@ long long lcm(int a, int b) {
 ## 8. Sieve of Eratosthenes - Count Primes
 
 ### Problem Statement
+
 Count the number of prime numbers less than or equal to n using the Sieve of Eratosthenes algorithm.
 
 ### Code
+
 ```cpp
 #include <iostream>
 #include <vector>
@@ -913,6 +977,7 @@ int main()
 ```
 
 ### Approach
+
 1. Create boolean array of size n+1, initialize all as true
 2. Mark 0 and 1 as not prime
 3. For each prime i from 2 to √n:
@@ -920,6 +985,7 @@ int main()
 4. Count remaining true values (primes)
 
 ### Why Start from i²?
+
 ```
 For i = 5:
 - 5×2 = 10 (already marked by 2)
@@ -931,10 +997,12 @@ All multiples < i² are already marked by smaller primes
 ```
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(n log log n) - Very efficient for finding multiple primes
 - **Space Complexity**: O(n) - Boolean array
 
 ### Dry Run (n = 20)
+
 ```
 Initial array (indices 0-20):
 isPrime: [F, F, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T]
@@ -966,6 +1034,7 @@ Marking process:
 ```
 
 ### Detailed Marking for i = 2
+
 ```
 i = 2, start from j = 2² = 4
 Mark: 4, 6, 8, 10, 12, 14, 16, 18, 20
@@ -976,6 +1045,7 @@ Mark: 4, 6, 8, 10, 12, 14, 16, 18, 20
 ```
 
 ### Why Sieve is Better Than Individual Checks
+
 ```
 To find all primes up to n:
 
@@ -995,9 +1065,11 @@ Sieve: O(n log log n)
 ## 9. Sieve of Eratosthenes - List Primes
 
 ### Problem Statement
+
 List all prime numbers less than or equal to n using the Sieve of Eratosthenes.
 
 ### Code
+
 ```cpp
 #include <iostream>
 #include <vector>
@@ -1037,13 +1109,16 @@ int main()
 ```
 
 ### Approach
+
 Same as count primes, but print each prime instead of counting.
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(n log log n) - Sieve algorithm
 - **Space Complexity**: O(n) - Boolean array
 
 ### Dry Run (n = 30)
+
 ```
 After sieving process:
 isPrime array shows: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29 are prime
@@ -1060,6 +1135,7 @@ Primes found: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29
 ```
 
 ### Prime Distribution
+
 ```
 Range       Primes
 0-10:       2, 3, 5, 7
@@ -1077,9 +1153,11 @@ Note: Primes become less frequent as numbers grow
 ## 10. Largest Digit
 
 ### Problem Statement
+
 Find the largest digit in a given number.
 
 ### Code
+
 ```cpp
 #include <iostream>
 using namespace std;
@@ -1112,6 +1190,7 @@ int main()
 ```
 
 ### Approach
+
 1. Handle negative numbers (work with absolute value)
 2. Initialize largest = 0
 3. Extract each digit using modulo 10
@@ -1119,10 +1198,12 @@ int main()
 5. Remove last digit by dividing by 10
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(log₁₀ n) - Process each digit
 - **Space Complexity**: O(1) - Only tracking largest
 
 ### Dry Run (n = 54729)
+
 ```
 n = 54729
 largest = 0
@@ -1161,6 +1242,7 @@ Visual:
 ```
 
 ### Dry Run (n = 1234)
+
 ```
 Digits: 4, 3, 2, 1
 Checking: 4 > 0 → largest = 4
@@ -1172,6 +1254,7 @@ Result: 4
 ```
 
 ### Edge Cases
+
 ```cpp
 largestDigit(0)      → 0
 largestDigit(9)      → 9
@@ -1181,6 +1264,7 @@ largestDigit(90125)  → 9
 ```
 
 ### Optimization (Early Exit)
+
 ```cpp
 int largestDigit(int n) {
     if (n < 0) n = -n;
@@ -1200,9 +1284,11 @@ int largestDigit(int n) {
 ## 11. Factorial
 
 ### Problem Statement
+
 Calculate the factorial of a non-negative integer (n! = n × (n-1) × ... × 2 × 1).
 
 ### Code
+
 ```cpp
 #include <iostream>
 using namespace std;
@@ -1227,16 +1313,19 @@ int main()
 ```
 
 ### Approach
+
 1. Handle negative input (factorial undefined)
 2. Initialize factorial = 1
 3. Multiply by each number from 1 to n
 4. Use `unsigned long long` for larger values
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(n) - Multiply n times
 - **Space Complexity**: O(1) - Only using one variable
 
 ### Dry Run (n = 5)
+
 ```
 n = 5
 factorial = 1
@@ -1270,6 +1359,7 @@ Building process:
 ```
 
 ### Factorial Values
+
 ```
 0! = 1    (by definition)
 1! = 1
@@ -1286,6 +1376,7 @@ Building process:
 ```
 
 ### Overflow Warning
+
 ```
 Factorials grow very quickly!
 - 20! is near the limit of unsigned long long
@@ -1297,6 +1388,7 @@ Factorials grow very quickly!
 ```
 
 ### Recursive Version
+
 ```cpp
 unsigned long long factorial(int n) {
     if (n <= 1) return 1;
@@ -1309,10 +1401,12 @@ unsigned long long factorial(int n) {
 ## 12. Perfect Number
 
 ### Problem Statement
+
 A perfect number equals the sum of its proper divisors (divisors excluding the number itself).
 Example: 6 = 1 + 2 + 3
 
 ### Code
+
 ```cpp
 #include <iostream>
 #include <cmath>
@@ -1346,6 +1440,7 @@ int main()
 ```
 
 ### Approach
+
 1. **Optimization**: Check divisors only up to √n
 2. For each divisor i found, also add n/i (complementary divisor)
 3. Start sum with 1 (always a proper divisor)
@@ -1353,6 +1448,7 @@ int main()
 5. Compare sum with n
 
 ### Why Check Up to √n?
+
 ```
 For n = 36:
 - Divisors come in pairs: (1,36), (2,18), (3,12), (4,9), (6,6)
@@ -1362,10 +1458,12 @@ For n = 36:
 ```
 
 ### Complexity Analysis
+
 - **Time Complexity**: O(√n) - Check up to square root
 - **Space Complexity**: O(1) - Only sum variable
 
 ### Dry Run (n = 6)
+
 ```
 n = 6
 sum = 1  (1 is always a divisor)
@@ -1375,7 +1473,7 @@ Check i = 2:
     sum += 2 → sum = 3
     other = 6 / 2 = 3
     3 ≠ 2, so sum += 3 → sum = 6
-    
+
 i = 3: 3² = 9 > 6, stop loop
 
 Compare: sum (6) == n (6) ✓
@@ -1388,6 +1486,7 @@ Sum: 1 + 2 + 3 = 6 = n ✓
 ```
 
 ### Dry Run (n = 28)
+
 ```
 n = 28
 sum = 1
@@ -1416,6 +1515,7 @@ Sum: 1 + 2 + 4 + 7 + 14 = 28 ✓
 ```
 
 ### Dry Run (n = 12)
+
 ```
 n = 12
 sum = 1
@@ -1431,6 +1531,7 @@ Sum: 1 + 2 + 3 + 4 + 6 = 16 ≠ 12
 ```
 
 ### Perfect Numbers
+
 ```
 First few perfect numbers:
 6 = 1 + 2 + 3
@@ -1443,6 +1544,7 @@ Only 51 known perfect numbers (as of 2024)
 ```
 
 ### Avoiding Double Count for Perfect Square
+
 ```
 For n = 36:
 When i = 6:
@@ -1458,22 +1560,26 @@ When i = 6:
 ## Mathematical Techniques Summary
 
 ### 1. Digit Manipulation
+
 - **Extract Last Digit**: `n % 10`
 - **Remove Last Digit**: `n / 10`
 - **Build Number**: `result = result * 10 + digit`
 - **Count Digits**: O(log₁₀ n) iterations
 
 ### 2. Divisibility Checking
+
 - **Check Prime**: Test divisors up to √n
 - **Find GCD**: Euclidean algorithm
 - **Find Divisors**: Check up to √n, add pairs
 
 ### 3. Optimization Patterns
+
 - **Early Exit**: Return immediately when answer found
 - **√n Limit**: Many problems only need checking up to square root
 - **Sieve**: Precompute for multiple queries
 
 ### 4. Number Properties
+
 - **Even/Odd**: `n % 2`
 - **Perfect Square**: `i * i == n`
 - **Powers**: `a^b` using repeated multiplication or exponentiation
@@ -1483,6 +1589,7 @@ When i = 6:
 ## Common Problem Patterns
 
 ### Pattern 1: Digit Processing
+
 - Count digits
 - Reverse number
 - Sum of digits
@@ -1490,18 +1597,21 @@ When i = 6:
 - **Approach**: Extract using mod, remove using division
 
 ### Pattern 2: Prime-Related
+
 - Check prime
 - List primes
 - Count primes
 - **Approach**: Trial division or Sieve
 
 ### Pattern 3: Divisor-Based
+
 - GCD/LCM
 - Perfect numbers
 - Factor counting
 - **Approach**: Check up to √n
 
 ### Pattern 4: Mathematical Properties
+
 - Factorial
 - Palindrome
 - Perfect power
@@ -1511,19 +1621,20 @@ When i = 6:
 
 ## Complexity Comparison
 
-| Operation | Naive | Optimized |
-|-----------|-------|-----------|
-| Count Digits | O(log n) | O(1) with log₁₀ |
-| Prime Check | O(n) | O(√n) |
-| GCD | O(min(a,b)) | O(log min(a,b)) |
-| List Primes (up to n) | O(n²) | O(n log log n) |
-| Find Divisors | O(n) | O(√n) |
+| Operation             | Naive       | Optimized       |
+| --------------------- | ----------- | --------------- |
+| Count Digits          | O(log n)    | O(1) with log₁₀ |
+| Prime Check           | O(n)        | O(√n)           |
+| GCD                   | O(min(a,b)) | O(log min(a,b)) |
+| List Primes (up to n) | O(n²)       | O(n log log n)  |
+| Find Divisors         | O(n)        | O(√n)           |
 
 ---
 
 ## Optimization Tips
 
 ### 1. Use Appropriate Data Types
+
 ```cpp
 // For large factorials
 unsigned long long factorial;
@@ -1536,6 +1647,7 @@ long long n;
 ```
 
 ### 2. Early Termination
+
 ```cpp
 // Stop when answer is found
 if (found) break;
@@ -1545,6 +1657,7 @@ if (digit == 9) return 9;
 ```
 
 ### 3. Mathematical Insights
+
 ```cpp
 // Only check odd numbers after 2
 for (int i = 3; i <= sqrt(n); i += 2)
@@ -1554,6 +1667,7 @@ for (int j = i * i; j <= n; j += i)
 ```
 
 ### 4. Avoid Redundant Computations
+
 ```cpp
 // Precompute sqrt
 int sqrtN = sqrt(n);
@@ -1565,6 +1679,7 @@ for (int i = 2; i <= sqrtN; i++)
 ## Common Pitfalls
 
 ### 1. Integer Overflow
+
 ```cpp
 // Factorial grows quickly!
 // Use unsigned long long or check overflow
@@ -1572,6 +1687,7 @@ unsigned long long factorial = 1;
 ```
 
 ### 2. Edge Cases
+
 ```cpp
 // Zero, negative numbers, single digit
 if (n == 0) return 1;  // 0 has 1 digit
@@ -1579,6 +1695,7 @@ if (n < 0) n = -n;     // Handle negatives
 ```
 
 ### 3. Off-by-One Errors
+
 ```cpp
 // Include or exclude boundary?
 for (int i = 2; i <= n; i++)  // Include n
@@ -1586,6 +1703,7 @@ for (int i = 2; i < n; i++)   // Exclude n
 ```
 
 ### 4. Division by Zero
+
 ```cpp
 // Check before dividing
 if (b != 0) a = a / b;
@@ -1596,18 +1714,22 @@ if (b != 0) a = a / b;
 ## Practice Tips
 
 1. **Master Digit Extraction**
+
    - Practice with mod and division
    - Understand building numbers
 
 2. **Understand Prime Algorithms**
+
    - Know why √n optimization works
    - When to use Sieve vs individual checks
 
 3. **Learn GCD Thoroughly**
+
    - Euclidean algorithm is fundamental
    - Used in many advanced problems
 
 4. **Handle Edge Cases**
+
    - Zero, negative, single digit
    - Very large numbers (overflow)
 
@@ -1620,12 +1742,14 @@ if (b != 0) a = a / b;
 ## Interview Tips
 
 ### Common Questions
+
 - "Why check only up to √n?"
 - "What's the time complexity of Sieve?"
 - "How does Euclidean GCD work?"
 - "What's the largest factorial you can compute?"
 
 ### Best Practices
+
 - Explain your approach before coding
 - Discuss optimizations
 - Handle edge cases explicitly
@@ -1643,6 +1767,7 @@ Mathematical operations are fundamental to computer science and competitive prog
 - **Optimization techniques** like √n and Sieve
 
 **Key Takeaways:**
+
 - Always consider edge cases (0, negatives, overflow)
 - Use mathematical insights for optimization
 - Understand why algorithms work, not just how

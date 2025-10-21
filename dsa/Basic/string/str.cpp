@@ -26,7 +26,7 @@ bool isPalindrome(string str)
     return true;
 }
 // largest odd number in a string in string format, if no odd return "", without zero prefix in starting
-int largestOddNumber(string str)
+string largestOddNumber(string str)
 {
     int n = str.size();
     for (int i = n - 1; i >= 0; i--)

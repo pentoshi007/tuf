@@ -1,4 +1,13 @@
 {
+  "code-runner.runInTerminal": true,
+  "code-runner.saveFileBeforeRun": true,
+  "code-runner.saveAllFilesBeforeRun": true,
+  "code-runner.executorMap": {
+    "cpp": "cd $dir && /opt/homebrew/opt/llvm/bin/clang++ -std=c++20 -O2 -Wall -I \"/opt/homebrew/include\" \"$fileName\" -o \"$fileNameWithoutExt\" && \"./$fileNameWithoutExt\""
+  }
+}
+
+{
   "code-runner.executorMap": {
     "cpp": "cd $dir && clang++ -std=c++20 -O2 -Wall -Wno-unused-variable $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt < input.txt > output.txt && echo '' && echo '=== OUTPUT FROM output.txt ===' && cat output.txt && echo '' && echo '=== INPUT FROM input.txt ===' && cat input.txt",
     "python": "python -u",
