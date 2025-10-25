@@ -87,25 +87,20 @@ public:
 7 8 9
 ```
 
-**Mapping Process:**
-```
-Original Position → Rotated Position
-(0,0)→1  becomes  (0,2)→1
-(0,1)→2  becomes  (1,2)→2
-(0,2)→3  becomes  (2,2)→3
-(1,0)→4  becomes  (0,1)→4
-(1,1)→5  becomes  (1,1)→5
-(1,2)→6  becomes  (2,1)→6
-(2,0)→7  becomes  (0,0)→7
-(2,1)→8  becomes  (1,0)→8
-(2,2)→9  becomes  (2,0)→9
-```
-
-**Rotated Matrix:**
-```
-7 4 1
-8 5 2
-9 6 3
+```mermaid
+graph TD
+    A["Matrix 3x3:<br/>1 2 3<br/>4 5 6<br/>7 8 9"] --> B["Position Mapping:<br/>(i,j) → (j, n-i-1)"]
+    B --> C["(0,0)→1 → (0,2)<br/>(0,1)→2 → (1,2)<br/>(0,2)→3 → (2,2)"]
+    C --> D["(1,0)→4 → (0,1)<br/>(1,1)→5 → (1,1)<br/>(1,2)→6 → (2,1)"]
+    D --> E["(2,0)→7 → (0,0)<br/>(2,1)→8 → (1,0)<br/>(2,2)→9 → (2,0)"]
+    E --> F["Rotated Matrix:<br/>7 4 1<br/>8 5 2<br/>9 6 3 ✓"]
+    
+    style A fill:#7B1FA2,stroke:#4A148C,stroke-width:3px,color:#fff
+    style B fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
+    style C fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
+    style D fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
+    style E fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
+    style F fill:#2E7D32,stroke:#1B5E20,stroke-width:3px,color:#fff
 ```
 
 ---
@@ -166,46 +161,27 @@ public:
 7 8 9
 ```
 
-**After Transpose (swap [i][j] ↔ [j][i]):**
-```
-Row 0, Col 1: swap(2, 4) → [1 4 3]
-                              [2 5 6]
-                              [7 8 9]
+**Step-by-Step: Transpose + Row Reverse**
 
-Row 0, Col 2: swap(3, 7) → [1 4 7]
-                              [2 5 6]
-                              [3 8 9]
-
-Row 1, Col 2: swap(6, 8) → [1 4 7]
-                              [2 5 8]
-                              [3 6 9]
+```mermaid
+graph TD
+    A["Original Matrix:<br/>1 2 3<br/>4 5 6<br/>7 8 9"] --> B["Step 1: Transpose<br/>Swap [i][j] ↔ [j][i]"]
+    B --> C["After Swap1: swap(2,4)<br/>1 4 3<br/>2 5 6<br/>7 8 9"]
+    C --> D["After Swap2: swap(3,7)<br/>1 4 7<br/>2 5 6<br/>3 8 9"]
+    D --> E["After Swap3: swap(6,8)<br/>1 4 7<br/>2 5 8<br/>3 6 9"]
+    E --> F["Step 2: Reverse Each Row"]
+    F --> G["Row 0: [1,4,7] → [7,4,1]<br/>Row 1: [2,5,8] → [8,5,2]<br/>Row 2: [3,6,9] → [9,6,3]"]
+    G --> H["Final Rotated Matrix:<br/>7 4 1<br/>8 5 2<br/>9 6 3 ✓"]
+    
+    style A fill:#7B1FA2,stroke:#4A148C,stroke-width:3px,color:#fff
+    style B fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
+    style C fill:#00796B,stroke:#004D40,stroke-width:3px,color:#fff
+    style D fill:#00796B,stroke:#004D40,stroke-width:3px,color:#fff
+    style E fill:#00796B,stroke:#004D40,stroke-width:3px,color:#fff
+    style F fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
+    style G fill:#F57C00,stroke:#E65100,stroke-width:3px,color:#fff
+    style H fill:#2E7D32,stroke:#1B5E20,stroke-width:3px,color:#fff
 ```
-
-**Matrix After Transpose:**
-```
-1 4 7
-2 5 8
-3 6 9
-```
-
-**After Reversing Each Row:**
-```
-Row 0: reverse [1, 4, 7] → [7, 4, 1]
-Row 1: reverse [2, 5, 8] → [8, 5, 2]
-Row 2: reverse [3, 6, 9] → [9, 6, 3]
-```
-
-**Final Rotated Matrix:**
-```
-7 4 1
-8 5 2
-9 6 3
-```
-
-#### Key Points
-✅ **Optimal solution** - O(1) space complexity  
-✅ **In-place rotation** - Modifies original matrix  
-✅ **Elegant approach** - Mathematical transformation  
 
 ---
 
@@ -272,11 +248,14 @@ public:
 
 **Input:** `nums = [1, 6, 2, 10, 3]`, `target = 7`
 
-```
-Pair Checks:
-(i=0, j=1): 1 + 6 = 7 ✓ FOUND! Return [0, 1]
-
-(Other pairs not checked)
+```mermaid
+graph TD
+    A["Array: [1, 6, 2, 10, 3]<br/>target = 7<br/><br/>Nested Loop Check"] --> B["i=0, j=1: nums[0]=1, nums[1]=6<br/>1 + 6 = 7 ✓<br/>FOUND! Return [0, 1]"]
+    B --> C["Result: [0, 1]"]
+    
+    style A fill:#7B1FA2,stroke:#4A148C,stroke-width:3px,color:#fff
+    style B fill:#2E7D32,stroke:#1B5E20,stroke-width:3px,color:#fff
+    style C fill:#F57C00,stroke:#E65100,stroke-width:3px,color:#fff
 ```
 
 ---
@@ -332,24 +311,17 @@ public:
 
 **Input:** `nums = [1, 6, 2, 10, 3]`, `target = 7`
 
+```mermaid
+graph TD
+    A["Initialize: mpp = {}<br/>target = 7"] --> B["i=0: num=1<br/>complement = 7-1 = 6<br/>mpp.find(6)? NO<br/>mpp = {1:0}"]
+    B --> C["i=1: num=6<br/>complement = 7-6 = 1<br/>mpp.find(1)? YES ✓<br/>Return [mpp[1], 1] = [0, 1]"]
+    C --> D["Result: [0, 1]"]
+    
+    style A fill:#7B1FA2,stroke:#4A148C,stroke-width:3px,color:#fff
+    style B fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
+    style C fill:#2E7D32,stroke:#1B5E20,stroke-width:3px,color:#fff
+    style D fill:#F57C00,stroke:#E65100,stroke-width:3px,color:#fff
 ```
-Iteration 1 (i=0, num=1):
-  complement = 7 - 1 = 6
-  mpp = {} → 6 not found
-  mpp = {1: 0}
-
-Iteration 2 (i=1, num=6):
-  complement = 7 - 6 = 1
-  mpp = {1: 0} → 1 FOUND! 
-  Return [mpp[1], 1] = [0, 1] ✓
-
-Result: [0, 1]
-```
-
-**Why This Is Better:**
-- ✅ Single pass through array
-- ✅ Average O(N) time complexity
-- ✅ Early termination when pair found
 
 ---
 
@@ -418,19 +390,23 @@ public:
 
 **Input:** `nums = [1, 6, 2, 10, 3]`, `target = 7`
 
+```mermaid
+graph TD
+    A["Create pairs:<br/>{1,0}, {6,1}, {2,2}, {10,3}, {3,4}"] --> B["Sort by value:<br/>{1,0}, {2,2}, {3,4}, {6,1}, {10,3}"]
+    B --> C["Two Pointers:<br/>left=0, right=4"]
+    C --> D["Iteration 1:<br/>sum = 1 + 10 = 11 > 7<br/>right-- (now 3)"]
+    D --> E["Iteration 2:<br/>sum = 1 + 6 = 7 = 7 ✓<br/>Found! Return original indices"]
+    E --> F["Result: [0, 1]<br/>(original indices)"]
+    
+    style A fill:#7B1FA2,stroke:#4A148C,stroke-width:3px,color:#fff
+    style B fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
+    style C fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
+    style D fill:#F57C00,stroke:#E65100,stroke-width:3px,color:#fff
+    style E fill:#F57C00,stroke:#E65100,stroke-width:3px,color:#fff
+    style F fill:#2E7D32,stroke:#1B5E20,stroke-width:3px,color:#fff
 ```
-Step 1: Create pairs with original indices
-[(1,0), (6,1), (2,2), (10,3), (3,4)]
 
-Step 2: Sort by value
-[(1,0), (2,2), (3,4), (6,1), (10,3)]
-
-Step 3: Two pointers
-left=0 (1,0), right=4 (10,3): sum = 1+10 = 11 > 7 → right--
-left=0 (1,0), right=3 (6,1): sum = 1+6 = 7 = 7 ✓
-
-Return [0, 1] (original indices)
-```
+---
 
 #### Comparison Table
 
@@ -511,19 +487,22 @@ public:
 
 **Input:** `nums = [2, -2, 0, 3, -3, 5]`
 
-```
-Triplet Checks (Only showing relevant ones):
-(0,1,2): 2 + (-2) + 0 = 0 ✓ → sorted [0, 2, -2] → add to set
-(0,1,3): 2 + (-2) + 3 = 3 ✗
-(1,2,3): -2 + 0 + 3 = 1 ✗
-(1,2,4): -2 + 0 + (-3) = -5 ✗
-(1,3,4): -2 + 3 + (-3) = -2 ✗
-(2,3,4): 0 + 3 + (-3) = 0 ✓ → sorted [0, 3, -3] → add to set
-(0,4,5): 2 + (-3) + 5 = 4 ✗
-(1,4,5): -2 + (-3) + 5 = 0 ✓ → sorted [-2, -3, 5] → add to set
-... (continue)
-
-Result Set: {[-3, -2, 5], [-3, 0, 3], [-2, 0, 2]}
+```mermaid
+graph TD
+    A["Brute Force: 3 Nested Loops<br/>Check all triplets"] --> B["(0,1,2): 2+(-2)+0 = 0 ✓<br/>sorted = [-2,0,2]<br/>Add to set"]
+    B --> C["(0,1,3): 2+(-2)+3 = 3 ✗<br/>Skip"]
+    C --> D["(1,2,3): (-2)+0+3 = 1 ✗<br/>Skip"]
+    D --> E["(2,3,4): 0+3+(-3) = 0 ✓<br/>sorted = [-3,0,3]<br/>Add to set"]
+    E --> F["(1,4,5): (-2)+(-3)+5 = 0 ✓<br/>sorted = [-3,-2,5]<br/>Add to set"]
+    F --> G["Result Set:<br/>{[-3,-2,5], [-3,0,3], [-2,0,2]}"]
+    
+    style A fill:#7B1FA2,stroke:#4A148C,stroke-width:3px,color:#fff
+    style B fill:#2E7D32,stroke:#1B5E20,stroke-width:3px,color:#fff
+    style C fill:#D32F2F,stroke:#B71C1C,stroke-width:3px,color:#fff
+    style D fill:#D32F2F,stroke:#B71C1C,stroke-width:3px,color:#fff
+    style E fill:#2E7D32,stroke:#1B5E20,stroke-width:3px,color:#fff
+    style F fill:#2E7D32,stroke:#1B5E20,stroke-width:3px,color:#fff
+    style G fill:#F57C00,stroke:#E65100,stroke-width:3px,color:#fff
 ```
 
 ---
@@ -584,29 +563,24 @@ public:
 
 **Input:** `nums = [2, -2, 0, 3, -3, 5]`
 
-```
-i=0 (fixed=2):
-  j=1: third = -(2 + -2) = 0, hashset = {}, not found, hashset = {-2}
-  j=2: third = -(2 + 0) = -2, hashset = {-2}, FOUND! 
-       triplet = [2, 0, -2] → sorted = [-2, 0, 2] ✓
-  j=3: third = -(2 + 3) = -5, hashset = {-2, 0}, not found
-  ...
-
-i=1 (fixed=-2):
-  j=2: third = -(-2 + 0) = 2, hashset = {}, not found, hashset = {0}
-  j=3: third = -(-2 + 3) = -1, hashset = {0}, not found, hashset = {0, 3}
-  j=4: third = -(-2 + -3) = 5, hashset = {0, 3}, not found
-  j=5: third = -(-2 + 5) = -3, hashset = {0, 3, -3}, FOUND!
-       triplet = [-2, 5, -3] → sorted = [-3, -2, 5] ✓
-  ...
-
-i=2 (fixed=0):
-  j=3: third = -(0 + 3) = -3, hashset = {}, not found, hashset = {3}
-  j=4: third = -(0 + -3) = 3, hashset = {3}, FOUND!
-       triplet = [0, -3, 3] → sorted = [-3, 0, 3] ✓
-  ...
-
-Result: {[-3, -2, 5], [-3, 0, 3], [-2, 0, 2]}
+```mermaid
+graph TD
+    A["i=0 fixed=2:<br/>Find pairs summing to -2"] --> B["j=1: third = -(2-2) = 0<br/>hashset={}, not found<br/>hashset={-2}"]
+    B --> C["j=2: third = -(2+0) = -2<br/>hashset={-2}, FOUND! ✓<br/>triplet: [2,0,-2] sorted [-2,0,2]"]
+    C --> D["i=1 fixed=-2:<br/>Find pairs summing to 2"]
+    D --> E["j=5: third = -(-2+5) = -3<br/>hashset={0,3,-3}, FOUND! ✓<br/>triplet: [-2,5,-3] sorted [-3,-2,5]"]
+    E --> F["i=2 fixed=0:<br/>Find pairs summing to 0"]
+    F --> G["j=4: third = -(0-3) = 3<br/>hashset={3}, FOUND! ✓<br/>triplet: [0,-3,3] sorted [-3,0,3]"]
+    G --> H["Result: {[-3,-2,5], [-3,0,3], [-2,0,2]}"]
+    
+    style A fill:#7B1FA2,stroke:#4A148C,stroke-width:3px,color:#fff
+    style B fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
+    style C fill:#2E7D32,stroke:#1B5E20,stroke-width:3px,color:#fff
+    style D fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
+    style E fill:#2E7D32,stroke:#1B5E20,stroke-width:3px,color:#fff
+    style F fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
+    style G fill:#2E7D32,stroke:#1B5E20,stroke-width:3px,color:#fff
+    style H fill:#F57C00,stroke:#E65100,stroke-width:3px,color:#fff
 ```
 
 ---
@@ -683,411 +657,38 @@ public:
 
 #### Dry Run with Visual
 
-**Input:** `nums = [2, -2, 0, 3, -3, 5]`
+**Input:** `nums = [2, -2, 0, 3, -3, 5]` → Sorted: `[-3, -2, 0, 2, 3, 5]`, `target = 0`
 
-```
-Step 1: Sort
-[-3, -2, 0, 2, 3, 5]
-
-Step 2: Fix elements and use two pointers
-
-i=0 (fixed=-3):
-  j=1(-2), k=5(5): sum = -3 + -2 + 5 = 0 ✓ → Add [-3, -2, 5]
-  j++, k--
-  j=2(0), k=4(3): sum = -3 + 0 + 3 = 0 ✓ → Add [-3, 0, 3]
-  j++, k--
-  j=3, k=3: Exit (j < k fails)
-
-i=1 (fixed=-2):
-  j=2(0), k=5(5): sum = -2 + 0 + 5 = 3 > 0 → k--
-  j=2(0), k=4(3): sum = -2 + 0 + 3 = 1 > 0 → k--
-  j=2(0), k=3(2): sum = -2 + 0 + 2 = 0 ✓ → Add [-2, 0, 2]
-  j++, k--
-  j=3, k=2: Exit (j < k fails)
-
-i=2 (fixed=0):
-  j=3(2), k=5(5): sum = 0 + 2 + 5 = 7 > 0 → k--
-  j=3(2), k=4(3): sum = 0 + 2 + 3 = 5 > 0 → k--
-  j=3, k=3: Exit (j < k fails)
-
-Result: [[-3, -2, 5], [-3, 0, 3], [-2, 0, 2]]
+```mermaid
+graph TD
+    A["Sorted Array: [-3, -2, 0, 2, 3, 5]<br/>Use two pointers after fixing"] --> B["Step 1: k=2(3), l=5(9)<br/>sum=-2+1+3+9=11 > 7<br/>l--"]
+    B --> C["Step 2: k=2(3), l=4(7)<br/>sum=-2+1+3+7=9 > 7<br/>l--"]
+    C --> D["Step 3: k=2(3), l=3(5)<br/>sum=-2+1+3+5=7 = 7 ✓<br/>Add [-2,1,3,5]"]
+    D --> E["k++, l--<br/>k=3, l=2<br/>k < l? NO<br/>Exit inner loop"]
+    E --> F["Check i=1(1):<br/>No valid triplets"]
+    F --> G["Result: [[-2,1,3,5]]"]
+    
+    style A fill:#7B1FA2,stroke:#4A148C,stroke-width:3px,color:#fff
+    style B fill:#F57C00,stroke:#E65100,stroke-width:3px,color:#fff
+    style C fill:#F57C00,stroke:#E65100,stroke-width:3px,color:#fff
+    style D fill:#2E7D32,stroke:#1B5E20,stroke-width:3px,color:#fff
+    style E fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
+    style F fill:#D32F2F,stroke:#B71C1C,stroke-width:3px,color:#fff
+    style G fill:#F57C00,stroke:#E65100,stroke-width:3px,color:#fff
 ```
 
-#### Comparison Table
-
-| Approach | Time | Space | Notes |
-|----------|------|-------|-------|
-| Brute Force | O(N³ log N) | O(K) | Very slow |
-| Hash Set | **O(N²)** | O(N) | Better |
-| Two Pointers | **O(N²)** | O(1) | **Best - Optimal** |
-
----
-
-## Problem 10: Four Sum
-
-### Problem Statement
-Given an integer array `nums` and an integer `target`, return all **unique quadruplets** that sum to the target.
-
-**Constraints:**
-- All indices must be distinct
-- No duplicate quadruplets in result
-- One element can be part of multiple quadruplets
-
-**Example:**
-```
-Input: nums = [1, -2, 3, 5, 7, 9], target = 7
-Output: [[-2, 1, 3, 5]]
-```
-
----
-
-### Approach 1: Brute Force (4 Nested Loops)
-
-#### Explanation
-Generate all possible quadruplets using four nested loops and check if sum equals target.
-
-**Algorithm:**
-1. Use four nested loops to generate all combinations
-2. For each quadruplet, check if sum equals target
-3. Use set to handle duplicates automatically
-4. Convert set to vector and return
-
-#### Code
-```cpp
-class Solution {
-public:
-    vector<vector<int>> fourSum(vector<int> &nums, int target) {
-        int n = nums.size();
-        set<vector<int>> st;
-        
-        // Check all possible quadruplets
-        for (int i = 0; i < n; i++) {
-            for (int j = i + 1; j < n; j++) {
-                for (int k = j + 1; k < n; k++) {
-                    for (int l = k + 1; l < n; l++) {
-                        // Calculate sum as long long to avoid overflow
-                        long long sum = nums[i] + nums[j] + nums[k] + nums[l];
-                        
-                        if (sum == target) {
-                            vector<int> temp = {nums[i], nums[j], nums[k], nums[l]};
-                            sort(temp.begin(), temp.end());
-                            st.insert(temp);
-                        }
-                    }
-                }
-            }
-        }
-        
-        vector<vector<int>> ans(st.begin(), st.end());
-        return ans;
-    }
-};
-```
-
-#### Complexity Analysis
-- **Time Complexity:** O(N⁴ log M) - Four nested loops: O(N⁴), sorting: O(1), set insertion: O(log M)
-  - Where M is the number of unique quadruplets
-  - Overall: **O(N⁴ log N)**
-- **Space Complexity:** O(M) - Set stores unique quadruplets
-
-#### Dry Run with Visual
-
-**Input:** `nums = [1, -2, 3, 5, 7, 9]`, `target = 7`
-
-```
-Quadruplet Checks (showing relevant ones):
-i=0, j=1, k=2, l=3: 1 + (-2) + 3 + 5 = 7 ✓
-  sorted = [1, -2, 3, 5] = [-2, 1, 3, 5] → add to set
-
-i=0, j=1, k=2, l=4: 1 + (-2) + 3 + 7 = 9 ✗
-i=0, j=1, k=2, l=5: 1 + (-2) + 3 + 9 = 11 ✗
-...
-
-Result: {[-2, 1, 3, 5]}
-```
-
----
-
-### Approach 2: Better (2 Fixed + Hash Set)
-
-#### Explanation
-Fix two elements (outer two loops) and use hash set for the inner two elements.
-
-**Algorithm:**
-1. Iterate through first element (i)
-2. Iterate through second element (j)
-3. For remaining elements, maintain hash set
-4. For each element, calculate required fourth element
-5. Check if fourth element exists in hash set
-
-#### Code
-```cpp
-class Solution {
-public:
-    vector<vector<int>> fourSum(vector<int> &nums, int target) {
-        int n = nums.size();
-        set<vector<int>> st;
-        
-        // Fix first two elements
-        for (int i = 0; i < n; i++) {
-            for (int j = i + 1; j < n; j++) {
-                set<long long> hashset;
-                
-                // Find two more elements using hash set
-                for (int k = j + 1; k < n; k++) {
-                    long long sum = nums[i] + nums[j];
-                    sum += nums[k];
-                    long long fourth = target - sum;
-                    
-                    // Check if fourth element exists
-                    if (hashset.find(fourth) != hashset.end()) {
-                        vector<int> temp = {nums[i], nums[j], nums[k], 
-                                           static_cast<int>(fourth)};
-                        sort(temp.begin(), temp.end());
-                        st.insert(temp);
-                    }
-                    
-                    hashset.insert(nums[k]);
-                }
-            }
-        }
-        
-        vector<vector<int>> ans(st.begin(), st.end());
-        return ans;
-    }
-};
-```
-
-#### Complexity Analysis
-- **Time Complexity:** O(N³) - Two outer loops: O(N²), inner hash set: O(N)
-  - Set operations: O(log M), overall dominated by O(N³)
-- **Space Complexity:** O(N) - Hash set size
-
-#### Dry Run with Visual
-
-**Input:** `nums = [1, -2, 3, 5, 7, 9]`, `target = 7`
-
-```
-i=0 (1), j=1 (-2):
-  k=2 (3): sum = 1 + (-2) + 3 = 2, fourth = 7 - 2 = 5
-           hashset = {}, not found, hashset = {3}
-  k=3 (5): sum = 1 + (-2) + 5 = 4, fourth = 7 - 4 = 3
-           hashset = {3}, FOUND! ✓
-           quadruplet = [1, -2, 5, 3] → sorted = [-2, 1, 3, 5]
-           hashset = {3, 5}
-  k=4 (7): sum = 1 + (-2) + 7 = 6, fourth = 7 - 6 = 1
-           hashset = {3, 5}, not found, hashset = {3, 5, 7}
-  k=5 (9): sum = 1 + (-2) + 9 = 8, fourth = 7 - 8 = -1
-           hashset = {3, 5, 7}, not found, hashset = {3, 5, 7, 9}
-
-i=0 (1), j=2 (3):
-  ... (no results)
-
-Result: {[-2, 1, 3, 5]}
-```
-
----
-
-### Approach 3: Optimal (Sort + 2 Fixed + Two Pointers)
-
-#### Explanation
-**Most Efficient Approach:**
-1. Sort the array first
-2. Fix two elements using nested loops
-3. Use two-pointer technique on remaining elements
-4. Skip duplicates explicitly
-
-**Key Insight:** After sorting, we can use two pointers for the last two elements, reducing one dimension of the loop.
-
-#### Code
-```cpp
-class Solution {
-public:
-    vector<vector<int>> fourSum(vector<int> &nums, int target) {
-        vector<vector<int>> ans;
-        int n = nums.size();
-        
-        // Sort the array
-        sort(nums.begin(), nums.end());
-        
-        // Fix first two elements
-        for (int i = 0; i < n; i++) {
-            // Skip duplicates for i
-            if (i > 0 && nums[i] == nums[i - 1])
-                continue;
-            
-            for (int j = i + 1; j < n; j++) {
-                // Skip duplicates for j
-                if (j > i + 1 && nums[j] == nums[j - 1])
-                    continue;
-                
-                // Two pointers for remaining two elements
-                int k = j + 1;
-                int l = n - 1;
-                
-                while (k < l) {
-                    long long sum = nums[i] + nums[j] + nums[k] + nums[l];
-                    
-                    if (sum == target) {
-                        // Found a quadruplet
-                        ans.push_back({nums[i], nums[j], nums[k], nums[l]});
-                        
-                        k++;
-                        l--;
-                        
-                        // Skip duplicates for k
-                        while (k < l && nums[k] == nums[k - 1])
-                            k++;
-                        
-                        // Skip duplicates for l
-                        while (k < l && nums[l] == nums[l + 1])
-                            l--;
-                    }
-                    else if (sum < target) {
-                        k++;
-                    }
-                    else {
-                        l--;
-                    }
-                }
-            }
-        }
-        
-        return ans;
-    }
-};
-```
-
-#### Complexity Analysis
-- **Time Complexity:** O(N³) - Sorting: O(N log N), two fixed loops: O(N²), two pointers: O(N)
-  - Overall: **O(N log N) + O(N³) = O(N³)**
-- **Space Complexity:** O(1) - No extra space (excluding answer)
-
-#### Dry Run with Visual
-
-**Input:** `nums = [1, -2, 3, 5, 7, 9]`, `target = 7`
-
-```
-Step 1: Sort
-[-2, 1, 3, 5, 7, 9]
-
-Step 2: Fix first two elements and use two pointers
-
-i=0 (fixed=-2):
-  j=1 (fixed=1):
-    k=2 (3), l=5 (9): sum = -2 + 1 + 3 + 9 = 11 > 7 → l--
-    k=2 (3), l=4 (7): sum = -2 + 1 + 3 + 7 = 9 > 7 → l--
-    k=2 (3), l=3 (5): sum = -2 + 1 + 3 + 5 = 7 ✓ → Add [-2, 1, 3, 5]
-    k++, l--
-    k=3, l=2: Exit (k < l fails)
-
-  j=2 (fixed=3):
-    k=3 (5), l=5 (9): sum = -2 + 3 + 5 + 9 = 15 > 7 → l--
-    ...
-
-Result: [[-2, 1, 3, 5]]
-```
-
-**Visual Representation of Two-Pointer Movement:**
-```
-Array: [-2, 1, 3, 5, 7, 9]
-       i=0, j=1
-
-Initial:  k        l
-          ↓        ↓
-        [-2, 1, 3, 5, 7, 9]  sum = 11 > 7 → l--
-
-        k        l
-        ↓        ↓
-        [-2, 1, 3, 5, 7, 9]  sum = 9 > 7 → l--
-
-        k        l
-        ↓        ↓
-        [-2, 1, 3, 5, 7, 9]  sum = 7 = 7 ✓ Found!
-```
-
-#### Comparison Table
-
-| Approach | Time | Space | Notes |
-|----------|------|-------|-------|
-| Brute Force | O(N⁴ log N) | O(M) | Very slow |
-| Hash Set | O(N³) | O(N) | Better |
-| Two Pointers | **O(N³)** | O(1) | **Best - Optimal** |
-
----
-
-## 🔑 Key Insights & Patterns
-
-### Pattern Recognition
-
-1. **Rotate Matrix:**
-   - Transpose + Row Reverse = 90° Clockwise Rotation
-   - In-place with O(1) space
-
-2. **Two Sum:**
-   - Hash Map: O(N) optimal for unsorted array
-   - Two Pointers: O(N log N) better when sorted
-
-3. **Three Sum:**
-   - Extends Two Sum by fixing first element
-   - Sort + Two Pointers: O(N²) optimal
-   - Duplicate handling is crucial
-
-4. **Four Sum:**
-   - Extends Three Sum by fixing first two elements
-   - Reduces to Two Sum problem
-   - Maintain O(N³) with two pointers
-
-### General Strategies
-
-| Problem Type | Strategy | Complexity |
-|-------------|----------|-----------|
-| Find N elements with condition | Brute Force | O(N^k) |
-| Find N elements (unsorted) | Hash Map | O(N) |
-| Find N elements (sorted) | Two Pointers | O(N^(k-1)) |
-| Matrix Transformation | Mathematical Pattern | O(N²) |
-
----
-
-## ⏱️ Complexity Summary
-
-| Problem | Brute Force | Better | Optimal | Space |
-|---------|-------------|--------|---------|-------|
-| Matrix Rotate | O(N²) | - | **O(N²)** | O(1) |
-| Two Sum | O(N²) | **O(N)** | O(N log N) | O(N) |
-| Three Sum | O(N³) | O(N²) | **O(N²)** | O(1) |
-| Four Sum | O(N⁴) | O(N³) | **O(N³)** | O(1) |
-
----
-
-## 📝 Practice Tips
-
-1. **Always consider:**
-   - Input constraints (array size, value range)
-   - Edge cases (empty array, duplicates, negative numbers)
-   - Space vs Time trade-offs
-
-2. **Common techniques:**
-   - Hash maps for fast lookups
-   - Two pointers for sorted arrays
-   - Duplicate handling with nested loops or sets
-
-3. **Verification:**
-   - Always dry run with examples
-   - Check duplicate handling
-   - Verify time/space complexity calculations
-
----
-
-## 📚 References & Further Learning
-
-- Hash Map operations: Average O(1) lookup/insertion
-- Sorting algorithms: O(N log N) comparison-based
-- Two-pointer technique: Effective for sorted data
-- In-place operations: No additional O(N) space needed
-
----
-
-**Last Updated:** October 2025  
-**Total Problems:** 4  
-**Total Solutions:** 10 (Brute Force, Better, Optimal approaches)
+**Visual Two-Pointer Movement:**
+
+```mermaid
+graph LR
+    A["Array: [-2, 1, 3, 5, 7, 9]<br/>Indices: 0  1  2  3  4  5"] 
+    B["Initial State<br/>i=0, j=1, k=2, l=5<br/>sum = 11 > 7<br/>Move: l--"]
+    C["State 2<br/>i=0, j=1, k=2, l=4<br/>sum = 9 > 7<br/>Move: l--"]
+    D["State 3<br/>i=0, j=1, k=2, l=3<br/>sum = 7 = 7 ✓<br/>FOUND!"]
+    
+    A --> B --> C --> D
+    
+    style A fill:#7B1FA2,stroke:#4A148C,stroke-width:3px,color:#fff
+    style B fill:#F57C00,stroke:#E65100,stroke-width:3px,color:#fff
+    style C fill:#F57C00,stroke:#E65100,stroke-width:3px,color:#fff
+    style D fill:#2E7D32,stroke:#1B5E20,stroke-width:3px,color:#fff
