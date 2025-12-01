@@ -46,73 +46,100 @@ Since the array has sorted portions, we can use **modified binary search** in O(
 
 ## 💻 Code Implementation
 
-```python
-def search(nums, k):
-    """
-    Search for target k in rotated sorted array
-    Time Complexity: O(log n)
-    Space Complexity: O(1)
-    """
-    left = 0
-    right = len(nums) - 1
-    
-    while left <= right:
-        mid = left + (right - left) // 2
-        
-        # Found the target!
-        if nums[mid] == k:
-            return mid
-        
-        # Determine which half is sorted
-        if nums[left] <= nums[mid]:
-            # Left half is sorted
-            if nums[left] <= k < nums[mid]:
-                # Target is in the sorted left half
-                right = mid - 1
-            else:
-                # Target is in the right half
-                left = mid + 1
-        else:
-            # Right half is sorted
-            if nums[mid] < k <= nums[right]:
-                # Target is in the sorted right half
-                left = mid + 1
-            else:
-                # Target is in the left half
-                right = mid - 1
-    
-    # Target not found
-    return -1
+```cpp
+class Solution
+{
+public:
+    /**
+     * Search for target k in rotated sorted array
+     * Time Complexity: O(log n)
+     * Space Complexity: O(1)
+     */
+    int search(vector<int> &nums, int k)
+    {
+        int left = 0;
+        int right = nums.size() - 1;
+
+        while (left <= right)
+        {
+            int mid = left + (right - left) / 2;
+
+            // Found the target!
+            if (nums[mid] == k)
+            {
+                return mid;
+            }
+
+            // Determine which half is sorted
+            if (nums[left] <= nums[mid])
+            {
+                // Left half is sorted
+                if (nums[left] <= k && k < nums[mid])
+                {
+                    // Target is in the sorted left half
+                    right = mid - 1;
+                }
+                else
+                {
+                    // Target is in the right half
+                    left = mid + 1;
+                }
+            }
+            else
+            {
+                // Right half is sorted
+                if (nums[mid] < k && k <= nums[right])
+                {
+                    // Target is in the sorted right half
+                    left = mid + 1;
+                }
+                else
+                {
+                    // Target is in the left half
+                    right = mid - 1;
+                }
+            }
+        }
+
+        // Target not found
+        return -1;
+    }
+};
 ```
 
 ### Code Breakdown
 
 #### Step 1: Initialize Pointers
-```python
-left = 0
-right = len(nums) - 1
+```cpp
+int left = 0;
+int right = nums.size() - 1;
 ```
 We use two pointers to define our search space.
 
 #### Step 2: Binary Search Loop
-```python
-while left <= right:
-    mid = left + (right - left) // 2
+```cpp
+while (left <= right)
+{
+    int mid = left + (right - left) / 2;
 ```
 - Continue until search space is exhausted
 - Calculate middle index safely (avoids integer overflow)
 
 #### Step 3: Check Middle Element
-```python
-if nums[mid] == k:
-    return mid
+```cpp
+if (nums[mid] == k)
+{
+    return mid;
+}
 ```
 If we found the target, return immediately!
 
 #### Step 4: Identify Sorted Half
-```python
-if nums[left] <= nums[mid]:
-    # Left half is sorted
+```cpp
+if (nums[left] <= nums[mid])
+{
+    // Left half is sorted
+}
 ```
 **How do we know?** If `nums[left] <= nums[mid]`, then all elements from `left` to `mid` are in ascending order.
 
@@ -120,27 +147,35 @@ if nums[left] <= nums[mid]:
 We have four cases:
 
 **Case 1: Left half is sorted AND target is in left range**
-```python
-if nums[left] <= k < nums[mid]:
-    right = mid - 1  # Search left half
+```cpp
+if (nums[left] <= k && k < nums[mid])
+{
+    right = mid - 1;  // Search left half
+}
 ```
 
 **Case 2: Left half is sorted BUT target is NOT in left range**
-```python
-else:
-    left = mid + 1  # Search right half
+```cpp
+else
+{
+    left = mid + 1;  // Search right half
+}
 ```
 
 **Case 3: Right half is sorted AND target is in right range**
-```python
-if nums[mid] < k <= nums[right]:
-    left = mid + 1  # Search right half
+```cpp
+if (nums[mid] < k && k <= nums[right])
+{
+    left = mid + 1;  // Search right half
+}
 ```
 
 **Case 4: Right half is sorted BUT target is NOT in right range**
-```python
-else:
-    right = mid - 1  # Search left half
+```cpp
+else
+{
+    right = mid - 1;  // Search left half
+}
 ```
 
 ---
