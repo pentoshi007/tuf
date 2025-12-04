@@ -59,13 +59,13 @@ public:
 | **Space** | O(1) | No extra space used |
 
 #### Dry Run
-```
-nums = [1, 3, 5, 6], target = 2
 
-i=0: nums[0]=1 >= 2? NO  → continue
-i=1: nums[1]=3 >= 2? YES → return 1
-
-Answer: 1 (2 would be inserted at index 1)
+```mermaid
+flowchart LR
+    subgraph Array["nums = [1, 3, 5, 6], target = 2"]
+        A["i=0: 1 >= 2? NO"] --> B["i=1: 3 >= 2? YES"]
+        B --> C["Return 1"]
+    end
 ```
 
 ---
@@ -76,12 +76,18 @@ Answer: 1 (2 would be inserted at index 1)
 Since the array is sorted, we can use binary search. We're looking for the **lower bound** - the smallest index `i` such that `nums[i] >= target`.
 
 #### Algorithm
-1. Initialize `left = 0`, `right = n-1`, `index = n` (default answer if target > all elements)
-2. While `left <= right`:
-   - Calculate `mid = left + (right - left) / 2`
-   - If `nums[mid] >= target`: This could be our answer, update `index = mid` and search left for smaller index
-   - Else: Search right half
-3. Return `index`
+
+```mermaid
+flowchart TD
+    A["Start: left=0, right=n-1, index=n"] --> B{left <= right?}
+    B -->|No| Z["Return index"]
+    B -->|Yes| C["mid = left + (right-left)/2"]
+    C --> D{"nums[mid] >= target?"}
+    D -->|Yes| E["index = mid\nright = mid - 1"]
+    D -->|No| F["left = mid + 1"]
+    E --> B
+    F --> B
+```
 
 #### Code
 ```cpp
@@ -117,65 +123,37 @@ public:
 
 **Example: `nums = [1, 3, 5, 6]`, `target = 2`**
 
-```
-Initial: left=0, right=3, index=4
-
-Iteration 1:
-┌───┬───┬───┬───┐
-│ 1 │ 3 │ 5 │ 6 │
-└───┴───┴───┴───┘
-  L       M       R
-  0   1   2   3
-
-mid = (0+3)/2 = 1
-nums[1] = 3 >= 2? YES
-→ index = 1, right = 0
-
-Iteration 2:
-┌───┬───┬───┬───┐
-│ 1 │ 3 │ 5 │ 6 │
-└───┴───┴───┴───┘
- L,M,R
-  0
-
-mid = (0+0)/2 = 0
-nums[0] = 1 >= 2? NO
-→ left = 1
-
-left (1) > right (0) → EXIT
-
-Answer: index = 1
+```mermaid
+flowchart TB
+    subgraph Iter1["Iteration 1"]
+        A1["left=0, right=3, index=4"]
+        A2["mid = 1, nums[1] = 3"]
+        A3["3 >= 2? YES"]
+        A4["index = 1, right = 0"]
+    end
+    
+    subgraph Iter2["Iteration 2"]
+        B1["left=0, right=0"]
+        B2["mid = 0, nums[0] = 1"]
+        B3["1 >= 2? NO"]
+        B4["left = 1"]
+    end
+    
+    Iter1 --> Iter2 --> C["left > right → EXIT"]
+    C --> D["Answer: index = 1"]
 ```
 
 **Example: `nums = [1, 3, 5, 6]`, `target = 7`**
 
-```
-Initial: left=0, right=3, index=4
-
-Iteration 1:
-┌───┬───┬───┬───┐
-│ 1 │ 3 │ 5 │ 6 │
-└───┴───┴───┴───┘
-  L       M       R
-mid = 1, nums[1]=3 >= 7? NO → left = 2
-
-Iteration 2:
-┌───┬───┬───┬───┐
-│ 1 │ 3 │ 5 │ 6 │
-└───┴───┴───┴───┘
-          L   M   R
-mid = 2, nums[2]=5 >= 7? NO → left = 3
-
-Iteration 3:
-┌───┬───┬───┬───┐
-│ 1 │ 3 │ 5 │ 6 │
-└───┴───┴───┴───┘
-              L,M,R
-mid = 3, nums[3]=6 >= 7? NO → left = 4
-
-left (4) > right (3) → EXIT
-
-Answer: index = 4 (insert at end)
+```mermaid
+flowchart TB
+    subgraph Process["All iterations"]
+        A["mid=1: 3 >= 7? NO → left=2"]
+        B["mid=2: 5 >= 7? NO → left=3"]
+        C["mid=3: 6 >= 7? NO → left=4"]
+    end
+    Process --> D["left > right → EXIT"]
+    D --> E["Answer: index = 4 (insert at end)"]
 ```
 
 ---
@@ -199,8 +177,23 @@ If no floor or ceil exists, return `-1`.
 | `[3, 4, 4, 7, 8, 10]` | `11` | `10` | `-1` | No element ≥ 11 |
 
 ### Key Insight
-- **Floor** = Find the largest element ≤ x (keep track when `nums[mid] <= x`)
-- **Ceil** = Find the smallest element ≥ x (keep track when `nums[mid] >= x`)
+
+```mermaid
+flowchart LR
+    subgraph Floor["FLOOR (largest ≤ x)"]
+        F1["if nums[mid] <= x"]
+        F2["ans = nums[mid]"]
+        F3["search RIGHT →"]
+        F1 --> F2 --> F3
+    end
+    
+    subgraph Ceil["CEIL (smallest ≥ x)"]
+        C1["if nums[mid] >= x"]
+        C2["ans = nums[mid]"]
+        C3["search LEFT ←"]
+        C1 --> C2 --> C3
+    end
+```
 
 ---
 
@@ -251,45 +244,28 @@ public:
 
 **Example: `nums = [3, 4, 4, 7, 8, 10]`, `x = 5`**
 
-```
-Initial: left=0, right=5, floor=-1, ceil=-1
-
-Iteration 1:
-┌───┬───┬───┬───┬───┬────┐
-│ 3 │ 4 │ 4 │ 7 │ 8 │ 10 │
-└───┴───┴───┴───┴───┴────┘
-  L           M            R
-  0   1   2   3   4    5
-
-mid = 2, nums[2] = 4
-4 == 5? NO
-4 < 5? YES → floor = 4, left = 3
-
-Iteration 2:
-┌───┬───┬───┬───┬───┬────┐
-│ 3 │ 4 │ 4 │ 7 │ 8 │ 10 │
-└───┴───┴───┴───┴───┴────┘
-              L   M    R
-              3   4    5
-
-mid = 4, nums[4] = 8
-8 < 5? NO
-8 > 5? YES → ceil = 8, right = 3
-
-Iteration 3:
-┌───┬───┬───┬───┬───┬────┐
-│ 3 │ 4 │ 4 │ 7 │ 8 │ 10 │
-└───┴───┴───┴───┴───┴────┘
-             L,M,R
-              3
-
-mid = 3, nums[3] = 7
-7 < 5? NO
-7 > 5? YES → ceil = 7, right = 2
-
-left (3) > right (2) → EXIT
-
-Answer: floor = 4, ceil = 7
+```mermaid
+flowchart TB
+    subgraph Iter1["Iteration 1: mid=2"]
+        A1["nums[2] = 4"]
+        A2["4 == 5? NO"]
+        A3["4 < 5? YES → floor=4, left=3"]
+    end
+    
+    subgraph Iter2["Iteration 2: mid=4"]
+        B1["nums[4] = 8"]
+        B2["8 < 5? NO"]
+        B3["8 > 5? YES → ceil=8, right=3"]
+    end
+    
+    subgraph Iter3["Iteration 3: mid=3"]
+        C1["nums[3] = 7"]
+        C2["7 < 5? NO"]
+        C3["7 > 5? YES → ceil=7, right=2"]
+    end
+    
+    Iter1 --> Iter2 --> Iter3 --> D["left > right → EXIT"]
+    D --> E["Answer: floor=4, ceil=7"]
 ```
 
 ---
@@ -359,17 +335,6 @@ public:
 | **Time** | O(log n) + O(log n) = O(log n) | Two binary searches |
 | **Space** | O(1) | Constant extra space |
 
-#### Floor vs Ceil Logic Comparison
-
-```
-FLOOR (largest ≤ x):          CEIL (smallest ≥ x):
-┌────────────────────┐        ┌────────────────────┐
-│ if nums[mid] <= x  │        │ if nums[mid] >= x  │
-│   ans = nums[mid]  │        │   ans = nums[mid]  │
-│   search RIGHT →   │        │   search LEFT ←    │
-└────────────────────┘        └────────────────────┘
-```
-
 ---
 
 ## 3. First and Last Occurrence of an Element
@@ -432,6 +397,22 @@ public:
 - First occurrence = Lower Bound (if element at that index equals target)
 - Last occurrence = Upper Bound - 1
 
+#### Visual: Lower Bound vs Upper Bound
+
+```mermaid
+flowchart LR
+    subgraph Array["Array: [5, 7, 7, 8, 8, 10], target = 8"]
+        A["5"] --> B["7"] --> C["7"] --> D["8"] --> E["8"] --> F["10"]
+    end
+    
+    subgraph Bounds["Bounds"]
+        LB["Lower Bound: index 3\n(first 8)"]
+        UB["Upper Bound: index 5\n(first > 8)"]
+    end
+    
+    Result["First = 3, Last = 5-1 = 4"]
+```
+
 #### Code
 ```cpp
 class Solution {
@@ -492,24 +473,6 @@ public:
 | **Time** | O(log n) | Two binary searches |
 | **Space** | O(1) | Constant extra space |
 
-#### Visual: Lower Bound vs Upper Bound
-
-```
-Array: [5, 7, 7, 8, 8, 10], target = 8
-
-Lower Bound (>= 8):     Upper Bound (> 8):
-        ↓                      ↓
-┌───┬───┬───┬───┬───┬────┐  ┌───┬───┬───┬───┬───┬────┐
-│ 5 │ 7 │ 7 │ 8 │ 8 │ 10 │  │ 5 │ 7 │ 7 │ 8 │ 8 │ 10 │
-└───┴───┴───┴───┴───┴────┘  └───┴───┴───┴───┴───┴────┘
-  0   1   2   3   4   5       0   1   2   3   4   5
-              ↑                               ↑
-        index = 3                       index = 5
-
-First occurrence = 3
-Last occurrence = 5 - 1 = 4
-```
-
 ---
 
 ### Approach 3: Direct Binary Search
@@ -518,6 +481,25 @@ Last occurrence = 5 - 1 = 4
 Instead of using generic lower/upper bound, we can directly find first and last occurrence:
 - **First occurrence**: When we find target, save index and search LEFT for earlier occurrence
 - **Last occurrence**: When we find target, save index and search RIGHT for later occurrence
+
+#### Algorithm
+
+```mermaid
+flowchart LR
+    subgraph First["Finding FIRST Occurrence"]
+        F1["Found target at mid"]
+        F2["Save index"]
+        F3["Search LEFT for earlier"]
+        F1 --> F2 --> F3
+    end
+    
+    subgraph Last["Finding LAST Occurrence"]
+        L1["Found target at mid"]
+        L2["Save index"]
+        L3["Search RIGHT for later"]
+        L1 --> L2 --> L3
+    end
+```
 
 #### Code
 ```cpp
@@ -584,61 +566,24 @@ public:
 
 **Example: `nums = [5, 7, 7, 8, 8, 10]`, `target = 8`**
 
-**Finding First Occurrence:**
+```mermaid
+flowchart TB
+    subgraph FindFirst["Finding First Occurrence"]
+        A1["mid=2: 7 < 8 → low=3"]
+        A2["mid=4: 8 == 8 → fo=4, high=3"]
+        A3["mid=3: 8 == 8 → fo=3, high=2"]
+        A4["low > high → First = 3"]
+    end
+    
+    subgraph FindLast["Finding Last Occurrence"]
+        B1["mid=2: 7 < 8 → low=3"]
+        B2["mid=4: 8 == 8 → lo=4, low=5"]
+        B3["mid=5: 10 > 8 → high=4"]
+        B4["low > high → Last = 4"]
+    end
+    
+    FindFirst --> FindLast --> Result["Answer: [3, 4]"]
 ```
-Initial: low=0, high=5, fo=-1
-
-Iteration 1:
-┌───┬───┬───┬───┬───┬────┐
-│ 5 │ 7 │ 7 │ 8 │ 8 │ 10 │
-└───┴───┴───┴───┴───┴────┘
-  L           M            R
-
-mid=2, nums[2]=7 < 8 → low=3
-
-Iteration 2:
-┌───┬───┬───┬───┬───┬────┐
-│ 5 │ 7 │ 7 │ 8 │ 8 │ 10 │
-└───┴───┴───┴───┴───┴────┘
-              L   M    R
-
-mid=4, nums[4]=8 == 8 → fo=4, high=3
-
-Iteration 3:
-┌───┬───┬───┬───┬───┬────┐
-│ 5 │ 7 │ 7 │ 8 │ 8 │ 10 │
-└───┴───┴───┴───┴───┴────┘
-             L,M,R
-
-mid=3, nums[3]=8 == 8 → fo=3, high=2
-
-low(3) > high(2) → EXIT
-First occurrence = 3
-```
-
-**Finding Last Occurrence:**
-```
-Initial: low=0, high=5, lo=-1
-
-Iteration 1:
-mid=2, nums[2]=7 < 8 → low=3
-
-Iteration 2:
-mid=4, nums[4]=8 == 8 → lo=4, low=5
-
-Iteration 3:
-┌───┬───┬───┬───┬───┬────┐
-│ 5 │ 7 │ 7 │ 8 │ 8 │ 10 │
-└───┴───┴───┴───┴───┴────┘
-                   L,M,R
-
-mid=5, nums[5]=10 > 8 → high=4
-
-low(5) > high(4) → EXIT
-Last occurrence = 4
-```
-
-**Answer: `[3, 4]`**
 
 ---
 
@@ -650,13 +595,18 @@ Given an integer array `nums`, sorted in ascending order (with **distinct values
 ### What is a Rotated Sorted Array?
 A rotated sorted array is created by taking a sorted array and rotating it at some pivot.
 
-```
-Original sorted: [0, 1, 2, 4, 5, 6, 7]
-                          ↑
-                      pivot point
-
-Rotated:         [4, 5, 6, 7, 0, 1, 2]
-                  ← right │ left →
+```mermaid
+flowchart LR
+    subgraph Original["Original Sorted"]
+        O["0,1,2,4,5,6,7"]
+    end
+    
+    subgraph Rotated["After Rotation"]
+        R["4,5,6,7,0,1,2"]
+        R1["← right half | left half →"]
+    end
+    
+    Original -->|"Rotate at pivot"| Rotated
 ```
 
 ### Examples
@@ -676,14 +626,26 @@ In a rotated sorted array, at least one half (left or right of mid) is **always 
 ### Approach: Binary Search with Sorted Half Identification
 
 #### Algorithm
-1. Find `mid` element
-2. Check if `nums[mid] == target` → return `mid`
-3. Identify which half is sorted:
-   - If `nums[low] <= nums[mid]` → **Left half is sorted**
-   - Else → **Right half is sorted**
-4. Check if target lies in the sorted half:
-   - If yes, search in sorted half
-   - If no, search in the other half
+
+```mermaid
+flowchart TD
+    A["Start: low=0, high=n-1"] --> B{low <= high?}
+    B -->|No| Z["Return -1 (not found)"]
+    B -->|Yes| C["Calculate mid"]
+    C --> D{"nums[mid] == k?"}
+    D -->|Yes| Y["Return mid"]
+    D -->|No| E{"nums[low] <= nums[mid]?"}
+    E -->|Yes - Left Sorted| F{"k in range [nums[low], nums[mid])?"}
+    F -->|Yes| G["high = mid - 1"]
+    F -->|No| H["low = mid + 1"]
+    E -->|No - Right Sorted| I{"k in range (nums[mid], nums[high]]?"}
+    I -->|Yes| J["low = mid + 1"]
+    I -->|No| K["high = mid - 1"]
+    G --> B
+    H --> B
+    J --> B
+    K --> B
+```
 
 #### Code
 ```cpp
@@ -732,86 +694,52 @@ public:
 
 #### Why Does This Work?
 
-```
-Rotated Array: [4, 5, 6, 7, 0, 1, 2]
-
-At any mid point, one half is ALWAYS sorted:
-
-Case 1: mid is in LEFT part (before rotation point)
-┌───┬───┬───┬───┬───┬───┬───┐
-│ 4 │ 5 │ 6 │ 7 │ 0 │ 1 │ 2 │
-└───┴───┴───┴───┴───┴───┴───┘
-  L       M                 R
-  └──sorted──┘
-
-nums[low]=4 <= nums[mid]=6 → LEFT half sorted ✓
-
-Case 2: mid is in RIGHT part (after rotation point)
-┌───┬───┬───┬───┬───┬───┬───┐
-│ 4 │ 5 │ 6 │ 7 │ 0 │ 1 │ 2 │
-└───┴───┴───┴───┴───┴───┴───┘
-  L                 M       R
-                    └─sorted─┘
-
-nums[low]=4 > nums[mid]=1 → RIGHT half sorted ✓
+```mermaid
+flowchart TB
+    subgraph Case1["Case 1: mid in LEFT part"]
+        A1["Array: 4,5,6,7,0,1,2"]
+        A2["L=0, M=2, R=6"]
+        A3["nums[0]=4 <= nums[2]=6"]
+        A4["→ LEFT half [4,5,6] is sorted ✓"]
+    end
+    
+    subgraph Case2["Case 2: mid in RIGHT part"]
+        B1["Array: 4,5,6,7,0,1,2"]
+        B2["L=0, M=5, R=6"]
+        B3["nums[0]=4 > nums[5]=1"]
+        B4["→ RIGHT half [1,2] is sorted ✓"]
+    end
 ```
 
 #### Visual Dry Run
 
 **Example: `nums = [4, 5, 6, 7, 0, 1, 2]`, `k = 0`**
 
-```
-Initial: low=0, high=6
-
-Iteration 1:
-┌───┬───┬───┬───┬───┬───┬───┐
-│ 4 │ 5 │ 6 │ 7 │ 0 │ 1 │ 2 │
-└───┴───┴───┴───┴───┴───┴───┘
-  L           M             R
-  0   1   2   3   4   5   6
-
-mid = 3, nums[3] = 7
-7 == 0? NO
-
-Check sorted half:
-nums[0]=4 <= nums[3]=7? YES → LEFT half [4,5,6,7] is sorted
-
-Is 0 in sorted left half [4,7)?
-4 <= 0 && 0 < 7? NO (4 > 0)
-
-→ Target must be in RIGHT half
-→ low = mid + 1 = 4
-
-Iteration 2:
-┌───┬───┬───┬───┬───┬───┬───┐
-│ 4 │ 5 │ 6 │ 7 │ 0 │ 1 │ 2 │
-└───┴───┴───┴───┴───┴───┴───┘
-                  L   M   R
-                  4   5   6
-
-mid = 5, nums[5] = 1
-1 == 0? NO
-
-Check sorted half:
-nums[4]=0 <= nums[5]=1? YES → LEFT half [0,1] is sorted
-
-Is 0 in sorted left half [0,1)?
-0 <= 0 && 0 < 1? YES!
-
-→ Target is in LEFT half
-→ high = mid - 1 = 4
-
-Iteration 3:
-┌───┬───┬───┬───┬───┬───┬───┐
-│ 4 │ 5 │ 6 │ 7 │ 0 │ 1 │ 2 │
-└───┴───┴───┴───┴───┴───┴───┘
-                 L,M,R
-                  4
-
-mid = 4, nums[4] = 0
-0 == 0? YES!
-
-Return mid = 4 ✓
+```mermaid
+flowchart TB
+    subgraph Iter1["Iteration 1"]
+        A1["low=0, mid=3, high=6"]
+        A2["nums[3]=7 == 0? NO"]
+        A3["nums[0]=4 <= nums[3]=7? YES → Left sorted"]
+        A4["Is 0 in [4,7)? NO (4 > 0)"]
+        A5["→ low = mid+1 = 4"]
+    end
+    
+    subgraph Iter2["Iteration 2"]
+        B1["low=4, mid=5, high=6"]
+        B2["nums[5]=1 == 0? NO"]
+        B3["nums[4]=0 <= nums[5]=1? YES → Left sorted"]
+        B4["Is 0 in [0,1)? YES!"]
+        B5["→ high = mid-1 = 4"]
+    end
+    
+    subgraph Iter3["Iteration 3"]
+        C1["low=4, mid=4, high=4"]
+        C2["nums[4]=0 == 0? YES!"]
+        C3["Return 4 ✓"]
+    end
+    
+    Iter1 --> Iter2 --> Iter3
 ```
 
 #### Edge Cases
@@ -838,6 +766,22 @@ Return mid = 4 ✓
 
 ## Key Takeaways
 
+```mermaid
+flowchart TB
+    A["Binary Search Key Patterns"] --> B["1. Lower Bound Pattern"]
+    A --> C["2. Upper Bound Pattern"]
+    A --> D["3. Rotated Array Pattern"]
+    
+    B --> B1["Find smallest index where condition satisfied"]
+    B --> B2["if condition: ans=mid, high=mid-1"]
+    
+    C --> C1["Similar but with strict inequality"]
+    C --> C2["if nums[mid] > target: ans=mid, high=mid-1"]
+    
+    D --> D1["One half is ALWAYS sorted"]
+    D --> D2["Identify sorted half → Check if target in range → Eliminate half"]
+```
+
 1. **Whenever you see "sorted" and "search"** → Think Binary Search!
 
 2. **Lower Bound Pattern**: Find smallest index where condition is satisfied, keep moving LEFT after finding
@@ -862,4 +806,3 @@ Return mid = 4 ✓
 - LeetCode 34: Find First and Last Position of Element
 - LeetCode 33: Search in Rotated Sorted Array
 - GFG: Floor and Ceil in Sorted Array
-

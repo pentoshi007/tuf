@@ -27,12 +27,18 @@ Given an integer array `nums`, sorted in ascending order (**may contain duplicat
 
 ### How is This Different from Part I?
 
-```
-Part I (Distinct values):     Part II (Duplicates allowed):
-[4, 5, 6, 7, 0, 1, 2]         [3, 1, 2, 3, 3, 3, 3]
-    ↑                              ↑
-We can always identify         nums[low] == nums[mid] == nums[high]
-which half is sorted!          Can't determine sorted half!
+```mermaid
+flowchart LR
+    subgraph Part1["Part I - Distinct Values"]
+        A1["4,5,6,7,0,1,2"]
+        A2["✓ Can always identify sorted half"]
+    end
+    
+    subgraph Part2["Part II - Duplicates Allowed"]
+        B1["3,1,2,3,3,3,3"]
+        B2["✗ nums[low]=nums[mid]=nums[high]"]
+        B3["Cannot determine sorted half!"]
+    end
 ```
 
 ### Key Insight 💡
@@ -55,23 +61,29 @@ The main challenge with duplicates is when `nums[low] == nums[mid] == nums[high]
    - If left half is sorted: check if target lies in `[nums[low], nums[mid])`
    - If right half is sorted: check if target lies in `[nums[mid], nums[high]]`
 
-#### Algorithm
-```
-1. Initialize low = 0, high = n-1
-2. While low <= high:
-   a. Calculate mid
-   b. If nums[mid] == k → return true
-   c. If nums[low] == nums[mid] == nums[high]:
-      → low++, high--, continue (SKIP this ambiguous state)
-   d. If LEFT half is sorted (nums[low] <= nums[mid]):
-      → Check if k is in [nums[low], nums[mid])
-      → If yes: high = mid - 1
-      → If no: low = mid + 1
-   e. Else RIGHT half is sorted:
-      → Check if k is in (nums[mid], nums[high]]
-      → If yes: low = mid + 1
-      → If no: high = mid - 1
-3. Return false (not found)
+#### Algorithm Flowchart
+
+```mermaid
+flowchart TD
+    A[Start: low=0, high=n-1] --> B{low <= high?}
+    B -->|No| Z[Return false]
+    B -->|Yes| C[Calculate mid]
+    C --> D{nums[mid] == k?}
+    D -->|Yes| Y[Return true]
+    D -->|No| E{nums[low] == nums[mid] == nums[high]?}
+    E -->|Yes| F["low++, high--"]
+    F --> B
+    E -->|No| G{nums[low] <= nums[mid]?}
+    G -->|Yes - Left Sorted| H{k in range nums[low] to nums[mid]?}
+    H -->|Yes| I[high = mid - 1]
+    H -->|No| J[low = mid + 1]
+    G -->|No - Right Sorted| K{k in range nums[mid] to nums[high]?}
+    K -->|Yes| L[low = mid + 1]
+    K -->|No| M[high = mid - 1]
+    I --> B
+    J --> B
+    L --> B
+    M --> B
 ```
 
 #### Code
@@ -137,94 +149,64 @@ public:
 
 **Example 1: `nums = [7, 8, 1, 2, 3, 3, 3, 4, 5, 6]`, `k = 3`**
 
+```mermaid
+block-beta
+    columns 10
+    block:arr1
+        a0["7"] a1["8"] a2["1"] a3["2"] a4["3"] a5["3"] a6["3"] a7["4"] a8["5"] a9["6"]
+    end
+    block:idx1
+        i0["0\nL"] i1["1"] i2["2"] i3["3"] i4["4\nM"] i5["5"] i6["6"] i7["7"] i8["8"] i9["9\nR"]
+    end
 ```
-Initial: low=0, high=9
 
-Iteration 1:
-┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
-│ 7 │ 8 │ 1 │ 2 │ 3 │ 3 │ 3 │ 4 │ 5 │ 6 │
-└───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
-  L               M                   R
-  0   1   2   3   4   5   6   7   8   9
+**Iteration 1:** `mid = 4`, `nums[4] = 3 == k` ✓ **Found!**
 
-mid = (0+9)/2 = 4
-nums[4] = 3 == k? YES! ✓
+**Answer: True**
 
-Answer: True
-```
+---
 
 **Example 2: Duplicate Edge Case - `nums = [3, 1, 2, 3, 3, 3, 3]`, `k = 1`**
 
-```
-Initial: low=0, high=6
-
-Iteration 1:
-┌───┬───┬───┬───┬───┬───┬───┐
-│ 3 │ 1 │ 2 │ 3 │ 3 │ 3 │ 3 │
-└───┴───┴───┴───┴───┴───┴───┘
-  L           M             R
-  0   1   2   3   4   5   6
-
-mid = 3, nums[3] = 3
-3 == 1? NO
-
-Check: nums[low]=3 == nums[mid]=3 == nums[high]=3? YES!
-→ This is the ambiguous case!
-→ low++, high--
-→ low=1, high=5
-
-Iteration 2:
-┌───┬───┬───┬───┬───┬───┬───┐
-│ 3 │ 1 │ 2 │ 3 │ 3 │ 3 │ 3 │
-└───┴───┴───┴───┴───┴───┴───┘
-      L       M       R
-      1   2   3   4   5
-
-mid = (1+5)/2 = 3, nums[3] = 3
-3 == 1? NO
-
-Check duplicate edge case:
-nums[1]=1 == nums[3]=3? NO → Normal case
-
-Check sorted half:
-nums[1]=1 <= nums[3]=3? YES → Left half [1,2,3] is sorted
-
-Is k=1 in [1, 3)?
-1 <= 1 && 1 < 3? YES!
-→ high = mid - 1 = 2
-
-Iteration 3:
-┌───┬───┬───┬───┬───┬───┬───┐
-│ 3 │ 1 │ 2 │ 3 │ 3 │ 3 │ 3 │
-└───┴───┴───┴───┴───┴───┴───┘
-      L   M   R
-      1   2   2
-
-mid = (1+2)/2 = 1, nums[1] = 1
-1 == 1? YES! ✓
-
-Answer: True
+```mermaid
+flowchart TB
+    subgraph Iter1["Iteration 1: Ambiguous Case"]
+        A1["Array: 3,1,2,3,3,3,3"]
+        A2["low=0, mid=3, high=6"]
+        A3["nums[0]=3 == nums[3]=3 == nums[6]=3"]
+        A4["→ Shrink: low++, high--"]
+    end
+    
+    subgraph Iter2["Iteration 2: Normal Case"]
+        B1["low=1, mid=3, high=5"]
+        B2["Left half sorted: 1 <= 3"]
+        B3["k=1 in range [1,3)? YES"]
+        B4["→ high = mid-1 = 2"]
+    end
+    
+    subgraph Iter3["Iteration 3: Found!"]
+        C1["low=1, mid=1, high=2"]
+        C2["nums[1] = 1 == k"]
+        C3["✓ Return true"]
+    end
+    
+    Iter1 --> Iter2 --> Iter3
 ```
 
 ---
 
 ### Memory Aid 🎯
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  ROTATED ARRAY SEARCH WITH DUPLICATES                   │
-├─────────────────────────────────────────────────────────┤
-│  1. Check if nums[mid] == target → DONE                 │
-│                                                         │
-│  2. Duplicate Edge Case Check:                          │
-│     nums[low] == nums[mid] == nums[high]?               │
-│     → YES: low++, high--, continue                      │
-│                                                         │
-│  3. Normal Case:                                        │
-│     → Identify sorted half                              │
-│     → Check if target is in sorted range                │
-│     → Eliminate appropriate half                        │
-└─────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    A["Rotated Array Search with Duplicates"] --> B["1. Check nums[mid] == target → DONE"]
+    B --> C["2. Duplicate Edge Case?"]
+    C --> D{"nums[low] == nums[mid] == nums[high]?"}
+    D -->|Yes| E["low++, high--, continue"]
+    D -->|No| F["3. Normal Case"]
+    F --> G["Identify sorted half"]
+    G --> H["Check if target in sorted range"]
+    H --> I["Eliminate appropriate half"]
 ```
 
 ---
@@ -246,12 +228,18 @@ Given an integer array `nums` of size N, sorted in ascending order with **distin
 
 In a rotated sorted array, the minimum element is the **rotation point** - where the array "breaks" from the sorted order.
 
-```
-Original: [0, 1, 2, 3, 4, 5, 6, 7]
-Rotated:  [4, 5, 6, 7, 0, 1, 2, 3]
-                      ↑
-                  MINIMUM
-              (rotation point)
+```mermaid
+flowchart LR
+    subgraph Original["Original Sorted Array"]
+        O["0,1,2,3,4,5,6,7"]
+    end
+    
+    subgraph Rotated["Rotated Array"]
+        R["4,5,6,7,0,1,2,3"]
+        M["↑ MIN at index 4"]
+    end
+    
+    Original -->|"Rotate 4 times"| Rotated
 ```
 
 The minimum element is always in the **unsorted half** of the array!
@@ -273,24 +261,23 @@ The minimum element is always in the **unsorted half** of the array!
    - Eliminate the sorted half (after recording its minimum)
    - Search in the unsorted half
 
-#### Algorithm
-```
-1. Initialize low = 0, high = n-1, ans = INT_MAX
-2. While low <= high:
-   a. Calculate mid
-   b. If nums[low] <= nums[high]:
-      → Entire range is sorted
-      → ans = min(ans, nums[low])
-      → BREAK (no need to continue)
-   c. If LEFT half is sorted (nums[low] <= nums[mid]):
-      → ans = min(ans, nums[low])
-      → Minimum is in RIGHT half
-      → low = mid + 1
-   d. Else RIGHT half is sorted:
-      → ans = min(ans, nums[mid])
-      → Minimum is in LEFT half
-      → high = mid - 1
-3. Return ans
+#### Algorithm Flowchart
+
+```mermaid
+flowchart TD
+    A["Start: low=0, high=n-1, min=∞"] --> B{low <= high?}
+    B -->|No| Z["Return min"]
+    B -->|Yes| C["Calculate mid"]
+    C --> D{"arr[low] <= arr[high]?"}
+    D -->|Yes - Fully Sorted| E["min = min(min, arr[low])"]
+    E --> Z
+    D -->|No| F{"arr[low] <= arr[mid]?"}
+    F -->|Yes - Left Sorted| G["min = min(min, arr[low])"]
+    G --> H["low = mid + 1"]
+    F -->|No - Right Sorted| I["min = min(min, arr[mid])"]
+    I --> J["high = mid - 1"]
+    H --> B
+    J --> B
 ```
 
 #### Code
@@ -341,82 +328,50 @@ public:
 
 **Example: `nums = [4, 5, 6, 7, 0, 1, 2, 3]`**
 
-```
-Initial: low=0, high=7, num=INT_MAX
-
-Iteration 1:
-┌───┬───┬───┬───┬───┬───┬───┬───┐
-│ 4 │ 5 │ 6 │ 7 │ 0 │ 1 │ 2 │ 3 │
-└───┴───┴───┴───┴───┴───┴───┴───┘
-  L           M               R
-  0   1   2   3   4   5   6   7
-
-mid = (0+7)/2 = 3
-
-Is arr[0]=4 <= arr[7]=3? NO → Range not fully sorted
-
-Is arr[0]=4 <= arr[3]=7? YES → LEFT half is sorted
-→ num = min(INT_MAX, 4) = 4
-→ low = mid + 1 = 4
-
-Iteration 2:
-┌───┬───┬───┬───┬───┬───┬───┬───┐
-│ 4 │ 5 │ 6 │ 7 │ 0 │ 1 │ 2 │ 3 │
-└───┴───┴───┴───┴───┴───┴───┴───┘
-                  L   M       R
-                  4   5   6   7
-
-mid = (4+7)/2 = 5
-
-Is arr[4]=0 <= arr[7]=3? YES → Range IS fully sorted!
-→ num = min(4, 0) = 0
-→ BREAK
-
-Answer: 0
-```
-
-**Example: Already Sorted Array `[1, 2, 3, 4, 5]`**
-
-```
-Initial: low=0, high=4, num=INT_MAX
-
-Iteration 1:
-┌───┬───┬───┬───┬───┐
-│ 1 │ 2 │ 3 │ 4 │ 5 │
-└───┴───┴───┴───┴───┘
-  L       M       R
-
-mid = 2
-
-Is arr[0]=1 <= arr[4]=5? YES → Range IS sorted!
-→ num = min(INT_MAX, 1) = 1
-→ BREAK
-
-Answer: 1
+```mermaid
+flowchart TB
+    subgraph Iter1["Iteration 1"]
+        A1["Array: 4,5,6,7,0,1,2,3"]
+        A2["low=0, mid=3, high=7"]
+        A3["arr[0]=4 <= arr[7]=3? NO"]
+        A4["arr[0]=4 <= arr[3]=7? YES → Left sorted"]
+        A5["min = 4, low = 4"]
+    end
+    
+    subgraph Iter2["Iteration 2"]
+        B1["Subarray: 0,1,2,3"]
+        B2["low=4, mid=5, high=7"]
+        B3["arr[4]=0 <= arr[7]=3? YES → Fully sorted"]
+        B4["min = min(4,0) = 0"]
+        B5["BREAK"]
+    end
+    
+    Iter1 --> Iter2
+    Iter2 --> Result["Answer: 0"]
 ```
 
 ---
 
 ### Why This Works - Visual Explanation
 
+```mermaid
+flowchart LR
+    subgraph Graph["Rotated Array Visualization"]
+        direction TB
+        L["Left Sorted: 4,5,6,7"]
+        R["Right Sorted: 0,1,2,3"]
+        M["MIN at break point"]
+    end
+    
+    note1["Left portion starts HIGH"]
+    note2["Right portion starts LOW"]
+    note3["Minimum = Start of right portion"]
 ```
-Rotated Array: [4, 5, 6, 7, 0, 1, 2, 3]
 
-Visual as a "broken" sorted sequence:
-
-     7
-   6   
-  5        3
- 4        2
-        1
-       0  ← MINIMUM (break point)
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-
-The LEFT sorted portion: [4,5,6,7] - starts HIGH
-The RIGHT sorted portion: [0,1,2,3] - starts LOW
-
-Minimum is always at the START of the RIGHT sorted portion!
-```
+The value distribution in rotated array:
+- LEFT sorted portion: `[4,5,6,7]` - starts HIGH (after rotation point)
+- RIGHT sorted portion: `[0,1,2,3]` - starts LOW (before rotation point)
+- **Minimum is always at the START of the right sorted portion!**
 
 ---
 
@@ -437,16 +392,20 @@ Given an integer array `nums` of size n, sorted in ascending order with **distin
 
 The **index of the minimum element** = Number of rotations!
 
-```
-Original:  [0, 1, 2, 3, 4, 5, 6, 7]
-            ↑
-           min at index 0
-
-Rotate 4:  [4, 5, 6, 7, 0, 1, 2, 3]
-                        ↑
-                   min at index 4
-
-Number of rotations = 4 (index of minimum)
+```mermaid
+flowchart LR
+    subgraph Original["Original Array"]
+        O["0,1,2,3,4,5,6,7"]
+        O1["min at index 0"]
+    end
+    
+    subgraph Rotated["After 4 Rotations"]
+        R["4,5,6,7,0,1,2,3"]
+        R1["min at index 4"]
+    end
+    
+    Original -->|"Rotate 4x"| Rotated
+    Result["Rotations = Index of min = 4"]
 ```
 
 ---
@@ -460,24 +419,6 @@ Number of rotations = 4 (index of minimum)
 2. **Use the same approach as Find Minimum**, but track the **index** instead of just the value.
 
 3. **Slight modification**: Instead of storing `min(num, arr[low])`, store the index when we find a smaller element.
-
-#### Algorithm
-```
-1. Initialize low = 0, high = n-1, ans = INT_MAX, index = -1
-2. While low <= high:
-   a. Calculate mid
-   b. If nums[low] <= nums[high]:
-      → Range is sorted, check if nums[low] is new minimum
-      → If yes, update ans and index
-      → BREAK
-   c. If LEFT half is sorted (nums[low] <= nums[mid]):
-      → Check if nums[low] < ans, update ans and index
-      → low = mid + 1
-   d. Else RIGHT half is sorted:
-      → Check if nums[mid] < ans, update ans and index
-      → high = mid - 1
-3. Return index
-```
 
 #### Code
 ```cpp
@@ -536,60 +477,42 @@ public:
 
 **Example: `nums = [4, 5, 6, 7, 0, 1, 2, 3]`**
 
-```
-Initial: low=0, high=7, ans=INT_MAX, index=-1
-
-Iteration 1:
-┌───┬───┬───┬───┬───┬───┬───┬───┐
-│ 4 │ 5 │ 6 │ 7 │ 0 │ 1 │ 2 │ 3 │
-└───┴───┴───┴───┴───┴───┴───┴───┘
-  L           M               R
-  0   1   2   3   4   5   6   7
-
-mid = 3
-
-Is nums[0]=4 <= nums[7]=3? NO → Not fully sorted
-
-Is nums[0]=4 <= nums[3]=7? YES → LEFT half sorted
-→ Is 4 < INT_MAX? YES
-→ index = 0, ans = 4
-→ low = mid + 1 = 4
-
-Iteration 2:
-┌───┬───┬───┬───┬───┬───┬───┬───┐
-│ 4 │ 5 │ 6 │ 7 │ 0 │ 1 │ 2 │ 3 │
-└───┴───┴───┴───┴───┴───┴───┴───┘
-                  L   M       R
-                  4   5   6   7
-
-mid = 5
-
-Is nums[4]=0 <= nums[7]=3? YES → Range IS sorted
-→ Is 0 < 4? YES
-→ index = 4, ans = 0
-→ BREAK
-
-Answer: 4 (the array was rotated 4 times)
+```mermaid
+flowchart TB
+    subgraph Iter1["Iteration 1"]
+        A1["low=0, mid=3, high=7"]
+        A2["Left half sorted: nums[0]=4 <= nums[3]=7"]
+        A3["Record: index=0, ans=4"]
+        A4["low = mid+1 = 4"]
+    end
+    
+    subgraph Iter2["Iteration 2"]
+        B1["low=4, mid=5, high=7"]
+        B2["Fully sorted: nums[4]=0 <= nums[7]=3"]
+        B3["0 < 4? YES → index=4, ans=0"]
+        B4["BREAK"]
+    end
+    
+    Iter1 --> Iter2 --> Result["Answer: 4 rotations"]
 ```
 
 ---
 
 ### Connection Between Problems
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  ROTATED ARRAY PROBLEMS - THE CONNECTION                │
-├─────────────────────────────────────────────────────────┤
-│                                                         │
-│  Find Minimum ─────────────────────► Value of min       │
-│       │                                                 │
-│       │ Same logic, different tracking                  │
-│       ▼                                                 │
-│  Find Rotations ───────────────────► Index of min       │
-│                                                         │
-│  Both use: Identify sorted half → Collect candidate     │
-│            → Eliminate sorted half → Continue           │
-└─────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    A["Rotated Array Problems"] --> B["Find Minimum"]
+    A --> C["Find Rotations"]
+    
+    B --> D["Returns: VALUE of minimum"]
+    C --> E["Returns: INDEX of minimum"]
+    
+    F["Same Core Logic"] --> B
+    F --> C
+    
+    G["Identify sorted half → Record candidate → Eliminate sorted half"]
+    F --> G
 ```
 
 ---
@@ -613,12 +536,23 @@ In a sorted array where every element appears twice except one:
 - **Before the single element**: Pairs start at EVEN indices (0,1), (2,3), (4,5)...
 - **After the single element**: Pairs start at ODD indices (odd,even), (odd,even)...
 
-```
-Array:  [1, 1, 2, 2, 4, 5, 5, 6, 6]
-Index:   0  1  2  3  4  5  6  7  8
-              ↑     ↑
-         (0,1) pairs  Single   (5,6) pairs
-         EVEN start   Element  ODD start
+```mermaid
+flowchart LR
+    subgraph Before["Before Single Element"]
+        B1["(0,1)"] --> B2["(2,3)"] --> B3["(4,5)"]
+        B4["Pairs at EVEN indices"]
+    end
+    
+    subgraph Single["Single"]
+        S["4 at index 6"]
+    end
+    
+    subgraph After["After Single Element"]
+        A1["(7,8)"] --> A2["(9,10)"]
+        A3["Pairs at ODD indices"]
+    end
+    
+    Before --> Single --> After
 ```
 
 ---
@@ -687,17 +621,10 @@ public:
 
 #### How XOR Works
 
-```
-nums = [1, 1, 2, 2, 4]
-
-Step by step:
-0 ^ 1 = 1
-1 ^ 1 = 0
-0 ^ 2 = 2
-2 ^ 2 = 0
-0 ^ 4 = 4
-
-Answer: 4 ✓
+```mermaid
+flowchart LR
+    A["0 ^ 1 = 1"] --> B["1 ^ 1 = 0"] --> C["0 ^ 2 = 2"] --> D["2 ^ 2 = 0"] --> E["0 ^ 4 = 4"]
+    F["Answer: 4 ✓"]
 ```
 
 #### Complexity Analysis
@@ -720,15 +647,8 @@ Answer: 4 ✓
    - After the single element: First of pair is at ODD index
 
 2. **The pattern**:
-   ```
-   Before single: (even, odd) - first match is at even index
-   After single:  (odd, even) - first match is at odd index
-   
-   Example: [1, 1, 2, 2, 4, 5, 5]
-             0  1  2  3  4  5  6
-            └──┘ └──┘ ↑ └──┘
-            even odd  S  odd even
-   ```
+   - Before single: `(even, odd)` - first match is at even index
+   - After single: `(odd, even)` - first match is at odd index
 
 3. **Strategy**:
    - At any `mid`, check if we're on the LEFT side or RIGHT side of the single element
@@ -740,23 +660,21 @@ Answer: 4 ✓
    - If `mid` is ODD and `nums[mid] == nums[mid-1]` → We're on LEFT side
    - Otherwise → We're on RIGHT side
 
-#### Algorithm
-```
-1. Handle edge cases:
-   - If n == 1: return nums[0]
-   - If nums[0] != nums[1]: return nums[0]
-   - If nums[n-1] != nums[n-2]: return nums[n-1]
-2. Search in range [1, n-2] (edges already handled)
-3. While low <= high:
-   a. Calculate mid
-   b. If nums[mid] != neighbors → return nums[mid]
-   c. Check if we're on LEFT side:
-      - (mid is ODD and nums[mid] == nums[mid-1]) OR
-      - (mid is EVEN and nums[mid] == nums[mid+1])
-      → low = mid + 1
-   d. Else we're on RIGHT side:
-      → high = mid - 1
-4. Return -1 (shouldn't reach here)
+#### Algorithm Flowchart
+
+```mermaid
+flowchart TD
+    A["Handle edge cases:\nn==1, first pair, last pair"] --> B["low=1, high=n-2"]
+    B --> C{low <= high?}
+    C -->|No| Z["Return -1"]
+    C -->|Yes| D["Calculate mid"]
+    D --> E{"nums[mid] != neighbors?"}
+    E -->|Yes| Y["Return nums[mid]"]
+    E -->|No| F{"On LEFT side?"}
+    F -->|"(mid ODD && match left) OR\n(mid EVEN && match right)"| G["low = mid + 1"]
+    F -->|No - RIGHT side| H["high = mid - 1"]
+    G --> C
+    H --> C
 ```
 
 #### Code
@@ -814,95 +732,61 @@ public:
 
 **Example: `nums = [1, 1, 2, 2, 3, 3, 4, 5, 5, 6, 6]`**
 
-```
-Array with index parity highlighted:
-┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
-│ 1 │ 1 │ 2 │ 2 │ 3 │ 3 │ 4 │ 5 │ 5 │ 6 │ 6 │
-└───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
-  E   O   E   O   E   O   E   O   E   O   E
-  0   1   2   3   4   5   6   7   8   9   10
-
-Edge checks: nums[0]=nums[1]? YES, nums[10]=nums[9]? YES
-→ Single element is in the middle
-
-low = 1, high = 9
-
-Iteration 1:
-┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
-│ 1 │ 1 │ 2 │ 2 │ 3 │ 3 │ 4 │ 5 │ 5 │ 6 │ 6 │
-└───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
-      L               M               R
-      1   2   3   4   5   6   7   8   9
-
-mid = 5, nums[5] = 3
-
-Is nums[5] != nums[4] AND nums[5] != nums[6]?
-3 != 3? NO → Not the single element
-
-Check if on LEFT side:
-mid=5 is ODD, check if nums[5]==nums[4]?
-3 == 3? YES → We're on LEFT side
-→ low = mid + 1 = 6
-
-Iteration 2:
-┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
-│ 1 │ 1 │ 2 │ 2 │ 3 │ 3 │ 4 │ 5 │ 5 │ 6 │ 6 │
-└───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
-                          L   M   R
-                          6   7   8   9
-
-mid = 7, nums[7] = 5
-
-Is nums[7] != nums[6] AND nums[7] != nums[8]?
-5 != 4? YES, 5 != 5? NO → Not the single element
-
-Check if on LEFT side:
-mid=7 is ODD, check if nums[7]==nums[6]?
-5 == 4? NO
-
-mid=7 is ODD and doesn't match left, so check other condition:
-mid=7 is ODD (not even), so even condition doesn't apply
-→ We're on RIGHT side
-→ high = mid - 1 = 6
-
-Iteration 3:
-┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
-│ 1 │ 1 │ 2 │ 2 │ 3 │ 3 │ 4 │ 5 │ 5 │ 6 │ 6 │
-└───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
-                         L,M,R
-                          6
-
-mid = 6, nums[6] = 4
-
-Is nums[6] != nums[5] AND nums[6] != nums[7]?
-4 != 3? YES, 4 != 5? YES → FOUND! ✓
-
-Answer: 4
+```mermaid
+flowchart TB
+    subgraph Setup["Setup"]
+        S1["Array: 1,1,2,2,3,3,4,5,5,6,6"]
+        S2["Indices: 0,1,2,3,4,5,6,7,8,9,10"]
+        S3["Edge checks pass → single is in middle"]
+        S4["low=1, high=9"]
+    end
+    
+    subgraph Iter1["Iteration 1"]
+        A1["mid=5, nums[5]=3"]
+        A2["Not single: 3==nums[4] or 3==nums[6]? YES"]
+        A3["mid=5 is ODD, nums[5]==nums[4]? 3==3 YES"]
+        A4["→ LEFT side, low = 6"]
+    end
+    
+    subgraph Iter2["Iteration 2"]
+        B1["mid=7, nums[7]=5"]
+        B2["Not single: 5!=4 but 5==5"]
+        B3["mid=7 is ODD, nums[7]==nums[6]? 5==4? NO"]
+        B4["→ RIGHT side, high = 6"]
+    end
+    
+    subgraph Iter3["Iteration 3"]
+        C1["mid=6, nums[6]=4"]
+        C2["4 != nums[5]=3 AND 4 != nums[7]=5"]
+        C3["✓ FOUND!"]
+    end
+    
+    Setup --> Iter1 --> Iter2 --> Iter3 --> Result["Answer: 4"]
 ```
 
 ---
 
 ### Pattern Summary - When to Use Which Index Check
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  SINGLE ELEMENT - INDEX PATTERN                         │
-├─────────────────────────────────────────────────────────┤
-│                                                         │
-│  BEFORE single element:                                 │
-│  ┌────────────────────────────────────────────┐        │
-│  │ (E,O) (E,O) (E,O) ... SINGLE ... (O,E)(O,E)│        │
-│  │  0,1   2,3   4,5                  7,8  9,10│        │
-│  └────────────────────────────────────────────┘        │
-│                                                         │
-│  ON LEFT SIDE (before single):                          │
-│  → mid is EVEN & nums[mid] == nums[mid+1]              │
-│  → mid is ODD  & nums[mid] == nums[mid-1]              │
-│                                                         │
-│  ON RIGHT SIDE (after single):                          │
-│  → mid is EVEN & nums[mid] == nums[mid-1]              │
-│  → mid is ODD  & nums[mid] == nums[mid+1]              │
-└─────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Pattern["Single Element Index Pattern"]
+        direction LR
+        B["Before single:\n(E,O)(E,O)(E,O)"]
+        S["SINGLE"]
+        A["After single:\n(O,E)(O,E)"]
+        B --> S --> A
+    end
+    
+    subgraph Left["ON LEFT SIDE"]
+        L1["mid is EVEN & nums[mid]==nums[mid+1]"]
+        L2["mid is ODD & nums[mid]==nums[mid-1]"]
+    end
+    
+    subgraph Right["ON RIGHT SIDE"]
+        R1["mid is EVEN & nums[mid]==nums[mid-1]"]
+        R2["mid is ODD & nums[mid]==nums[mid+1]"]
+    end
 ```
 
 ---
@@ -941,37 +825,38 @@ Answer: 4
 
 ## Quick Revision Patterns 📝
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  BINARY SEARCH IN ROTATED ARRAYS - MASTER PATTERN       │
-├─────────────────────────────────────────────────────────┤
-│                                                         │
-│  1. Identify which half is SORTED                       │
-│     → nums[low] <= nums[mid] → LEFT is sorted           │
-│     → else → RIGHT is sorted                            │
-│                                                         │
-│  2. Check if target/answer is in SORTED half            │
-│     → If yes, search sorted half                        │
-│     → If no, search unsorted half                       │
-│                                                         │
-│  3. For DUPLICATES: Handle ambiguous case               │
-│     → low++, high-- when all three equal                │
-│                                                         │
-└─────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Master["Binary Search in Rotated Arrays - Master Pattern"]
+        A["1. Identify which half is SORTED"]
+        B["nums[low] <= nums[mid] → LEFT sorted"]
+        C["else → RIGHT sorted"]
+        A --> B --> C
+        
+        D["2. Check if target in SORTED half"]
+        E["If yes → search sorted half"]
+        F["If no → search unsorted half"]
+        D --> E --> F
+        
+        G["3. For DUPLICATES"]
+        H["low++, high-- when all three equal"]
+        G --> H
+    end
 ```
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  SINGLE ELEMENT - QUICK PATTERN                         │
-├─────────────────────────────────────────────────────────┤
-│                                                         │
-│  Before single: pairs at (EVEN, ODD) indices            │
-│  After single: pairs at (ODD, EVEN) indices             │
-│                                                         │
-│  At mid, check:                                         │
-│  → (mid ODD && match left) OR (mid EVEN && match right) │
-│    = We're before single → go RIGHT                     │
-│  → Otherwise → go LEFT                                  │
-│                                                         │
-└─────────────────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    subgraph Quick["Single Element - Quick Pattern"]
+        A["Before single:\npairs at EVEN,ODD"]
+        B["After single:\npairs at ODD,EVEN"]
+        
+        C["At mid check:"]
+        D["(mid ODD && match left) OR\n(mid EVEN && match right)\n= Before single → go RIGHT"]
+        E["Otherwise → go LEFT"]
+        
+        A --> C
+        B --> C
+        C --> D
+        C --> E
+    end
 ```
