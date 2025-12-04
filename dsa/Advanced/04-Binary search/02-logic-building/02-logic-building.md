@@ -30,13 +30,13 @@ Given an integer array `nums`, sorted in ascending order (**may contain duplicat
 ```mermaid
 flowchart LR
     subgraph Part1["Part I - Distinct Values"]
-        A1["4,5,6,7,0,1,2"]
-        A2["✓ Can always identify sorted half"]
+        A1["Array: 4,5,6,7,0,1,2"]
+        A2["Can always identify sorted half"]
     end
     
     subgraph Part2["Part II - Duplicates Allowed"]
-        B1["3,1,2,3,3,3,3"]
-        B2["✗ nums[low]=nums[mid]=nums[high]"]
+        B1["Array: 3,1,2,3,3,3,3"]
+        B2["low = mid = high scenario"]
         B3["Cannot determine sorted half!"]
     end
 ```
@@ -65,21 +65,21 @@ The main challenge with duplicates is when `nums[low] == nums[mid] == nums[high]
 
 ```mermaid
 flowchart TD
-    A[Start: low=0, high=n-1] --> B{low <= high?}
-    B -->|No| Z[Return false]
-    B -->|Yes| C[Calculate mid]
-    C --> D{nums[mid] == k?}
-    D -->|Yes| Y[Return true]
-    D -->|No| E{nums[low] == nums[mid] == nums[high]?}
+    A["Start: low=0, high=n-1"] --> B{"low <= high?"}
+    B -->|No| Z["Return false"]
+    B -->|Yes| C["Calculate mid"]
+    C --> D{"target found at mid?"}
+    D -->|Yes| Y["Return true"]
+    D -->|No| E{"all three equal?"}
     E -->|Yes| F["low++, high--"]
     F --> B
-    E -->|No| G{nums[low] <= nums[mid]?}
-    G -->|Yes - Left Sorted| H{k in range nums[low] to nums[mid]?}
-    H -->|Yes| I[high = mid - 1]
-    H -->|No| J[low = mid + 1]
-    G -->|No - Right Sorted| K{k in range nums[mid] to nums[high]?}
-    K -->|Yes| L[low = mid + 1]
-    K -->|No| M[high = mid - 1]
+    E -->|No| G{"left half sorted?"}
+    G -->|Yes| H{"target in left range?"}
+    H -->|Yes| I["high = mid - 1"]
+    H -->|No| J["low = mid + 1"]
+    G -->|No| K{"target in right range?"}
+    K -->|Yes| L["low = mid + 1"]
+    K -->|No| M["high = mid - 1"]
     I --> B
     J --> B
     L --> B
@@ -150,13 +150,13 @@ public:
 **Example 1: `nums = [7, 8, 1, 2, 3, 3, 3, 4, 5, 6]`, `k = 3`**
 
 ```mermaid
-block-beta
-    columns 10
-    block:arr1
-        a0["7"] a1["8"] a2["1"] a3["2"] a4["3"] a5["3"] a6["3"] a7["4"] a8["5"] a9["6"]
+flowchart LR
+    subgraph Array
+        A0["7"] --- A1["8"] --- A2["1"] --- A3["2"] --- A4["3"] --- A5["3"] --- A6["3"] --- A7["4"] --- A8["5"] --- A9["6"]
     end
-    block:idx1
-        i0["0\nL"] i1["1"] i2["2"] i3["3"] i4["4\nM"] i5["5"] i6["6"] i7["7"] i8["8"] i9["9\nR"]
+    
+    subgraph Pointers
+        P["L=0, M=4, R=9"]
     end
 ```
 
@@ -173,21 +173,21 @@ flowchart TB
     subgraph Iter1["Iteration 1: Ambiguous Case"]
         A1["Array: 3,1,2,3,3,3,3"]
         A2["low=0, mid=3, high=6"]
-        A3["nums[0]=3 == nums[3]=3 == nums[6]=3"]
-        A4["→ Shrink: low++, high--"]
+        A3["All three equal to 3"]
+        A4["Shrink: low++, high--"]
     end
     
     subgraph Iter2["Iteration 2: Normal Case"]
         B1["low=1, mid=3, high=5"]
-        B2["Left half sorted: 1 <= 3"]
-        B3["k=1 in range [1,3)? YES"]
-        B4["→ high = mid-1 = 2"]
+        B2["Left half sorted"]
+        B3["k=1 in left range? YES"]
+        B4["high = mid-1 = 2"]
     end
     
     subgraph Iter3["Iteration 3: Found!"]
         C1["low=1, mid=1, high=2"]
-        C2["nums[1] = 1 == k"]
-        C3["✓ Return true"]
+        C2["nums 1 equals k"]
+        C3["Return true"]
     end
     
     Iter1 --> Iter2 --> Iter3
@@ -199,9 +199,9 @@ flowchart TB
 
 ```mermaid
 flowchart TD
-    A["Rotated Array Search with Duplicates"] --> B["1. Check nums[mid] == target → DONE"]
+    A["Rotated Array Search with Duplicates"] --> B["1. Check target at mid"]
     B --> C["2. Duplicate Edge Case?"]
-    C --> D{"nums[low] == nums[mid] == nums[high]?"}
+    C --> D{"All three pointers equal?"}
     D -->|Yes| E["low++, high--, continue"]
     D -->|No| F["3. Normal Case"]
     F --> G["Identify sorted half"]
@@ -236,7 +236,7 @@ flowchart LR
     
     subgraph Rotated["Rotated Array"]
         R["4,5,6,7,0,1,2,3"]
-        M["↑ MIN at index 4"]
+        M["MIN at index 4"]
     end
     
     Original -->|"Rotate 4 times"| Rotated
@@ -265,16 +265,16 @@ The minimum element is always in the **unsorted half** of the array!
 
 ```mermaid
 flowchart TD
-    A["Start: low=0, high=n-1, min=∞"] --> B{low <= high?}
+    A["Start: low=0, high=n-1, min=INF"] --> B{"low <= high?"}
     B -->|No| Z["Return min"]
     B -->|Yes| C["Calculate mid"]
-    C --> D{"arr[low] <= arr[high]?"}
-    D -->|Yes - Fully Sorted| E["min = min(min, arr[low])"]
+    C --> D{"Range fully sorted?"}
+    D -->|Yes| E["min = min of low element"]
     E --> Z
-    D -->|No| F{"arr[low] <= arr[mid]?"}
-    F -->|Yes - Left Sorted| G["min = min(min, arr[low])"]
+    D -->|No| F{"Left half sorted?"}
+    F -->|Yes| G["Record min from left, go right"]
     G --> H["low = mid + 1"]
-    F -->|No - Right Sorted| I["min = min(min, arr[mid])"]
+    F -->|No| I["Record min from mid, go left"]
     I --> J["high = mid - 1"]
     H --> B
     J --> B
@@ -333,16 +333,16 @@ flowchart TB
     subgraph Iter1["Iteration 1"]
         A1["Array: 4,5,6,7,0,1,2,3"]
         A2["low=0, mid=3, high=7"]
-        A3["arr[0]=4 <= arr[7]=3? NO"]
-        A4["arr[0]=4 <= arr[3]=7? YES → Left sorted"]
-        A5["min = 4, low = 4"]
+        A3["Range not fully sorted"]
+        A4["Left half sorted, min = 4"]
+        A5["low = 4"]
     end
     
     subgraph Iter2["Iteration 2"]
         B1["Subarray: 0,1,2,3"]
         B2["low=4, mid=5, high=7"]
-        B3["arr[4]=0 <= arr[7]=3? YES → Fully sorted"]
-        B4["min = min(4,0) = 0"]
+        B3["Range fully sorted"]
+        B4["min = 0"]
         B5["BREAK"]
     end
     
@@ -355,23 +355,15 @@ flowchart TB
 ### Why This Works - Visual Explanation
 
 ```mermaid
-flowchart LR
+flowchart TB
     subgraph Graph["Rotated Array Visualization"]
-        direction TB
-        L["Left Sorted: 4,5,6,7"]
-        R["Right Sorted: 0,1,2,3"]
+        L["Left Sorted: 4,5,6,7 - starts HIGH"]
+        R["Right Sorted: 0,1,2,3 - starts LOW"]
         M["MIN at break point"]
     end
     
-    note1["Left portion starts HIGH"]
-    note2["Right portion starts LOW"]
-    note3["Minimum = Start of right portion"]
+    Note["Minimum = Start of right portion"]
 ```
-
-The value distribution in rotated array:
-- LEFT sorted portion: `[4,5,6,7]` - starts HIGH (after rotation point)
-- RIGHT sorted portion: `[0,1,2,3]` - starts LOW (before rotation point)
-- **Minimum is always at the START of the right sorted portion!**
 
 ---
 
@@ -405,8 +397,9 @@ flowchart LR
     end
     
     Original -->|"Rotate 4x"| Rotated
-    Result["Rotations = Index of min = 4"]
 ```
+
+**Rotations = Index of minimum = 4**
 
 ---
 
@@ -481,16 +474,16 @@ public:
 flowchart TB
     subgraph Iter1["Iteration 1"]
         A1["low=0, mid=3, high=7"]
-        A2["Left half sorted: nums[0]=4 <= nums[3]=7"]
+        A2["Left half sorted"]
         A3["Record: index=0, ans=4"]
         A4["low = mid+1 = 4"]
     end
     
     subgraph Iter2["Iteration 2"]
         B1["low=4, mid=5, high=7"]
-        B2["Fully sorted: nums[4]=0 <= nums[7]=3"]
-        B3["0 < 4? YES → index=4, ans=0"]
-        B4["BREAK"]
+        B2["Fully sorted: 0 <= 3"]
+        B3["0 less than 4? YES"]
+        B4["index=4, ans=0, BREAK"]
     end
     
     Iter1 --> Iter2 --> Result["Answer: 4 rotations"]
@@ -508,11 +501,11 @@ flowchart TB
     B --> D["Returns: VALUE of minimum"]
     C --> E["Returns: INDEX of minimum"]
     
-    F["Same Core Logic"] --> B
+    F["Same Core Logic"]
+    F --> B
     F --> C
     
-    G["Identify sorted half → Record candidate → Eliminate sorted half"]
-    F --> G
+    G["Identify sorted half then Record candidate then Eliminate sorted half"]
 ```
 
 ---
@@ -539,7 +532,9 @@ In a sorted array where every element appears twice except one:
 ```mermaid
 flowchart LR
     subgraph Before["Before Single Element"]
-        B1["(0,1)"] --> B2["(2,3)"] --> B3["(4,5)"]
+        B1["Pair at 0,1"]
+        B2["Pair at 2,3"]
+        B3["Pair at 4,5"]
         B4["Pairs at EVEN indices"]
     end
     
@@ -548,7 +543,8 @@ flowchart LR
     end
     
     subgraph After["After Single Element"]
-        A1["(7,8)"] --> A2["(9,10)"]
+        A1["Pair at 7,8"]
+        A2["Pair at 9,10"]
         A3["Pairs at ODD indices"]
     end
     
@@ -623,9 +619,10 @@ public:
 
 ```mermaid
 flowchart LR
-    A["0 ^ 1 = 1"] --> B["1 ^ 1 = 0"] --> C["0 ^ 2 = 2"] --> D["2 ^ 2 = 0"] --> E["0 ^ 4 = 4"]
-    F["Answer: 4 ✓"]
+    A["0 XOR 1 = 1"] --> B["1 XOR 1 = 0"] --> C["0 XOR 2 = 2"] --> D["2 XOR 2 = 0"] --> E["0 XOR 4 = 4"]
 ```
+
+**Answer: 4**
 
 #### Complexity Analysis
 
@@ -664,14 +661,14 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    A["Handle edge cases:\nn==1, first pair, last pair"] --> B["low=1, high=n-2"]
-    B --> C{low <= high?}
+    A["Handle edge cases"] --> B["low=1, high=n-2"]
+    B --> C{"low <= high?"}
     C -->|No| Z["Return -1"]
     C -->|Yes| D["Calculate mid"]
-    D --> E{"nums[mid] != neighbors?"}
-    E -->|Yes| Y["Return nums[mid]"]
+    D --> E{"mid element unique?"}
+    E -->|Yes| Y["Return mid element"]
     E -->|No| F{"On LEFT side?"}
-    F -->|"(mid ODD && match left) OR\n(mid EVEN && match right)"| G["low = mid + 1"]
+    F -->|"ODD and match left OR EVEN and match right"| G["low = mid + 1"]
     F -->|No - RIGHT side| H["high = mid - 1"]
     G --> C
     H --> C
@@ -736,29 +733,29 @@ public:
 flowchart TB
     subgraph Setup["Setup"]
         S1["Array: 1,1,2,2,3,3,4,5,5,6,6"]
-        S2["Indices: 0,1,2,3,4,5,6,7,8,9,10"]
-        S3["Edge checks pass → single is in middle"]
+        S2["Indices: 0 to 10"]
+        S3["Edge checks pass"]
         S4["low=1, high=9"]
     end
     
     subgraph Iter1["Iteration 1"]
-        A1["mid=5, nums[5]=3"]
-        A2["Not single: 3==nums[4] or 3==nums[6]? YES"]
-        A3["mid=5 is ODD, nums[5]==nums[4]? 3==3 YES"]
-        A4["→ LEFT side, low = 6"]
+        A1["mid=5, value=3"]
+        A2["Not unique: matches neighbor"]
+        A3["mid=5 is ODD, matches left"]
+        A4["LEFT side, low = 6"]
     end
     
     subgraph Iter2["Iteration 2"]
-        B1["mid=7, nums[7]=5"]
-        B2["Not single: 5!=4 but 5==5"]
-        B3["mid=7 is ODD, nums[7]==nums[6]? 5==4? NO"]
-        B4["→ RIGHT side, high = 6"]
+        B1["mid=7, value=5"]
+        B2["Not unique"]
+        B3["mid=7 is ODD, not match left"]
+        B4["RIGHT side, high = 6"]
     end
     
     subgraph Iter3["Iteration 3"]
-        C1["mid=6, nums[6]=4"]
-        C2["4 != nums[5]=3 AND 4 != nums[7]=5"]
-        C3["✓ FOUND!"]
+        C1["mid=6, value=4"]
+        C2["4 not equal to neighbors"]
+        C3["FOUND!"]
     end
     
     Setup --> Iter1 --> Iter2 --> Iter3 --> Result["Answer: 4"]
@@ -771,21 +768,20 @@ flowchart TB
 ```mermaid
 flowchart TB
     subgraph Pattern["Single Element Index Pattern"]
-        direction LR
-        B["Before single:\n(E,O)(E,O)(E,O)"]
+        B["Before single: E,O pairs"]
         S["SINGLE"]
-        A["After single:\n(O,E)(O,E)"]
+        A["After single: O,E pairs"]
         B --> S --> A
     end
     
     subgraph Left["ON LEFT SIDE"]
-        L1["mid is EVEN & nums[mid]==nums[mid+1]"]
-        L2["mid is ODD & nums[mid]==nums[mid-1]"]
+        L1["mid EVEN and match right"]
+        L2["mid ODD and match left"]
     end
     
     subgraph Right["ON RIGHT SIDE"]
-        R1["mid is EVEN & nums[mid]==nums[mid-1]"]
-        R2["mid is ODD & nums[mid]==nums[mid+1]"]
+        R1["mid EVEN and match left"]
+        R2["mid ODD and match right"]
     end
 ```
 
@@ -827,15 +823,15 @@ flowchart TB
 
 ```mermaid
 flowchart TB
-    subgraph Master["Binary Search in Rotated Arrays - Master Pattern"]
+    subgraph Master["Binary Search in Rotated Arrays"]
         A["1. Identify which half is SORTED"]
-        B["nums[low] <= nums[mid] → LEFT sorted"]
-        C["else → RIGHT sorted"]
+        B["left element <= mid means LEFT sorted"]
+        C["else RIGHT sorted"]
         A --> B --> C
         
         D["2. Check if target in SORTED half"]
-        E["If yes → search sorted half"]
-        F["If no → search unsorted half"]
+        E["If yes - search sorted half"]
+        F["If no - search unsorted half"]
         D --> E --> F
         
         G["3. For DUPLICATES"]
@@ -846,17 +842,15 @@ flowchart TB
 
 ```mermaid
 flowchart LR
-    subgraph Quick["Single Element - Quick Pattern"]
-        A["Before single:\npairs at EVEN,ODD"]
-        B["After single:\npairs at ODD,EVEN"]
+    subgraph Quick["Single Element Pattern"]
+        A["Before single: pairs at EVEN,ODD"]
+        B["After single: pairs at ODD,EVEN"]
         
-        C["At mid check:"]
-        D["(mid ODD && match left) OR\n(mid EVEN && match right)\n= Before single → go RIGHT"]
-        E["Otherwise → go LEFT"]
+        C["At mid check parity and neighbor match"]
+        D["Determines which side of single we are on"]
         
         A --> C
         B --> C
         C --> D
-        C --> E
     end
 ```

@@ -62,7 +62,7 @@ public:
 
 ```mermaid
 flowchart LR
-    subgraph Array["nums = [1, 3, 5, 6], target = 2"]
+    subgraph Search["nums = 1,3,5,6 and target = 2"]
         A["i=0: 1 >= 2? NO"] --> B["i=1: 3 >= 2? YES"]
         B --> C["Return 1"]
     end
@@ -79,11 +79,11 @@ Since the array is sorted, we can use binary search. We're looking for the **low
 
 ```mermaid
 flowchart TD
-    A["Start: left=0, right=n-1, index=n"] --> B{left <= right?}
+    A["Start: left=0, right=n-1, index=n"] --> B{"left <= right?"}
     B -->|No| Z["Return index"]
-    B -->|Yes| C["mid = left + (right-left)/2"]
-    C --> D{"nums[mid] >= target?"}
-    D -->|Yes| E["index = mid\nright = mid - 1"]
+    B -->|Yes| C["mid = left + right-left over 2"]
+    C --> D{"mid element >= target?"}
+    D -->|Yes| E["index = mid, right = mid - 1"]
     D -->|No| F["left = mid + 1"]
     E --> B
     F --> B
@@ -127,19 +127,19 @@ public:
 flowchart TB
     subgraph Iter1["Iteration 1"]
         A1["left=0, right=3, index=4"]
-        A2["mid = 1, nums[1] = 3"]
+        A2["mid = 1, value = 3"]
         A3["3 >= 2? YES"]
         A4["index = 1, right = 0"]
     end
     
     subgraph Iter2["Iteration 2"]
         B1["left=0, right=0"]
-        B2["mid = 0, nums[0] = 1"]
+        B2["mid = 0, value = 1"]
         B3["1 >= 2? NO"]
         B4["left = 1"]
     end
     
-    Iter1 --> Iter2 --> C["left > right → EXIT"]
+    Iter1 --> Iter2 --> C["left > right, EXIT"]
     C --> D["Answer: index = 1"]
 ```
 
@@ -148,12 +148,12 @@ flowchart TB
 ```mermaid
 flowchart TB
     subgraph Process["All iterations"]
-        A["mid=1: 3 >= 7? NO → left=2"]
-        B["mid=2: 5 >= 7? NO → left=3"]
-        C["mid=3: 6 >= 7? NO → left=4"]
+        A["mid=1: 3 >= 7? NO, left=2"]
+        B["mid=2: 5 >= 7? NO, left=3"]
+        C["mid=3: 6 >= 7? NO, left=4"]
     end
-    Process --> D["left > right → EXIT"]
-    D --> E["Answer: index = 4 (insert at end)"]
+    Process --> D["left > right, EXIT"]
+    D --> E["Answer: index = 4 insert at end"]
 ```
 
 ---
@@ -180,17 +180,17 @@ If no floor or ceil exists, return `-1`.
 
 ```mermaid
 flowchart LR
-    subgraph Floor["FLOOR (largest ≤ x)"]
-        F1["if nums[mid] <= x"]
-        F2["ans = nums[mid]"]
-        F3["search RIGHT →"]
+    subgraph Floor["FLOOR - largest <= x"]
+        F1["if mid element <= x"]
+        F2["ans = mid element"]
+        F3["search RIGHT"]
         F1 --> F2 --> F3
     end
     
-    subgraph Ceil["CEIL (smallest ≥ x)"]
-        C1["if nums[mid] >= x"]
-        C2["ans = nums[mid]"]
-        C3["search LEFT ←"]
+    subgraph Ceil["CEIL - smallest >= x"]
+        C1["if mid element >= x"]
+        C2["ans = mid element"]
+        C3["search LEFT"]
         C1 --> C2 --> C3
     end
 ```
@@ -247,24 +247,27 @@ public:
 ```mermaid
 flowchart TB
     subgraph Iter1["Iteration 1: mid=2"]
-        A1["nums[2] = 4"]
-        A2["4 == 5? NO"]
-        A3["4 < 5? YES → floor=4, left=3"]
+        A1["value = 4"]
+        A2["4 equals 5? NO"]
+        A3["4 less than 5? YES"]
+        A4["floor=4, left=3"]
     end
     
     subgraph Iter2["Iteration 2: mid=4"]
-        B1["nums[4] = 8"]
-        B2["8 < 5? NO"]
-        B3["8 > 5? YES → ceil=8, right=3"]
+        B1["value = 8"]
+        B2["8 less than 5? NO"]
+        B3["8 greater than 5? YES"]
+        B4["ceil=8, right=3"]
     end
     
     subgraph Iter3["Iteration 3: mid=3"]
-        C1["nums[3] = 7"]
-        C2["7 < 5? NO"]
-        C3["7 > 5? YES → ceil=7, right=2"]
+        C1["value = 7"]
+        C2["7 less than 5? NO"]
+        C3["7 greater than 5? YES"]
+        C4["ceil=7, right=2"]
     end
     
-    Iter1 --> Iter2 --> Iter3 --> D["left > right → EXIT"]
+    Iter1 --> Iter2 --> Iter3 --> D["left > right, EXIT"]
     D --> E["Answer: floor=4, ceil=7"]
 ```
 
@@ -401,17 +404,17 @@ public:
 
 ```mermaid
 flowchart LR
-    subgraph Array["Array: [5, 7, 7, 8, 8, 10], target = 8"]
-        A["5"] --> B["7"] --> C["7"] --> D["8"] --> E["8"] --> F["10"]
+    subgraph Array["Array: 5,7,7,8,8,10 with target = 8"]
+        A["5"] --- B["7"] --- C["7"] --- D["8"] --- E["8"] --- F["10"]
     end
     
-    subgraph Bounds["Bounds"]
-        LB["Lower Bound: index 3\n(first 8)"]
-        UB["Upper Bound: index 5\n(first > 8)"]
+    subgraph Bounds
+        LB["Lower Bound: index 3"]
+        UB["Upper Bound: index 5"]
     end
-    
-    Result["First = 3, Last = 5-1 = 4"]
 ```
+
+**First = 3, Last = 5-1 = 4**
 
 #### Code
 ```cpp
@@ -569,20 +572,20 @@ public:
 ```mermaid
 flowchart TB
     subgraph FindFirst["Finding First Occurrence"]
-        A1["mid=2: 7 < 8 → low=3"]
-        A2["mid=4: 8 == 8 → fo=4, high=3"]
-        A3["mid=3: 8 == 8 → fo=3, high=2"]
-        A4["low > high → First = 3"]
+        A1["mid=2: 7 less than 8, low=3"]
+        A2["mid=4: 8 equals 8, fo=4, high=3"]
+        A3["mid=3: 8 equals 8, fo=3, high=2"]
+        A4["low > high, First = 3"]
     end
     
     subgraph FindLast["Finding Last Occurrence"]
-        B1["mid=2: 7 < 8 → low=3"]
-        B2["mid=4: 8 == 8 → lo=4, low=5"]
-        B3["mid=5: 10 > 8 → high=4"]
-        B4["low > high → Last = 4"]
+        B1["mid=2: 7 less than 8, low=3"]
+        B2["mid=4: 8 equals 8, lo=4, low=5"]
+        B3["mid=5: 10 greater than 8, high=4"]
+        B4["low > high, Last = 4"]
     end
     
-    FindFirst --> FindLast --> Result["Answer: [3, 4]"]
+    FindFirst --> FindLast --> Result["Answer: 3, 4"]
 ```
 
 ---
@@ -603,7 +606,6 @@ flowchart LR
     
     subgraph Rotated["After Rotation"]
         R["4,5,6,7,0,1,2"]
-        R1["← right half | left half →"]
     end
     
     Original -->|"Rotate at pivot"| Rotated
@@ -629,16 +631,16 @@ In a rotated sorted array, at least one half (left or right of mid) is **always 
 
 ```mermaid
 flowchart TD
-    A["Start: low=0, high=n-1"] --> B{low <= high?}
-    B -->|No| Z["Return -1 (not found)"]
+    A["Start: low=0, high=n-1"] --> B{"low <= high?"}
+    B -->|No| Z["Return -1 not found"]
     B -->|Yes| C["Calculate mid"]
-    C --> D{"nums[mid] == k?"}
+    C --> D{"target at mid?"}
     D -->|Yes| Y["Return mid"]
-    D -->|No| E{"nums[low] <= nums[mid]?"}
-    E -->|Yes - Left Sorted| F{"k in range [nums[low], nums[mid])?"}
+    D -->|No| E{"left half sorted?"}
+    E -->|Yes| F{"target in left range?"}
     F -->|Yes| G["high = mid - 1"]
     F -->|No| H["low = mid + 1"]
-    E -->|No - Right Sorted| I{"k in range (nums[mid], nums[high]]?"}
+    E -->|No| I{"target in right range?"}
     I -->|Yes| J["low = mid + 1"]
     I -->|No| K["high = mid - 1"]
     G --> B
@@ -699,15 +701,15 @@ flowchart TB
     subgraph Case1["Case 1: mid in LEFT part"]
         A1["Array: 4,5,6,7,0,1,2"]
         A2["L=0, M=2, R=6"]
-        A3["nums[0]=4 <= nums[2]=6"]
-        A4["→ LEFT half [4,5,6] is sorted ✓"]
+        A3["low element <= mid element"]
+        A4["LEFT half is sorted"]
     end
     
     subgraph Case2["Case 2: mid in RIGHT part"]
         B1["Array: 4,5,6,7,0,1,2"]
         B2["L=0, M=5, R=6"]
-        B3["nums[0]=4 > nums[5]=1"]
-        B4["→ RIGHT half [1,2] is sorted ✓"]
+        B3["low element > mid element"]
+        B4["RIGHT half is sorted"]
     end
 ```
 
@@ -719,24 +721,24 @@ flowchart TB
 flowchart TB
     subgraph Iter1["Iteration 1"]
         A1["low=0, mid=3, high=6"]
-        A2["nums[3]=7 == 0? NO"]
-        A3["nums[0]=4 <= nums[3]=7? YES → Left sorted"]
-        A4["Is 0 in [4,7)? NO (4 > 0)"]
-        A5["→ low = mid+1 = 4"]
+        A2["value at mid = 7"]
+        A3["Left half sorted: 4 <= 7"]
+        A4["Is 0 in range 4 to 7? NO"]
+        A5["low = mid+1 = 4"]
     end
     
     subgraph Iter2["Iteration 2"]
         B1["low=4, mid=5, high=6"]
-        B2["nums[5]=1 == 0? NO"]
-        B3["nums[4]=0 <= nums[5]=1? YES → Left sorted"]
-        B4["Is 0 in [0,1)? YES!"]
-        B5["→ high = mid-1 = 4"]
+        B2["value at mid = 1"]
+        B3["Left half sorted: 0 <= 1"]
+        B4["Is 0 in range 0 to 1? YES"]
+        B5["high = mid-1 = 4"]
     end
     
     subgraph Iter3["Iteration 3"]
         C1["low=4, mid=4, high=4"]
-        C2["nums[4]=0 == 0? YES!"]
-        C3["Return 4 ✓"]
+        C2["value at mid = 0 equals k"]
+        C3["Return 4"]
     end
     
     Iter1 --> Iter2 --> Iter3
@@ -773,13 +775,13 @@ flowchart TB
     A --> D["3. Rotated Array Pattern"]
     
     B --> B1["Find smallest index where condition satisfied"]
-    B --> B2["if condition: ans=mid, high=mid-1"]
+    B --> B2["if condition then ans=mid, high=mid-1"]
     
     C --> C1["Similar but with strict inequality"]
-    C --> C2["if nums[mid] > target: ans=mid, high=mid-1"]
+    C --> C2["if mid element > target then ans=mid, high=mid-1"]
     
     D --> D1["One half is ALWAYS sorted"]
-    D --> D2["Identify sorted half → Check if target in range → Eliminate half"]
+    D --> D2["Identify sorted half then Check if target in range then Eliminate half"]
 ```
 
 1. **Whenever you see "sorted" and "search"** → Think Binary Search!
