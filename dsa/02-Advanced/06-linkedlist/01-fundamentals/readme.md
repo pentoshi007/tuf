@@ -46,12 +46,12 @@ public:
 ```mermaid
 %%{init: {'theme':'dark'}}%%
 flowchart TD
-    A[head -> 5 -> 4 -> 3 -> 1 -> 0 -> null] --> B[temp = head, ans = []]
+    A["head -> 5 -> 4 -> 3 -> 1 -> 0 -> null"] --> B["temp = head, ans = empty"]
     B --> C{temp != null?}
-    C -->|Yes| D[Push temp.data into ans]
-    D --> E[temp = temp.next]
+    C -->|Yes| D["Push temp.data into ans"]
+    D --> E["temp = temp.next"]
     E --> C
-    C -->|No| F[Return ans = [5,4,3,1,0]]
+    C -->|No| F["Return ans = 5,4,3,1,0"]
 ```
 
 ### 5. Complexity Analysis
@@ -100,10 +100,10 @@ public:
 ```mermaid
 %%{init: {'theme':'dark'}}%%
 flowchart TD
-    A[Before: head -> 10 -> 20 -> 30 -> null] --> B[temp = head (10)]
-    B --> C[head = head.next (20)]
-    C --> D[delete temp (10)]
-    D --> E[After: head -> 20 -> 30 -> null]
+    A["Before: head -> 10 -> 20 -> 30 -> null"] --> B["temp points to 10"]
+    B --> C["head moves to 20"]
+    C --> D["delete old head 10"]
+    D --> E["After: head -> 20 -> 30 -> null"]
 ```
 
 ### 5. Complexity Analysis
@@ -166,14 +166,14 @@ public:
 ```mermaid
 %%{init: {'theme':'dark'}}%%
 flowchart TD
-    A[Before: 5 -> 8 -> 12 -> null] --> B[temp = head (5)]
+    A["Before: 5 -> 8 -> 12 -> null"] --> B["temp starts at 5"]
     B --> C{temp.next.next != null?}
-    C -->|Yes| D[temp = 8]
+    C -->|Yes| D["temp moves to 8"]
     D --> C
-    C -->|No| E[last = temp.next (12)]
-    E --> F[temp.next = null]
-    F --> G[delete last]
-    G --> H[After: 5 -> 8 -> null]
+    C -->|No| E["last = temp.next = 12"]
+    E --> F["temp.next = null"]
+    F --> G["delete last"]
+    G --> H["After: 5 -> 8 -> null"]
 ```
 
 ### 5. Complexity Analysis
@@ -242,14 +242,14 @@ public:
 ```mermaid
 %%{init: {'theme':'dark'}}%%
 flowchart TD
-    A[Input: 1 -> 2 -> 3 -> 4 -> null, k=3] --> B[pos=1, prev=null, curr=1]
-    B --> C[pos<k, move both]
-    C --> D[pos=2, prev=1, curr=2]
-    D --> E[pos<k, move both]
-    E --> F[pos=3, prev=2, curr=3]
-    F --> G[prev.next = curr.next]
-    G --> H[delete curr]
-    H --> I[Output: 1 -> 2 -> 4 -> null]
+    A["Input: 1 -> 2 -> 3 -> 4 -> null, k = 3"] --> B["pos=1, prev=null, curr=1"]
+    B --> C["pos<k, move prev and curr"]
+    C --> D["pos=2, prev=1, curr=2"]
+    D --> E["pos<k, move prev and curr"]
+    E --> F["pos=3, prev=2, curr=3"]
+    F --> G["prev.next = curr.next"]
+    G --> H["delete curr"]
+    H --> I["Output: 1 -> 2 -> 4 -> null"]
 ```
 
 ### 5. Complexity Analysis
@@ -317,13 +317,13 @@ public:
 ```mermaid
 %%{init: {'theme':'dark'}}%%
 flowchart TD
-    A[Input: 4 -> 9 -> 2 -> 7 -> null, X=2] --> B[prev=4, temp=9]
+    A["Input: 4 -> 9 -> 2 -> 7 -> null, X = 2"] --> B["prev=4, temp=9"]
     B --> C{temp.data == X?}
-    C -->|No| D[prev=9, temp=2]
+    C -->|No| D["prev=9, temp=2"]
     D --> E{temp.data == X?}
-    E -->|Yes| F[prev.next = temp.next]
-    F --> G[delete temp]
-    G --> H[Output: 4 -> 9 -> 7 -> null]
+    E -->|Yes| F["prev.next = temp.next"]
+    F --> G["delete temp"]
+    G --> H["Output: 4 -> 9 -> 7 -> null"]
 ```
 
 ### 5. Complexity Analysis
@@ -369,9 +369,9 @@ public:
 ```mermaid
 %%{init: {'theme':'dark'}}%%
 flowchart TD
-    A[Before: head -> 20 -> 30 -> null, X=10] --> B[Create ele(10), ele.next=head]
-    B --> C[head = ele]
-    C --> D[After: head -> 10 -> 20 -> 30 -> null]
+    A["Before: head -> 20 -> 30 -> null, X = 10"] --> B["Create ele 10 and set ele.next = head"]
+    B --> C["head = ele"]
+    C --> D["After: head -> 10 -> 20 -> 30 -> null"]
 ```
 
 ### 5. Complexity Analysis
@@ -428,13 +428,13 @@ public:
 ```mermaid
 %%{init: {'theme':'dark'}}%%
 flowchart TD
-    A[Before: 11 -> 22 -> null, X=33] --> B[Create ele(33)]
-    B --> C[mover=head(11)]
+    A["Before: 11 -> 22 -> null, X = 33"] --> B["Create ele 33"]
+    B --> C["mover starts at 11"]
     C --> D{mover.next != null?}
-    D -->|Yes| E[mover=22]
+    D -->|Yes| E["mover moves to 22"]
     E --> D
-    D -->|No| F[mover.next = ele]
-    F --> G[After: 11 -> 22 -> 33 -> null]
+    D -->|No| F["mover.next = ele"]
+    F --> G["After: 11 -> 22 -> 33 -> null"]
 ```
 
 ### 5. Complexity Analysis
@@ -501,14 +501,14 @@ public:
 ```mermaid
 %%{init: {'theme':'dark'}}%%
 flowchart TD
-    A[Input: 1 -> 2 -> 4 -> null, X=3, K=3] --> B[pos=1, prev=null, curr=1]
-    B --> C[pos<3, move]
-    C --> D[pos=2, prev=1, curr=2]
-    D --> E[pos<3, move]
-    E --> F[pos=3, prev=2, curr=4]
-    F --> G[ele.next = curr (4)]
-    G --> H[prev.next = ele (3)]
-    H --> I[Output: 1 -> 2 -> 3 -> 4 -> null]
+    A["Input: 1 -> 2 -> 4 -> null, X = 3, K = 3"] --> B["pos=1, prev=null, curr=1"]
+    B --> C["pos<3, move"]
+    C --> D["pos=2, prev=1, curr=2"]
+    D --> E["pos<3, move"]
+    E --> F["pos=3, prev=2, curr=4"]
+    F --> G["ele.next = curr 4"]
+    G --> H["prev.next = ele 3"]
+    H --> I["Output: 1 -> 2 -> 3 -> 4 -> null"]
 ```
 
 ### 5. Complexity Analysis
@@ -580,13 +580,13 @@ public:
 ```mermaid
 %%{init: {'theme':'dark'}}%%
 flowchart TD
-    A[Input: 5 -> 9 -> 12 -> null, X=12, val=10] --> B[prev=5, mover=9]
+    A["Input: 5 -> 9 -> 12 -> null, X = 12, val = 10"] --> B["prev=5, mover=9"]
     B --> C{mover.data == X?}
-    C -->|No| D[prev=9, mover=12]
+    C -->|No| D["prev=9, mover=12"]
     D --> E{mover.data == X?}
-    E -->|Yes| F[ele.next = mover]
-    F --> G[prev.next = ele]
-    G --> H[Output: 5 -> 9 -> 10 -> 12 -> null]
+    E -->|Yes| F["ele.next = mover"]
+    F --> G["prev.next = ele"]
+    G --> H["Output: 5 -> 9 -> 10 -> 12 -> null"]
 ```
 
 ### 5. Complexity Analysis
