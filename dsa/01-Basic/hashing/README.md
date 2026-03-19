@@ -96,45 +96,35 @@ int mocc_brute(int arr[], int n)
 
 ```mermaid
 flowchart TD
-    Start([Start: arr = 1,2,3,5,5,2]) --> Init[Initialize:<br/>vis=0, max_count=0, ele=-1]
-    Init --> Loop1{i < n?}
+    Start([Start: arr = 1,2,3,5,5,2]) --> Init[Initialize: vis=0, max_count=0, ele=-1]
+    Init --> I0[i=0, arr=1, vis1=0]
+    I0 --> C0[Mark vis1=1, Count arr1 in array]
+    C0 --> U0[count=1, max_count=1, ele=1]
     
-    Loop1 -->|i=0, arr=1| Check1{vis[1]==0?}
-    Check1 -->|Yes| Mark1[vis[1]=1, count=0]
-    Mark1 --> InnerLoop1[Scan array:<br/>count=1]
-    InnerLoop1 --> Update1{count > max_count?}
-    Update1 -->|Yes| Set1[max_count=1, ele=1]
+    U0 --> I1[i=1, arr=2, vis2=0]
+    I1 --> C1[Mark vis2=1, Count arr2 in array]
+    C1 --> U1[count=2, max_count=2, ele=2]
     
-    Set1 --> Loop2{i < n?}
-    Loop2 -->|i=1, arr=2| Check2{vis[2]==0?}
-    Check2 -->|Yes| Mark2[vis[2]=1, count=0]
-    Mark2 --> InnerLoop2[Scan array:<br/>count=2]
-    InnerLoop2 --> Update2{count > max_count?}
-    Update2 -->|Yes| Set2[max_count=2, ele=2]
+    U1 --> I2[i=2, arr=3, vis3=0]
+    I2 --> C2[Mark vis3=1, Count arr3 in array]
+    C2 --> U2[count=1, No update]
     
-    Set2 --> Loop3{i < n?}
-    Loop3 -->|i=2, arr=3| Check3{vis[3]==0?}
-    Check3 -->|Yes| Mark3[vis[3]=1, count=0]
-    Mark3 --> InnerLoop3[Scan array:<br/>count=1]
-    InnerLoop3 --> Update3{count > max_count?}
-    Update3 -->|No| Loop4{i < n?}
+    U2 --> I3[i=3, arr=5, vis5=0]
+    I3 --> C3[Mark vis5=1, Count arr5 in array]
+    C3 --> U3[count=2, No update]
     
-    Loop4 -->|i=3, arr=5| Check4{vis[5]==0?}
-    Check4 -->|Yes| Mark4[vis[5]=1, count=0]
-    Mark4 --> InnerLoop4[Scan array:<br/>count=2]
-    InnerLoop4 --> Update4{count > max_count?}
-    Update4 -->|No| Loop5{i < n?}
+    U3 --> I4[i=4, arr=5, vis5=1]
+    I4 --> Skip1[Skip - already visited]
     
-    Loop5 -->|i=4, arr=5| Check5{vis[5]==0?}
-    Check5 -->|No, Skip| Loop6{i < n?}
+    Skip1 --> I5[i=5, arr=2, vis2=1]
+    I5 --> Skip2[Skip - already visited]
     
-    Loop6 -->|i=5, arr=2| Check6{vis[2]==0?}
-    Check6 -->|No, Skip| End([Return ele=2])
+    Skip2 --> End([Return ele=2])
     
     style Start fill:#2d5016,stroke:#4a7c2c,color:#fff
     style End fill:#2d5016,stroke:#4a7c2c,color:#fff
-    style Set1 fill:#1a4d2e,stroke:#2d7a4f,color:#fff
-    style Set2 fill:#1a4d2e,stroke:#2d7a4f,color:#fff
+    style U0 fill:#1a4d2e,stroke:#2d7a4f,color:#fff
+    style U1 fill:#1a4d2e,stroke:#2d7a4f,color:#fff
 ```
 
 ### Complexity Analysis
@@ -210,57 +200,32 @@ int mocc_hash(int arr[], int n)
 ### Visual Dry Run
 
 ```mermaid
-stateDiagram-v2
-    [*] --> BuildHash: arr = [1,2,3,5,5,2]
+flowchart TD
+    Start([Start: arr = 1,2,3,5,5,2]) --> Phase1[Phase 1: Build Hash Array]
     
-    BuildHash --> Hash_i0: i=0, arr[0]=1
-    state Hash_i0 {
-        [*] --> h1: hash[1]++
-        h1 --> [*]: hash[1]=1
-    }
+    Phase1 --> B0[i=0: hash1++ = 1]
+    B0 --> B1[i=1: hash2++ = 1]
+    B1 --> B2[i=2: hash3++ = 1]
+    B2 --> B3[i=3: hash5++ = 1]
+    B3 --> B4[i=4: hash5++ = 2]
+    B4 --> B5[i=5: hash2++ = 2]
     
-    Hash_i0 --> Hash_i1: i=1, arr[1]=2
-    state Hash_i1 {
-        [*] --> h2: hash[2]++
-        h2 --> [*]: hash[2]=1
-    }
+    B5 --> HashBuilt[Hash Built: h1=1, h2=2, h3=1, h5=2]
     
-    Hash_i1 --> Hash_i2: i=2, arr[2]=3
-    state Hash_i2 {
-        [*] --> h3: hash[3]++
-        h3 --> [*]: hash[3]=1
-    }
+    HashBuilt --> Phase2[Phase 2: Find Maximum]
     
-    Hash_i2 --> Hash_i3: i=3, arr[3]=5
-    state Hash_i3 {
-        [*] --> h5a: hash[5]++
-        h5a --> [*]: hash[5]=1
-    }
+    Phase2 --> S1[i=1: hash1=1, max_count=1, ele=1]
+    S1 --> S2[i=2: hash2=2, max_count=2, ele=2]
+    S2 --> S3[i=3: hash3=1, No update]
+    S3 --> S5[i=5: hash5=2, No update]
     
-    Hash_i3 --> Hash_i4: i=4, arr[4]=5
-    state Hash_i4 {
-        [*] --> h5b: hash[5]++
-        h5b --> [*]: hash[5]=2
-    }
+    S5 --> End([Return ele=2])
     
-    Hash_i4 --> Hash_i5: i=5, arr[5]=2
-    state Hash_i5 {
-        [*] --> h2b: hash[2]++
-        h2b --> [*]: hash[2]=2
-    }
-    
-    Hash_i5 --> FindMax: Hash Built<br/>hash[1]=1, hash[2]=2<br/>hash[3]=1, hash[5]=2
-    
-    FindMax --> Scan: Scan hash array
-    state Scan {
-        [*] --> s1: i=1: hash[1]=1<br/>max_count=1, ele=1
-        s1 --> s2: i=2: hash[2]=2<br/>max_count=2, ele=2
-        s2 --> s3: i=3: hash[3]=1<br/>No update
-        s3 --> s5: i=5: hash[5]=2<br/>No update (not >)
-        s5 --> [*]
-    }
-    
-    Scan --> [*]: Return ele=2
+    style Start fill:#2d5016,stroke:#4a7c2c,color:#fff
+    style End fill:#2d5016,stroke:#4a7c2c,color:#fff
+    style HashBuilt fill:#1a4d2e,stroke:#2d7a4f,color:#fff
+    style S1 fill:#1a4d2e,stroke:#2d7a4f,color:#fff
+    style S2 fill:#1a4d2e,stroke:#2d7a4f,color:#fff
 ```
 
 ### Complexity Analysis
@@ -370,39 +335,32 @@ int smocc_hash(int arr[], int n)
 
 ```mermaid
 flowchart TD
-    Start([Start: arr = 1,2,3,5,5,5,2]) --> Build[Build Hash:<br/>hash[1]=1, hash[2]=2<br/>hash[3]=1, hash[5]=3]
+    Start([Start: arr = 1,2,3,5,5,5,2]) --> Build[Build Hash: h1=1, h2=2, h3=1, h5=3]
     
-    Build --> Init[max_count=0<br/>second_max_count=0<br/>ele=-1]
+    Build --> Init[Initialize: max_count=0, second_max=0]
     
-    Init --> Scan1{Scan i=1}
-    Scan1 --> Check1{hash[1]=1 > 0?}
-    Check1 -->|Yes| Update1[second_max=0<br/>max_count=1]
+    Init --> S1[Scan i=1: hash1=1]
+    S1 --> U1[1 > 0: second_max=0, max_count=1]
     
-    Update1 --> Scan2{Scan i=2}
-    Scan2 --> Check2{hash[2]=2 > 1?}
-    Check2 -->|Yes| Update2[second_max=1<br/>max_count=2]
+    U1 --> S2[Scan i=2: hash2=2]
+    S2 --> U2[2 > 1: second_max=1, max_count=2]
     
-    Update2 --> Scan3{Scan i=3}
-    Scan3 --> Check3{hash[3]=1 > 2?}
-    Check3 -->|No| Check3b{1 > 1 AND 1 < 2?}
-    Check3b -->|No| Scan5{Scan i=5}
+    U2 --> S3[Scan i=3: hash3=1]
+    S3 --> U3[1 not > 2, 1 not > 1: No update]
     
-    Scan5 --> Check5{hash[5]=3 > 2?}
-    Check5 -->|Yes| Update5[second_max=2<br/>max_count=3]
+    U3 --> S5[Scan i=5: hash5=3]
+    S5 --> U5[3 > 2: second_max=2, max_count=3]
     
-    Update5 --> FindEle[Find element with<br/>second_max_count=2]
-    
-    FindEle --> Search{Scan hash}
-    Search --> Found[i=2: hash[2]=2<br/>ele=2, break]
-    
-    Found --> End([Return ele=2])
+    U5 --> Find[Find element with second_max=2]
+    Find --> Result[Scan: i=2 has hash2=2]
+    Result --> End([Return ele=2])
     
     style Start fill:#2d5016,stroke:#4a7c2c,color:#fff
     style End fill:#2d5016,stroke:#4a7c2c,color:#fff
-    style Update1 fill:#1a4d2e,stroke:#2d7a4f,color:#fff
-    style Update2 fill:#1a4d2e,stroke:#2d7a4f,color:#fff
-    style Update5 fill:#1a4d2e,stroke:#2d7a4f,color:#fff
-    style Found fill:#1a4d2e,stroke:#2d7a4f,color:#fff
+    style U1 fill:#1a4d2e,stroke:#2d7a4f,color:#fff
+    style U2 fill:#1a4d2e,stroke:#2d7a4f,color:#fff
+    style U5 fill:#1a4d2e,stroke:#2d7a4f,color:#fff
+    style Result fill:#1a4d2e,stroke:#2d7a4f,color:#fff
 ```
 
 ### Complexity Analysis
@@ -497,46 +455,30 @@ int sum_of_highest_and_lowest_frequency(int arr[], int n)
 
 ### Visual Dry Run
 
+**Original Code (with bug):**
+
 ```mermaid
-stateDiagram-v2
-    [*] --> BuildPhase: arr = [1,2,3,5,5,5,2,7]
+flowchart TD
+    Start([Start: arr = 1,2,3,5,5,5,2,7]) --> Build[Build Hash: h1=1, h2=2, h3=1, h5=3, h7=1]
     
-    state BuildPhase {
-        [*] --> b1: Process array
-        b1 --> b2: hash[1]=1
-        b2 --> b3: hash[2]=2
-        b3 --> b4: hash[3]=1
-        b4 --> b5: hash[5]=3
-        b5 --> b6: hash[7]=1
-        b6 --> [*]
-    }
+    Build --> Init[max_count=0, min_count=1000000]
     
-    BuildPhase --> FindMax: Hash Built<br/>Non-zero: 1→1, 2→2, 3→1, 5→3, 7→1
+    Init --> FindMax[Find Max Loop]
+    FindMax --> M1[i=1: hash1=1, max=1]
+    M1 --> M2[i=2: hash2=2, max=2]
+    M2 --> M3[i=3: hash3=1, no update]
+    M3 --> M5[i=5: hash5=3, max=3]
+    M5 --> M7[i=7: hash7=1, no update]
     
-    state FindMax {
-        [*] --> m1: max_count=0
-        m1 --> m2: i=1: hash[1]=1<br/>max_count=1
-        m2 --> m3: i=2: hash[2]=2<br/>max_count=2
-        m3 --> m4: i=3: hash[3]=1<br/>No update
-        m4 --> m5: i=5: hash[5]=3<br/>max_count=3
-        m5 --> m6: i=7: hash[7]=1<br/>No update
-        m6 --> [*]: max_count=3
-    }
+    M7 --> FindMin[Find Min Loop - BUG HERE]
+    FindMin --> N0[i=0: hash0=0, min=0 ❌]
+    N0 --> Bug[Bug: Includes non-existent elements!]
     
-    FindMax --> FindMin: max_count=3
+    Bug --> Wrong([Wrong Result: 3+0=3])
     
-    state FindMin {
-        [*] --> n1: min_count=1000000
-        n1 --> n2: i=0: hash[0]=0<br/>min_count=0 ❌
-        note right of n2: BUG: This includes<br/>non-existent elements!<br/>Should check hash[i]>0
-        n2 --> [*]: min_count=0
-    }
-    
-    FindMin --> Result: INCORRECT<br/>Returns 3+0=3
-    
-    Result --> [*]
-    
-    note right of FindMin: ISSUE: Code has a bug!<br/>Should only consider<br/>non-zero frequencies
+    style Start fill:#8b0000,stroke:#ff0000,color:#fff
+    style Wrong fill:#8b0000,stroke:#ff0000,color:#fff
+    style Bug fill:#8b0000,stroke:#ff0000,color:#fff
 ```
 
 ### Bug Fix & Corrected Code
@@ -582,38 +524,36 @@ int sum_of_highest_and_lowest_frequency(int arr[], int n)
 
 ```mermaid
 flowchart TD
-    Start([Start: arr = 1,2,3,5,5,5,2,7]) --> Build[Build Hash:<br/>hash[1]=1, hash[2]=2<br/>hash[3]=1, hash[5]=3, hash[7]=1]
+    Start([Start: arr = 1,2,3,5,5,5,2,7]) --> Build[Build Hash: h1=1, h2=2, h3=1, h5=3, h7=1]
     
-    Build --> Init[max_count=0<br/>min_count=INT_MAX]
+    Build --> Init[max_count=0, min_count=INT_MAX]
     
-    Init --> Loop{Scan hash array}
+    Init --> Loop[Scan hash array, check only hash i > 0]
     
-    Loop --> i0{i=0: hash[0]=0}
-    i0 -->|Skip, =0| i1{i=1: hash[1]=1}
+    Loop --> I1[i=1: hash1=1 > 0]
+    I1 --> C1[1 > 0: max=1, 1 < MAX: min=1]
     
-    i1 -->|>0| Check1[1 > 0? Yes<br/>max_count=1<br/>1 < INT_MAX? Yes<br/>min_count=1]
+    C1 --> I2[i=2: hash2=2 > 0]
+    I2 --> C2[2 > 1: max=2, 2 not < 1: min=1]
     
-    Check1 --> i2{i=2: hash[2]=2}
-    i2 -->|>0| Check2[2 > 1? Yes<br/>max_count=2<br/>2 < 1? No<br/>min_count=1]
+    C2 --> I3[i=3: hash3=1 > 0]
+    I3 --> C3[1 not > 2, 1 not < 1: no update]
     
-    Check2 --> i3{i=3: hash[3]=1}
-    i3 -->|>0| Check3[1 > 2? No<br/>1 < 1? No<br/>No updates]
+    C3 --> I5[i=5: hash5=3 > 0]
+    I5 --> C5[3 > 2: max=3, 3 not < 1: min=1]
     
-    Check3 --> i5{i=5: hash[5]=3}
-    i5 -->|>0| Check5[3 > 2? Yes<br/>max_count=3<br/>3 < 1? No<br/>min_count=1]
+    C5 --> I7[i=7: hash7=1 > 0]
+    I7 --> C7[1 not > 3, 1 not < 1: no update]
     
-    Check5 --> i7{i=7: hash[7]=1}
-    i7 -->|>0| Check7[1 > 3? No<br/>1 < 1? No<br/>No updates]
-    
-    Check7 --> Result[max_count=3<br/>min_count=1<br/>Sum = 3+1 = 4]
-    
-    Result --> End([Return 4])
+    C7 --> Result[max_count=3, min_count=1]
+    Result --> Sum[Sum = 3 + 1 = 4]
+    Sum --> End([Return 4 ✓])
     
     style Start fill:#2d5016,stroke:#4a7c2c,color:#fff
     style End fill:#2d5016,stroke:#4a7c2c,color:#fff
-    style Check1 fill:#1a4d2e,stroke:#2d7a4f,color:#fff
-    style Check2 fill:#1a4d2e,stroke:#2d7a4f,color:#fff
-    style Check5 fill:#1a4d2e,stroke:#2d7a4f,color:#fff
+    style C1 fill:#1a4d2e,stroke:#2d7a4f,color:#fff
+    style C2 fill:#1a4d2e,stroke:#2d7a4f,color:#fff
+    style C5 fill:#1a4d2e,stroke:#2d7a4f,color:#fff
     style Result fill:#1a4d2e,stroke:#2d7a4f,color:#fff
 ```
 
